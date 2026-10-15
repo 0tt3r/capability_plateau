@@ -1,0 +1,83 @@
+{
+  "law": "n_T(eps) = a log2(1/eps) + b, mean over uniformly random angles",
+  "a": 3.0764791908264293,
+  "b": 1.0970643939393736,
+  "max_residual": 1.3794070512820262,
+  "angles_per_eps": 64,
+  "tool": "pygridsynth gridsynth_gates",
+  "rows": [
+    {
+      "eps": 0.1,
+      "mean_T": 9.9375,
+      "min_T": 0,
+      "max_T": 14
+    },
+    {
+      "eps": 0.01,
+      "mean_T": 21.25,
+      "min_T": 0,
+      "max_T": 26
+    },
+    {
+      "eps": 0.001,
+      "mean_T": 32.21875,
+      "min_T": 28,
+      "max_T": 36
+    },
+    {
+      "eps": 0.0001,
+      "mean_T": 42.46875,
+      "min_T": 38,
+      "max_T": 48
+    },
+    {
+      "eps": 1e-05,
+      "mean_T": 52.90625,
+      "min_T": 46,
+      "max_T": 58
+    },
+    {
+      "eps": 1e-06,
+      "mean_T": 63.15625,
+      "min_T": 58,
+      "max_T": 66
+    },
+    {
+      "eps": 1e-07,
+      "mean_T": 72.90625,
+      "min_T": 66,
+      "max_T": 76
+    },
+    {
+      "eps": 1e-08,
+      "mean_T": 83.0,
+      "min_T": 72,
+      "max_T": 88
+    },
+    {
+      "eps": 1e-09,
+      "mean_T": 92.53125,
+      "min_T": 88,
+      "max_T": 96
+    },
+    {
+      "eps": 1e-10,
+      "mean_T": 103.5625,
+      "min_T": 98,
+      "max_T": 106
+    },
+    {
+      "eps": 1e-11,
+      "mean_T": 113.21875,
+      "min_T": 108,
+      "max_T": 116
+    },
+    {
+      "eps": 1e-12,
+      "mean_T": 123.15625,
+      "min_T": 116,
+      "max_T": 126
+    }
+  ],
+  "seconds": 35.5
+}

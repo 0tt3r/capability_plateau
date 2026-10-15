@@ -1,0 +1,156 @@
+{
+ "circuits": [
+  {
+   "w": 8,
+   "ensemble": "shallow",
+   "eps": 0.05,
+   "rotations": 32,
+   "circuits": 24,
+   "infidelity": 0.008936726251254482,
+   "stderr": 0.00032301548895534747,
+   "sum_delta_sq": 0.01182293619917185,
+   "sum_delta_all_sq": 0.35526003931533734,
+   "charge": 0.08000000000000002,
+   "infidelity_over_charge": 0.111709078140681,
+   "infidelity_over_sum_delta_sq": 0.7558804429546413
+  },
+  {
+   "w": 8,
+   "ensemble": "shallow",
+   "eps": 0.02,
+   "rotations": 32,
+   "circuits": 24,
+   "infidelity": 0.0013988051839392928,
+   "stderr": 0.00010477230923572568,
+   "sum_delta_sq": 0.001779787868547945,
+   "sum_delta_all_sq": 0.052600084975676774,
+   "charge": 0.0128,
+   "infidelity_over_charge": 0.10928165499525724,
+   "infidelity_over_sum_delta_sq": 0.7859392732463784
+  },
+  {
+   "w": 8,
+   "ensemble": "shallow",
+   "eps": 0.01,
+   "rotations": 32,
+   "circuits": 24,
+   "infidelity": 0.0003646083401704914,
+   "stderr": 1.826653640769503e-05,
+   "sum_delta_sq": 0.00044809222305286847,
+   "sum_delta_all_sq": 0.012866022471133559,
+   "charge": 0.0032,
+   "infidelity_over_charge": 0.11394010630327855,
+   "infidelity_over_sum_delta_sq": 0.8136903999056302
+  },
+  {
+   "w": 6,
+   "ensemble": "deep",
+   "eps": 0.05,
+   "rotations": 108,
+   "circuits": 24,
+   "infidelity": 0.03443971179611157,
+   "stderr": 0.001090616024765301,
+   "sum_delta_sq": 0.039978133655353465,
+   "sum_delta_all_sq": 4.049843702295584,
+   "charge": 0.2700000000000001,
+   "infidelity_over_charge": 0.12755448813374654,
+   "infidelity_over_sum_delta_sq": 0.8614637214686423
+  },
+  {
+   "w": 6,
+   "ensemble": "deep",
+   "eps": 0.02,
+   "rotations": 108,
+   "circuits": 24,
+   "infidelity": 0.005702334332003604,
+   "stderr": 0.0002822699930414988,
+   "sum_delta_sq": 0.006090829946500721,
+   "sum_delta_all_sq": 0.6059991546184589,
+   "charge": 0.0432,
+   "infidelity_over_charge": 0.13199847990749083,
+   "infidelity_over_sum_delta_sq": 0.936216309122156
+  },
+  {
+   "w": 6,
+   "ensemble": "deep",
+   "eps": 0.01,
+   "rotations": 108,
+   "circuits": 24,
+   "infidelity": 0.0014149053278113184,
+   "stderr": 4.192121400088655e-05,
+   "sum_delta_sq": 0.0014871797218631779,
+   "sum_delta_all_sq": 0.14382413744944192,
+   "charge": 0.0108,
+   "infidelity_over_charge": 0.13100975257512207,
+   "infidelity_over_sum_delta_sq": 0.9514017082203674
+  },
+  {
+   "w": 8,
+   "ensemble": "deep",
+   "eps": 0.05,
+   "rotations": 256,
+   "circuits": 24,
+   "infidelity": 0.08646065547502392,
+   "stderr": 0.0017765472551400862,
+   "sum_delta_sq": 0.09479198037317882,
+   "sum_delta_all_sq": 22.592033607475837,
+   "charge": 0.6400000000000001,
+   "infidelity_over_charge": 0.13509477417972485,
+   "infidelity_over_sum_delta_sq": 0.9121093908434449
+  },
+  {
+   "w": 8,
+   "ensemble": "deep",
+   "eps": 0.02,
+   "rotations": 256,
+   "circuits": 24,
+   "infidelity": 0.013424209970971046,
+   "stderr": 0.0002788009903328254,
+   "sum_delta_sq": 0.014088715238351883,
+   "sum_delta_all_sq": 3.3034767419454965,
+   "charge": 0.1024,
+   "infidelity_over_charge": 0.13109580049776412,
+   "infidelity_over_sum_delta_sq": 0.9528342182989162
+  },
+  {
+   "w": 8,
+   "ensemble": "deep",
+   "eps": 0.01,
+   "rotations": 256,
+   "circuits": 24,
+   "infidelity": 0.0033149087718868423,
+   "stderr": 6.72208992018675e-05,
+   "sum_delta_sq": 0.003530608426887606,
+   "sum_delta_all_sq": 0.8086132791231725,
+   "charge": 0.0256,
+   "infidelity_over_charge": 0.12948862390182977,
+   "infidelity_over_sum_delta_sq": 0.938905811996004
+  }
+ ],
+ "single": [
+  {
+   "eps": 0.01,
+   "angles": 200,
+   "mean_delta_sq_over_eps_sq": 0.14338381413365325,
+   "max_delta_over_eps": 0.49970789481847677
+  },
+  {
+   "eps": 0.0001,
+   "angles": 200,
+   "mean_delta_sq_over_eps_sq": 0.15201638839690057,
+   "max_delta_over_eps": 0.49993758037265523
+  },
+  {
+   "eps": 1e-06,
+   "angles": 200,
+   "mean_delta_sq_over_eps_sq": 0.14621943381643077,
+   "max_delta_over_eps": 0.4992949637680577
+  },
+  {
+   "eps": 1e-08,
+   "angles": 200,
+   "mean_delta_sq_over_eps_sq": 0.1460078519502562,
+   "max_delta_over_eps": 0.49887999631767027
+  }
+ ]
+}

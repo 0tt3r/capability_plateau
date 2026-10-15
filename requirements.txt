@@ -1,0 +1,6 @@
+numpy>=1.26
+scipy>=1.11
+networkx>=3.2
+matplotlib>=3.8
+pygridsynth>=2.0   # only for scripts/fit_synthesis.py
+pytest>=8
