@@ -34,8 +34,9 @@ def compute(ch=BASELINE):
 
 
 def best(rows):
+    """Largest passing size; of designs that tie, the one with the fewest qubits, where the curve first reaches it."""
     ok = [r for r in rows if r['passes']]
-    return max(ok, key=lambda r: r['s']) if ok else None
+    return max(ok, key=lambda r: (r['s'], -r['qubits'])) if ok else None
 
 
 def plot(data, path):

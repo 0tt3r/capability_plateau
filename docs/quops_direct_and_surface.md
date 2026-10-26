@@ -77,7 +77,8 @@ size of either ensemble that passes, $144 = 12^2$ on H2 and $1{,}728 = 12^3$ on 
 the capability on all-to-all hardware is therefore decided by which allowed size, $w^2$ or $w^3$, falls
 just below the limit. On the grid the SWAP cost of a CNOT layer grows with $w$, so the deep ensemble,
 which reaches a given size with fewer qubits, costs less per unit of size. It sets the capability on H3
-($w = 6$), and on H1 the two ensembles tie at $s = 64$ ($w = 8$ shallow, $w = 4$ deep).
+($w = 6$). On H1 both ensembles reach $s = 64$, the deep one with $w = 4$ qubits and the shallow one with
+$w = 8$, so the curve reaches 64 at $N = 4$.
 
 ## 4. Surface-code implementation
 
