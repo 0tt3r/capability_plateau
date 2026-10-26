@@ -16,9 +16,9 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 from capability import curves, direct, surface
-from capability.config import BASELINE, HARDWARE
+from capability.config import BASELINE, HARDWARE, N_MAX
 
-PROBES = (1e4, 1e6)                         # exact capability is reported at these qubit counts
+PROBES = (1e4, N_MAX)                       # exact capability is reported at these qubit counts
 DIRECT, SURFACE = '#2a78d6', '#eb6834'      # categorical slots 1 and 2 of the dataviz reference palette
 INK, MUTED = '#2b2b2b', '#8a8a8a'
 
@@ -49,12 +49,12 @@ def plot(data, path):
             ax.step(grid, y, where='post', color=color, lw=2, label=label)
         if v['crossover']:
             ax.axvline(v['crossover'], color=MUTED, lw=1, ls=':')
-            ax.text(v['crossover']*1.3, 3e10, f"crossover\n{v['crossover']:,.0f} qubits", color=INK, fontsize=8,
+            ax.text(v['crossover']*1.3, 4e8, f"crossover\n{v['crossover']:,.0f} qubits", color=INK, fontsize=8,
                     va='top')
         b = best(v['direct'])
-        ax.text(3e4, b['s']/2.2, f"direct: s = {b['s']:,} ({b['ensemble']}, w = {b['w']})", color=INK,
-                fontsize=8, va='top')
-        ax.set(xscale='log', yscale='log', xlim=(1, 1e9), ylim=(1, 1e12), title=f"{key}: {v['hardware']['name']}")
+        ax.text(2, b['s']*1.8, f"direct: s = {b['s']:,} ({b['ensemble']}, w = {b['w']})", color=INK,
+                fontsize=8, va='bottom')
+        ax.set(xscale='log', yscale='log', xlim=(1, N_MAX), ylim=(1, 1e9), title=f"{key}: {v['hardware']['name']}")
         ax.title.set_fontsize(10)
         ax.grid(alpha=.15)
         for side in ('top', 'right'):
@@ -64,8 +64,6 @@ def plot(data, path):
     for ax in axes[:, 0]:
         ax.set_ylabel('QUOPS capability s')
     axes[0, 0].legend(frameon=False, fontsize=9, loc='upper left', bbox_to_anchor=(0, .86))
-    fig.suptitle('QUOPS capability, p = 1e-3, baseline choices (capability_plateau/capability/config.py)',
-                 fontsize=10)
     fig.tight_layout()
     for ext in ('pdf', 'png'):
         fig.savefig(path.with_suffix('.' + ext), dpi=180)

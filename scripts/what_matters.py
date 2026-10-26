@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from capability import curves, direct, surface
-from capability.config import BASELINE, HARDWARE, vary
+from capability.config import BASELINE, HARDWARE, N_MAX, vary
 
 VARIANTS = [
     ('baseline', 'all defaults in config.py', {}),
@@ -36,7 +36,7 @@ VARIANTS = [
     ('both: 10^4 executions', 'all runs must fit in the week (extra copies)', dict(executions=10_000)),
 ]
 KEYS = ('H1', 'H2', 'H3', 'H4')
-PROBES = (1e4, 1e6)
+PROBES = (1e4, N_MAX)
 
 
 DESIGN = ('w', 'ensemble', 's', 'qubits', 'distance', 'factory', 'factories', 'copies', 'runs_per_copy',
@@ -48,7 +48,7 @@ def summarize(ch):
     for key in KEYS:
         hw = HARDWARE[key]
         d, s = direct.sweep(hw, ch), surface.sweep(hw, ch)
-        out[key] = dict(direct=curves.capability(d, 1e12), crossover=curves.crossover(d, s))
+        out[key] = dict(direct=curves.capability(d, N_MAX), crossover=curves.crossover(d, s))
         for N in PROBES:
             x = surface.best_at(N, hw, ch, s)
             out[key][f'surface_{N:.0e}'] = x['s'] if x else 0

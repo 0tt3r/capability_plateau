@@ -8,6 +8,7 @@ from dataclasses import dataclass, replace
 
 P = 1e-3                       # [draft] physical error parameter, fixed throughout
 WEEK_SECONDS = 7*24*3600       # [draft] time budget
+N_MAX = 1e6                    # [choice] largest machine considered; curves and probes stop here
 
 
 @dataclass(frozen=True)

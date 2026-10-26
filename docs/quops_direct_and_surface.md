@@ -68,10 +68,16 @@ along it by odd-even transposition. The alternative router uses minimum-distance
 row-column-row sorting. Because the routing depends on the placement left by earlier layers, we average
 the no-fault probability over 64 sampled circuits. The standard error of that mean is below $0.005$.
 
-The resulting capabilities are $s = 64$ on H1, 144 on H2, 216 on H3, and 1,728 on H4. Under uniform noise
-the shallow ensemble sets the capability ($w = 8$ on the grid, $w = 12$ all-to-all). Under bimodal noise
-the one-qubit and idle locations are nearly free, so only the CNOTs, preparations, and measurements
-count, and the deep ensemble sets the capability ($w = 6$ and $w = 12$).
+The resulting capabilities are $s = 64$ on H1, 144 on H2, 216 on H3, and 1,728 on H4. On all-to-all
+hardware the two ensembles cost almost the same per unit of size. A rotation layer and a CNOT layer add
+$2w$ to the size and cost about $(5w + w/2)p$ under uniform noise and $wp/2$ under bimodal noise, so
+$-\ln\bar q \approx 2.75\,ps$ and $0.25\,ps$, plus $2wp$ for preparation and measurement. Before that
+last term the criterion allows $s \approx 180$ and $s \approx 2{,}000$, and the capability is the largest
+size of either ensemble that passes, $144 = 12^2$ on H2 and $1{,}728 = 12^3$ on H4. Which ensemble sets
+the capability on all-to-all hardware is therefore decided by which allowed size, $w^2$ or $w^3$, falls
+just below the limit. On the grid the SWAP cost of a CNOT layer grows with $w$, so the deep ensemble,
+which reaches a given size with fewer qubits, costs less per unit of size. It sets the capability on H3
+($w = 6$), and on H1 the two ensembles tie at $s = 64$ ($w = 8$ shallow, $w = 4$ deep).
 
 ## 4. Surface-code implementation
 
@@ -141,9 +147,18 @@ uses at most 14% of the week, so this design is limited by area, not by time.
 | Crossover $N$ | 3,928 | 3,928 | 3,616 | 7,800 |
 | Surface code, $s$ at $N=10^6$ | $5.9\times10^7$ | $5.9\times10^7$ | $1.4\times10^8$ | $1.4\times10^8$ |
 
-Every number quoted in this note is exact within the model. The crossover is found at the steps of the
-two curves rather than on a plotting grid, and capabilities at fixed $N$ are refined over every even
-width. Only the plotted staircase samples widths about 6.5% apart above $w = 100$.
+The curves, and every number in this note, stop at $N = 10^6$ physical qubits (`N_MAX` in
+`capability/config.py`). Every number quoted in this note is exact within the model. The crossover is
+found at the steps of the two curves rather than on a plotting grid, and capabilities at fixed $N$ are
+refined over every even width. Only the plotted staircase samples widths about 6.5% apart above
+$w = 100$.
+
+The short flat step of each surface-code curve near $s \approx 10^7$ is where the designs change from
+cultivation to distillation factories, at $3.9\times10^5$ qubits under uniform noise and $3.0\times10^5$
+under bimodal noise. Factory errors take up to 0.38 of the 0.5 budget just before the change, close to
+the cultivation ceiling of Eq. (3) in Sec. 6. The first distillation factory used, Litinski's
+$2.7\times10^{-12}$ factory, is 30 times larger and has a 740 times lower output error, and above the
+change factory errors take at most 0.15 of the budget.
 
 The surface-code curves of H1 and H2 (and of H3 and H4) coincide, because the baseline surface-code
 model does not use all-to-all connectivity. The draft's Fig. 3 assigns the surface code to the 2D
@@ -201,9 +216,8 @@ $$
 s \lesssim \frac{1}{n_T\,\varepsilon_T} \approx 1.1\times10^{7} \quad \text{(cultivation)}, \tag{3}
 $$
 where the approximation neglects the synthesis and patch shares of the budget. That is, the factory's
-output error caps the capability however many qubits are available. With $10^9$ qubits, or with a cycle
-1,000 times faster, the cultivation-only capability is still $1.09\times10^7$. With a 1 ms cycle, time
-sets the limit instead, and the single run takes 98% of the week. Requiring $10^4$ executions combines
+output error caps the capability however many qubits are available. With a 1 ms cycle, time sets the
+limit instead, and the single run takes 98% of the week. Requiring $10^4$ executions combines
 the two limits. Each run must then finish in about 60 s, and within $10^6$ qubits only many small
 factories can supply T states that fast. The winning design feeds one copy from 395 cultivation
 factories and runs the $10^4$ executions back to back in 98% of the week, so it reaches the cultivation

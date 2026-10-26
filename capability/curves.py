@@ -5,7 +5,9 @@ required qubits are at most N.
 """
 import numpy as np
 
-N_GRID = np.unique(np.round(np.geomspace(1, 1e9, 1801)))
+from .config import N_MAX
+
+N_GRID = np.unique(np.round(np.geomspace(1, N_MAX, 1201)))
 
 
 def capability(rows, N):

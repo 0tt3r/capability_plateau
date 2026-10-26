@@ -31,7 +31,7 @@ from pathlib import Path
 
 import numpy as np
 
-from .config import WEEK_SECONDS
+from .config import N_MAX, WEEK_SECONDS
 from .factories import menu
 from .quops import ENSEMBLES, layer_counts, size
 
@@ -118,12 +118,14 @@ def widths(w_max=200000):
 
 
 def sweep(hw, ch):
+    """Designs at the sampled widths up to N_MAX qubits. The fewest qubits never decrease with w (see best_at),
+    so the first width that fails or needs more than N_MAX ends each ensemble."""
     rows = []
     for ensemble in ENSEMBLES:
         for w in widths():
             design = min_qubits(w, ensemble, hw, ch)
-            if design is None:
-                continue
+            if design is None or design['qubits'] > N_MAX:
+                break
             rows.append(dict(ensemble=ensemble, w=w, s=size(w, ensemble), passes=True, **design))
     return rows
 
