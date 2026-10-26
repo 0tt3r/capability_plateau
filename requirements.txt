@@ -4,3 +4,4 @@ networkx>=3.2
 matplotlib>=3.8
 pygridsynth>=2.0   # only for scripts/fit_synthesis.py
 pytest>=8
+jupyter>=1.0       # only to open notebooks/

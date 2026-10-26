@@ -8,7 +8,9 @@ on what matters before adding approaches, problem classes, or sophistication.
 Start with the methods note, [docs/quops_direct_and_surface.md](docs/quops_direct_and_surface.md). It
 states how each number is obtained, that is, which parts are formulas, which are compiled and counted,
 which are simulated, which come from the literature, and which are declared choices. It also shows which
-choices move the curves.
+choices move the curves. The notebook [notebooks/quops_walkthrough.ipynb](notebooks/quops_walkthrough.ipynb)
+computes one direct and one surface-code design by hand, checks them against the package, and builds the
+curves for one hardware class.
 
 ## Layout
 
@@ -26,6 +28,8 @@ scripts/
   make_curves.py     baseline curves -> results/baseline.json, figures/quops_direct_surface.*
   what_matters.py    one-at-a-time choice changes -> results/what_matters.json, docs/what_matters_table.md
   check_synthesis_accumulation.py   state-vector check of how synthesis errors add up in QUOPS circuits
+notebooks/
+  quops_walkthrough.ipynb   one width through each model by hand, checked against the package
 tests/               checks against brute force and against each model's own constraints
 ```
 
