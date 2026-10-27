@@ -66,5 +66,53 @@ class Choices:
 BASELINE = Choices()
 
 
+@dataclass(frozen=True)
+class StarChoices:
+    """Toshio STAR on a 2D grid. These are estimator choices, not calibrated device parameters.
+
+    Weight m=1 uses Choi's single-qubit rotations; m=2 uses Toshio's ZZ rotations.
+    d_p = m*k; odd k avoids the extra even-k Clifford in the preparation gadget.
+    See docs/star_surface_code_estimation.md for the uncalibrated noise assumptions.
+    """
+    groups: tuple = (3, 5, 7, 9)
+    max_distance: int = 31
+    angle_points: int = 512
+    protocol_switching: bool = True
+    # [choice] Effective fault opportunities in the selectively postselected strip.
+    rejection_scale: float = 1.0
+    strip_2q_per_distance: float = 24.0
+    strip_1q_per_distance: float = 8.0
+    # [choice] Full-patch rejection surrogate for the original-protocol fallback.
+    fallback_2q_per_distance_squared: float = 8.0
+    fallback_1q_per_distance_squared: float = 4.0
+    # [paper] About four cycles per state preparation attempt (m <= 3).
+    preparation_cycles: int = 4
+    # [choice] Charge growth on every attempt, including rejected ones (conservative).
+    growth_steps: int = 1
+    injection_steps: int = 1
+    delivery_steps: int = 1
+    clifford_steps: int = 1
+    # [choice] Background QEC floor during accepted preparation, separately from injection.
+    preparation_floor_scale: float = 1.0
+    # Markov deadline bound per execution; this probability is charged to success as well.
+    deadline_failure: float = 1e-6
+    timing_tail_tolerance: float = 1e-9
+    rotation_weight: int = 2
+    postselection: str = 'strip'         # 'strip' (Toshio) or 'full' (Choi)
+    full_2q_per_distance_squared: float = 8.0
+    full_1q_per_distance_squared: float = 4.0
+    # [choice] Effective physical fault exposures per rotated data qubit for m=1.
+    # Eight CNOT exposures (four per round, two rounds), with marginal Z rate 4p/15.
+    # Three one-qubit exposures: rotation plus two representing initialization/idling.
+    # These are not a propagated syndrome-circuit count; vary the scale to assess them.
+    single_qubit_2q_locations: float = 8.0
+    single_qubit_1q_locations: float = 3.0
+    single_qubit_undetected_scale: float = 1.0
+
+
+STAR_BASELINE = StarChoices()
+STAR_SINGLE_QUBIT = replace(STAR_BASELINE, rotation_weight=1, postselection='full')
+
+
 def vary(**changes):
     return replace(BASELINE, **changes)
