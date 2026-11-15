@@ -51,26 +51,46 @@ a module with a `sweep(hardware, choices)` function that returns rows with `s`, 
 
 ## STAR preparation comparison on a 2D grid
 
-The additional estimator compares the single-qubit transversal rotations of Choi et al.
-(`m=1`) and Toshio et al.'s two-qubit transversal multirotation protocol (`m=2`) with the
+The main comparison adds the adopted optimistic two-qubit STAR model to the
 existing direct and Clifford+T implementations on H1 and H3:
 
+```bash
+.venv/bin/python -B scripts/make_star_comparison.py
+.venv/bin/python -B scripts/package_star_inputs.py --check
+.venv/bin/python -B -m pytest -q
 ```
-.venv/bin/python scripts/make_star_comparison.py
-```
 
-This writes `results/star_comparison.json`, `figures/star_comparison.{png,pdf}`, and the
-`figures/star_preparation.{png,pdf}` diagnostic. It also writes
-`figures/star_single_qubit_comparison.{png,pdf}`, showing the effect of protocol switching.
-The main STAR curves both include probabilistic coherent error cancellation and original-STAR
-protocol switching. The single-qubit error coefficients are explicit modeling assumptions,
-with sensitivity results included. Read
-[the STAR methods and implementation note](docs/star_surface_code_estimation.md) for the equations,
-results, validation, and explicit uncalibrated preparation-yield assumptions. This is an analytical
-resource estimate for uniform-angle QUOPS, with no observable-level error mitigation. It does not
-reproduce the paper's application-specific Hamiltonian simulations.
+The comparison is saved in [results/star_comparison.json](results/star_comparison.json)
+and [figures/star_comparison.png](figures/star_comparison.png)
+([PDF](figures/star_comparison.pdf)). The main figure shows direct, surface-code,
+and two-qubit STAR curves. The script also generates preparation and historical
+single-qubit diagnostics; those are separate from the main comparison.
 
-## Status
+`STAR_BASELINE` uses circuit-derived acceptance, retained single-fault logical
+errors, ideal auxiliary coherent corrections with supply costs, and the shared
+mean-runtime week criterion. `STAR_LEGACY` and `STAR_SINGLE_QUBIT` retain their
+historical channel and Markov-deadline choices. Non-STAR implementations and
+configuration are unchanged.
 
-First pass with the simplest reasonable choices. Open questions for the group are collected in
-Sec. 7 of the methods note.
+| Hardware | Adopted maximum volume | Minimum physical qubits | Stress-test minimum qubits at the same volume |
+|---|---:|---:|---:|
+| H1 | 1,156 | 31,171 | 73,123 |
+| H3 | 3,136 | 30,371 | 119,675 |
+
+The stress test charges omitted accepted nonzero Toshio sectors as failures;
+other unmodeled logical effects remain idealized. It is not a complete-channel
+bound. Results cover at most one million physical qubits, H1/H3 rates,
+$k=3,5,7,9$, and odd computation distances 3–31. Unsupported counted inputs
+raise an error rather than being extrapolated.
+
+- [Methods and implementation](docs/star_surface_code_estimation.md).
+- [Status and treatment of all seven assumptions](docs/star_two_qubit_assumption_responses.md).
+- [Original-STAR channel and coherent corrections](docs/original_star_channel_and_correction.md).
+- [Circuit inputs and reproduction](analysis/star_inputs.md).
+
+Assumptions 1–5 and 7 are implemented for the declared optimistic comparison.
+Assumption 6 is partial: shared routing, injection, delivery, and frame conventions
+are implemented; STAR-specific growth, storage, and adaptive scheduling remain
+provisional. Aligning the distance search with the surface-code baseline also
+remains open. The main integration is checked against 114 independently saved
+designs in [the regression fixture](tests/fixtures/star_reference.json).

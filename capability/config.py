@@ -77,6 +77,12 @@ class StarChoices:
     groups: tuple = (3, 5, 7, 9)
     max_distance: int = 31
     angle_points: int = 512
+    # 'legacy' preserves the October analytic model; the adopted m=2 default
+    # below uses circuit acceptance and retained single-fault logical errors.
+    state_model: str = 'legacy'         # 'legacy' or 'counted'
+    omitted_sector_stress: bool = False
+    correction_rounds: int = 48
+    deadline_model: str = 'markov'      # 'markov' or shared-baseline 'mean'
     protocol_switching: bool = True
     # [choice] Effective fault opportunities in the selectively postselected strip.
     rejection_scale: float = 1.0
@@ -110,8 +116,13 @@ class StarChoices:
     single_qubit_undetected_scale: float = 1.0
 
 
-STAR_BASELINE = StarChoices()
-STAR_SINGLE_QUBIT = replace(STAR_BASELINE, rotation_weight=1, postselection='full')
+STAR_LEGACY = StarChoices()
+# Adopted optimistic comparison, assumptions 1–5 and 7; STAR-specific factory
+# growth, storage and synchronized scheduling remain provisional (assumption 6).
+STAR_BASELINE = replace(STAR_LEGACY, state_model='counted', preparation_floor_scale=0.,
+                        delivery_steps=0, clifford_steps=0, deadline_model='mean')
+# The m=1 preparation channel has not received the m=2 circuit calibration.
+STAR_SINGLE_QUBIT = replace(STAR_LEGACY, rotation_weight=1, postselection='full')
 
 
 def vary(**changes):

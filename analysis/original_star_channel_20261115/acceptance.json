@@ -1,0 +1,601 @@
+{
+  "method": "Positive Fourier expectation, all orders; exact at d=3, sampled otherwise.",
+  "rows": [
+    {
+      "distance": 3,
+      "samples": 65536,
+      "seed": 15112026,
+      "exact": true,
+      "detectors": 16,
+      "characteristic_groups": 113,
+      "hardware": {
+        "H1": {
+          "p": 0.001,
+          "q": 0.001,
+          "acceptance": 0.7323056427394093,
+          "acceptance_standard_error": 0.0,
+          "zero_signature_probability": 0.7310492556952279,
+          "acceptance_over_zero_signature": 1.0017186079246967,
+          "ratio_standard_error": 0.0,
+          "retained_local_one": 0.0006002222411047891,
+          "accepted_known_single_fault_weight": 0.00043879202261137775,
+          "conditional_error": 0.000599192464187418,
+          "conditional_error_leading": 0.0006000000000000001,
+          "previous_product_acceptance": 0.7310378775827284
+        },
+        "H3": {
+          "p": 0.001,
+          "q": 1e-06,
+          "acceptance": 0.8811949705917633,
+          "acceptance_standard_error": 0.0,
+          "zero_signature_probability": 0.8809880942096945,
+          "acceptance_over_zero_signature": 1.0002348231303335,
+          "ratio_standard_error": 0.0,
+          "retained_local_one": 0.00026717771394365485,
+          "accepted_known_single_fault_weight": 0.0002353803850225234,
+          "conditional_error": 0.00026711498916574,
+          "conditional_error_leading": 0.00026700000000000004,
+          "previous_product_acceptance": 0.8809833000092897
+        }
+      }
+    },
+    {
+      "distance": 5,
+      "samples": 262144,
+      "seed": 15112026,
+      "exact": false,
+      "detectors": 38,
+      "characteristic_groups": 308,
+      "hardware": {
+        "H1": {
+          "p": 0.001,
+          "q": 0.001,
+          "acceptance": 0.5341562161659194,
+          "acceptance_standard_error": 7.807310591224269e-05,
+          "zero_signature_probability": 0.5328676248621091,
+          "acceptance_over_zero_signature": 1.002418220292786,
+          "ratio_standard_error": 0.00014651501098879064,
+          "retained_local_one": 0.0006002222411047891,
+          "accepted_known_single_fault_weight": 0.0003198390000069212,
+          "conditional_error": 0.0005987742730070054,
+          "conditional_error_leading": 0.0006000000000000001,
+          "previous_product_acceptance": 0.5328502719797167
+        },
+        "H3": {
+          "p": 0.001,
+          "q": 1e-06,
+          "acceptance": 0.7396703670237862,
+          "acceptance_standard_error": 4.993675360467424e-05,
+          "zero_signature_probability": 0.7393377422680065,
+          "acceptance_over_zero_signature": 1.0004498955440302,
+          "ratio_standard_error": 6.754254618665524e-05,
+          "retained_local_one": 0.00026717771394365485,
+          "accepted_known_single_fault_weight": 0.00019753456781142906,
+          "conditional_error": 0.00026705756593474125,
+          "conditional_error_leading": 0.00026700000000000004,
+          "previous_product_acceptance": 0.7393292909084328
+        }
+      }
+    },
+    {
+      "distance": 7,
+      "samples": 262144,
+      "seed": 15112026,
+      "exact": false,
+      "detectors": 72,
+      "characteristic_groups": 615,
+      "hardware": {
+        "H1": {
+          "p": 0.001,
+          "q": 0.001,
+          "acceptance": 0.33418955633848296,
+          "acceptance_standard_error": 5.881293918378671e-05,
+          "zero_signature_probability": 0.3329955526805408,
+          "acceptance_over_zero_signature": 1.0035856444578033,
+          "ratio_standard_error": 0.00017661779177035702,
+          "retained_local_one": 0.0006002222411047891,
+          "accepted_known_single_fault_weight": 0.00019987133690784208,
+          "conditional_error": 0.0005980777469461163,
+          "conditional_error_leading": 0.0006000000000000001,
+          "previous_product_acceptance": 0.3329765317691895
+        },
+        "H3": {
+          "p": 0.001,
+          "q": 1e-06,
+          "acceptance": 0.5643590367670415,
+          "acceptance_standard_error": 5.072855512583223e-05,
+          "zero_signature_probability": 0.5638730303737274,
+          "acceptance_over_zero_signature": 1.0008619074989134,
+          "ratio_standard_error": 8.996449979565442e-05,
+          "retained_local_one": 0.00026717771394365485,
+          "accepted_known_single_fault_weight": 0.00015065430720973355,
+          "conditional_error": 0.00026694762977973055,
+          "conditional_error_leading": 0.00026700000000000004,
+          "previous_product_acceptance": 0.5638615191142337
+        }
+      }
+    },
+    {
+      "distance": 9,
+      "samples": 262144,
+      "seed": 15112026,
+      "exact": false,
+      "detectors": 118,
+      "characteristic_groups": 1034,
+      "hardware": {
+        "H1": {
+          "p": 0.001,
+          "q": 0.001,
+          "acceptance": 0.17929700694894565,
+          "acceptance_standard_error": 3.733619452843936e-05,
+          "zero_signature_probability": 0.17835612577690607,
+          "acceptance_over_zero_signature": 1.0052752949636081,
+          "ratio_standard_error": 0.00020933508375899995,
+          "retained_local_one": 0.0006002222411047891,
+          "accepted_known_single_fault_weight": 0.00010705331352858221,
+          "conditional_error": 0.0005970725075129969,
+          "conditional_error_leading": 0.0006000000000000001,
+          "previous_product_acceptance": 0.1783402253227943
+        },
+        "H3": {
+          "p": 0.001,
+          "q": 1e-06,
+          "acceptance": 0.39142837475142794,
+          "acceptance_standard_error": 4.429712228713637e-05,
+          "zero_signature_probability": 0.39085368781509,
+          "acceptance_over_zero_signature": 1.0014703377613001,
+          "ratio_standard_error": 0.00011333428254127926,
+          "retained_local_one": 0.00026717771394365485,
+          "accepted_known_single_fault_weight": 0.0001044273947968827,
+          "conditional_error": 0.00026678544922349614,
+          "conditional_error_leading": 0.00026700000000000004,
+          "previous_product_acceptance": 0.39084101483513417
+        }
+      }
+    },
+    {
+      "distance": 11,
+      "samples": 262144,
+      "seed": 15112026,
+      "exact": false,
+      "detectors": 176,
+      "characteristic_groups": 1565,
+      "hardware": {
+        "H1": {
+          "p": 0.001,
+          "q": 0.001,
+          "acceptance": 0.08244388276849113,
+          "acceptance_standard_error": 1.9901763803074623e-05,
+          "zero_signature_probability": 0.08187816956473805,
+          "acceptance_over_zero_signature": 1.0069092067734342,
+          "ratio_standard_error": 0.00024306556813460557,
+          "retained_local_one": 0.0006002222411047891,
+          "accepted_known_single_fault_weight": 4.9145098433705005e-05,
+          "conditional_error": 0.0005961036378127445,
+          "conditional_error_leading": 0.0006000000000000001,
+          "previous_product_acceptance": 0.08186763572415844
+        },
+        "H3": {
+          "p": 0.001,
+          "q": 1e-06,
+          "acceptance": 0.24674844682368302,
+          "acceptance_standard_error": 3.3669763961575816e-05,
+          "zero_signature_probability": 0.2462303314279378,
+          "acceptance_over_zero_signature": 1.0021041899783043,
+          "ratio_standard_error": 0.00013674092775783664,
+          "retained_local_one": 0.00026717771394365485,
+          "accepted_known_single_fault_weight": 6.578725705450489e-05,
+          "conditional_error": 0.00026661670175178023,
+          "conditional_error_leading": 0.00026700000000000004,
+          "previous_product_acceptance": 0.24621864569946983
+        }
+      }
+    },
+    {
+      "distance": 13,
+      "samples": 262144,
+      "seed": 15112026,
+      "exact": false,
+      "detectors": 246,
+      "characteristic_groups": 2208,
+      "hardware": {
+        "H1": {
+          "p": 0.001,
+          "q": 0.001,
+          "acceptance": 0.0324849449101762,
+          "acceptance_standard_error": 8.908477143494035e-06,
+          "zero_signature_probability": 0.032216526829406913,
+          "acceptance_over_zero_signature": 1.0083316889555045,
+          "ratio_standard_error": 0.0002765188560103403,
+          "retained_local_one": 0.0006002222411047891,
+          "accepted_known_single_fault_weight": 1.9337075934159183e-05,
+          "conditional_error": 0.0005952626974627151,
+          "conditional_error_leading": 0.0006000000000000001,
+          "previous_product_acceptance": 0.03221086872192503
+        },
+        "H3": {
+          "p": 0.001,
+          "q": 1e-06,
+          "acceptance": 0.1413416409504524,
+          "acceptance_standard_error": 2.2526611696231486e-05,
+          "zero_signature_probability": 0.14098189053213497,
+          "acceptance_over_zero_signature": 1.0025517491428122,
+          "ratio_standard_error": 0.00015978372549272092,
+          "retained_local_one": 0.00026717771394365485,
+          "accepted_known_single_fault_weight": 3.766721921983042e-05,
+          "conditional_error": 0.0002664976787204186,
+          "conditional_error_leading": 0.00026700000000000004,
+          "previous_product_acceptance": 0.14097265360574235
+        }
+      }
+    },
+    {
+      "distance": 15,
+      "samples": 262144,
+      "seed": 15112026,
+      "exact": false,
+      "detectors": 328,
+      "characteristic_groups": 2963,
+      "hardware": {
+        "H1": {
+          "p": 0.001,
+          "q": 0.001,
+          "acceptance": 0.010979656846222017,
+          "acceptance_standard_error": 3.3811511959574174e-06,
+          "zero_signature_probability": 0.01086475181863811,
+          "acceptance_over_zero_signature": 1.0105759459122474,
+          "ratio_standard_error": 0.0003112037212076182,
+          "retained_local_one": 0.0006002222411047891,
+          "accepted_known_single_fault_weight": 6.521265685630299e-06,
+          "conditional_error": 0.000593940755796407,
+          "conditional_error_leading": 0.0006000000000000001,
+          "previous_product_acceptance": 0.01086225212629476
+        },
+        "H3": {
+          "p": 0.001,
+          "q": 1e-06,
+          "acceptance": 0.07361423567609707,
+          "acceptance_standard_error": 1.344727340859252e-05,
+          "zero_signature_probability": 0.07336341771235559,
+          "acceptance_over_zero_signature": 1.0034188424089632,
+          "ratio_standard_error": 0.00018329671419230762,
+          "retained_local_one": 0.00026717771394365485,
+          "accepted_known_single_fault_weight": 1.9601070231480605e-05,
+          "conditional_error": 0.00026626738770644024,
+          "conditional_error_leading": 0.00026700000000000004,
+          "previous_product_acceptance": 0.0733570641689693
+        }
+      }
+    },
+    {
+      "distance": 17,
+      "samples": 262144,
+      "seed": 15112026,
+      "exact": false,
+      "detectors": 422,
+      "characteristic_groups": 3830,
+      "hardware": {
+        "H1": {
+          "p": 0.001,
+          "q": 0.001,
+          "acceptance": 0.003183266414613681,
+          "acceptance_standard_error": 1.0881720570495417e-06,
+          "zero_signature_probability": 0.0031404465073328813,
+          "acceptance_over_zero_signature": 1.013634974256309,
+          "ratio_standard_error": 0.0003465023379664902,
+          "retained_local_one": 0.0006002222411047891,
+          "accepted_known_single_fault_weight": 1.8849658407010495e-06,
+          "conditional_error": 0.0005921483140863055,
+          "conditional_error_leading": 0.0006000000000000001,
+          "previous_product_acceptance": 0.003139529529340596
+        },
+        "H3": {
+          "p": 0.001,
+          "q": 1e-06,
+          "acceptance": 0.03486337356266631,
+          "acceptance_standard_error": 7.18073933783229e-06,
+          "zero_signature_probability": 0.03469686410299191,
+          "acceptance_over_zero_signature": 1.0047989771980588,
+          "ratio_standard_error": 0.0002069564360778384,
+          "retained_local_one": 0.00026717771394365485,
+          "accepted_known_single_fault_weight": 9.270228832051038e-06,
+          "conditional_error": 0.0002659016579502257,
+          "conditional_error_leading": 0.00026700000000000004,
+          "previous_product_acceptance": 0.03469302267996802
+        }
+      }
+    },
+    {
+      "distance": 19,
+      "samples": 262144,
+      "seed": 15112026,
+      "exact": false,
+      "detectors": 528,
+      "characteristic_groups": 4809,
+      "hardware": {
+        "H1": {
+          "p": 0.001,
+          "q": 0.001,
+          "acceptance": 0.0007912771650786221,
+          "acceptance_standard_error": 2.9829629556837364e-07,
+          "zero_signature_probability": 0.0007780248859295755,
+          "acceptance_over_zero_signature": 1.0170332329835605,
+          "ratio_standard_error": 0.00038340199775483086,
+          "retained_local_one": 0.0006002222411047891,
+          "accepted_known_single_fault_weight": 4.6698784066794766e-07,
+          "conditional_error": 0.0005901697423829327,
+          "conditional_error_leading": 0.0006000000000000001,
+          "previous_product_acceptance": 0.0007777437276414364
+        },
+        "H3": {
+          "p": 0.001,
+          "q": 1e-06,
+          "acceptance": 0.015005409612323304,
+          "acceptance_standard_error": 3.4440073905763825e-06,
+          "zero_signature_probability": 0.014914041243036243,
+          "acceptance_over_zero_signature": 1.006126332078485,
+          "ratio_standard_error": 0.00023092382101226117,
+          "retained_local_one": 0.00026717771394365485,
+          "accepted_known_single_fault_weight": 3.9846994449758085e-06,
+          "conditional_error": 0.0002655508611843121,
+          "conditional_error_leading": 0.00026700000000000004,
+          "previous_product_acceptance": 0.014911985361382187
+        }
+      }
+    },
+    {
+      "distance": 21,
+      "samples": 6291456,
+      "seed": 15112026,
+      "exact": false,
+      "detectors": 646,
+      "characteristic_groups": 5900,
+      "hardware": {
+        "H1": {
+          "p": 0.001,
+          "q": 0.001,
+          "acceptance": 0.00016841341998726422,
+          "acceptance_standard_error": 1.4169640264597596e-08,
+          "zero_signature_probability": 0.00016520609855169224,
+          "acceptance_over_zero_signature": 1.0194140619728298,
+          "ratio_standard_error": 8.576947454614686e-05,
+          "retained_local_one": 0.0006002222411047891,
+          "accepted_known_single_fault_weight": 9.916037471687537e-08,
+          "conditional_error": 0.0005887914082166023,
+          "conditional_error_leading": 0.0006000000000000001,
+          "previous_product_acceptance": 0.00016513370090938612
+        },
+        "H3": {
+          "p": 0.001,
+          "q": 1e-06,
+          "acceptance": 0.005866854123130524,
+          "acceptance_standard_error": 3.0333367128443867e-07,
+          "zero_signature_probability": 0.005826327584720057,
+          "acceptance_over_zero_signature": 1.0069557603518124,
+          "ratio_standard_error": 5.206258434214238e-05,
+          "retained_local_one": 0.00026717771394365485,
+          "accepted_known_single_fault_weight": 1.556664884772361e-06,
+          "conditional_error": 0.00026533212725284743,
+          "conditional_error_leading": 0.00026700000000000004,
+          "previous_product_acceptance": 0.005825348714325051
+        }
+      },
+      "batch_seeds": [
+        15112026,
+        15122026,
+        15132026,
+        15142026,
+        15152026,
+        15162026,
+        15172026,
+        15182026,
+        15192026,
+        15202026,
+        15212026,
+        15222026,
+        15232026,
+        15242026,
+        15252026,
+        15262026,
+        15272026,
+        15282026,
+        15292026,
+        15302026,
+        15312026,
+        15322026,
+        15332026,
+        15342026
+      ]
+    },
+    {
+      "distance": 23,
+      "samples": 262144,
+      "seed": 15112026,
+      "exact": false,
+      "detectors": 776,
+      "characteristic_groups": 7103,
+      "hardware": {
+        "H1": {
+          "p": 0.001,
+          "q": 0.001,
+          "acceptance": 3.074836568607069e-05,
+          "acceptance_standard_error": 1.3695758171645406e-08,
+          "zero_signature_probability": 3.0066935095390405e-05,
+          "acceptance_over_zero_signature": 1.022663786266155,
+          "ratio_standard_error": 0.0004555089545440605,
+          "retained_local_one": 0.0006002222411047891,
+          "accepted_known_single_fault_weight": 1.8046843166107465e-08,
+          "conditional_error": 0.0005869204025462356,
+          "conditional_error_leading": 0.0006000000000000001,
+          "previous_product_acceptance": 3.0051223818546474e-05
+        },
+        "H3": {
+          "p": 0.001,
+          "q": 1e-06,
+          "acceptance": 0.0020858430004473097,
+          "acceptance_standard_error": 5.748784355050443e-07,
+          "zero_signature_probability": 0.002068658982381223,
+          "acceptance_over_zero_signature": 1.008306839460947,
+          "ratio_standard_error": 0.0002778990836098585,
+          "retained_local_one": 0.00026717771394365485,
+          "accepted_known_single_fault_weight": 5.526995778416225e-07,
+          "conditional_error": 0.00026497659590060034,
+          "conditional_error_leading": 0.00026700000000000004,
+          "previous_product_acceptance": 0.0020682427852416127
+        }
+      }
+    },
+    {
+      "distance": 25,
+      "samples": 262144,
+      "seed": 15112026,
+      "exact": false,
+      "detectors": 918,
+      "characteristic_groups": 8418,
+      "hardware": {
+        "H1": {
+          "p": 0.001,
+          "q": 0.001,
+          "acceptance": 4.8125555068345964e-06,
+          "acceptance_standard_error": 2.3222582381267124e-09,
+          "zero_signature_probability": 4.690106918997186e-06,
+          "acceptance_over_zero_signature": 1.0261078457169996,
+          "ratio_standard_error": 0.00049513972244864,
+          "retained_local_one": 0.0006002222411047891,
+          "accepted_known_single_fault_weight": 2.8151064859415683e-09,
+          "conditional_error": 0.0005849504451312131,
+          "conditional_error_leading": 0.0006000000000000001,
+          "previous_product_acceptance": 4.687225674061722e-06
+        },
+        "H3": {
+          "p": 0.001,
+          "q": 1e-06,
+          "acceptance": 0.0006739810832768952,
+          "acceptance_standard_error": 2.0252441025965848e-07,
+          "zero_signature_probability": 0.0006675400888336389,
+          "acceptance_over_zero_signature": 1.0096488503851662,
+          "ratio_standard_error": 0.0003033891351956401,
+          "retained_local_one": 0.00026717771394365485,
+          "accepted_known_single_fault_weight": 1.7835183490031591e-07,
+          "conditional_error": 0.00026462439276955595,
+          "conditional_error_leading": 0.00026700000000000004,
+          "previous_product_acceptance": 0.0006673816152703504
+        }
+      }
+    },
+    {
+      "distance": 27,
+      "samples": 262144,
+      "seed": 15112026,
+      "exact": false,
+      "detectors": 1072,
+      "characteristic_groups": 9845,
+      "hardware": {
+        "H1": {
+          "p": 0.001,
+          "q": 0.001,
+          "acceptance": 6.455514228680544e-07,
+          "acceptance_standard_error": 3.344654889259731e-10,
+          "zero_signature_probability": 6.27056717705058e-07,
+          "acceptance_over_zero_signature": 1.0294944693849777,
+          "ratio_standard_error": 0.0005333895315723132,
+          "retained_local_one": 0.0006002222411047891,
+          "accepted_known_single_fault_weight": 3.76373388400743e-10,
+          "conditional_error": 0.0005830261929074405,
+          "conditional_error_leading": 0.0006000000000000001,
+          "previous_product_acceptance": 6.266092714023794e-07
+        },
+        "H3": {
+          "p": 0.001,
+          "q": 1e-06,
+          "acceptance": 0.00019791865314337808,
+          "acceptance_standard_error": 6.4105425624481e-08,
+          "zero_signature_probability": 0.0001957763583188937,
+          "acceptance_over_zero_signature": 1.0109425614148715,
+          "ratio_standard_error": 0.0003274421190328905,
+          "retained_local_one": 0.00026717771394365485,
+          "accepted_known_single_fault_weight": 5.2307079859855857e-08,
+          "conditional_error": 0.00026428575088353635,
+          "conditional_error_leading": 0.00026700000000000004,
+          "previous_product_acceptance": 0.00019572220061016662
+        }
+      }
+    },
+    {
+      "distance": 29,
+      "samples": 262144,
+      "seed": 15112026,
+      "exact": false,
+      "detectors": 1238,
+      "characteristic_groups": 11384,
+      "hardware": {
+        "H1": {
+          "p": 0.001,
+          "q": 0.001,
+          "acceptance": 7.430184912208309e-08,
+          "acceptance_standard_error": 4.111324413346203e-11,
+          "zero_signature_probability": 7.18557298049459e-08,
+          "acceptance_over_zero_signature": 1.0340420913374233,
+          "ratio_standard_error": 0.0005721637543041441,
+          "retained_local_one": 0.0006002222411047891,
+          "accepted_known_single_fault_weight": 4.312940717974482e-11,
+          "conditional_error": 0.0005804620973682662,
+          "conditional_error_leading": 0.0006000000000000001,
+          "previous_product_acceptance": 7.17967889157874e-08
+        },
+        "H3": {
+          "p": 0.001,
+          "q": 1e-06,
+          "acceptance": 5.284617516900721e-05,
+          "acceptance_standard_error": 1.834584984069136e-08,
+          "zero_signature_probability": 5.218402628056362e-05,
+          "acceptance_over_zero_signature": 1.012688727483073,
+          "ratio_standard_error": 0.0003515606431373507,
+          "retained_local_one": 0.00026717771394365485,
+          "accepted_known_single_fault_weight": 1.3942408846016595e-08,
+          "conditional_error": 0.0002638300463832513,
+          "conditional_error_leading": 0.00026700000000000004,
+          "previous_product_acceptance": 5.216738558295753e-05
+        }
+      }
+    },
+    {
+      "distance": 31,
+      "samples": 262144,
+      "seed": 15112026,
+      "exact": false,
+      "detectors": 1416,
+      "characteristic_groups": 13035,
+      "hardware": {
+        "H1": {
+          "p": 0.001,
+          "q": 0.001,
+          "acceptance": 7.337543210291058e-09,
+          "acceptance_standard_error": 4.337491886898692e-12,
+          "zero_signature_probability": 7.057428432958871e-09,
+          "acceptance_over_zero_signature": 1.0396907712197299,
+          "ratio_standard_error": 0.0006145994859320411,
+          "retained_local_one": 0.0006002222411047891,
+          "accepted_known_single_fault_weight": 4.2360255104672334e-12,
+          "conditional_error": 0.0005773084245045561,
+          "conditional_error_leading": 0.0006000000000000001,
+          "previous_product_acceptance": 7.050833795349914e-09
+        },
+        "H3": {
+          "p": 0.001,
+          "q": 1e-06,
+          "acceptance": 1.2833490414522115e-05,
+          "acceptance_standard_error": 4.772679162757355e-09,
+          "zero_signature_probability": 1.2641813160106785e-05,
+          "acceptance_over_zero_signature": 1.0151621647929585,
+          "ratio_standard_error": 0.0003775312213771906,
+          "retained_local_one": 0.00026717771394365485,
+          "accepted_known_single_fault_weight": 3.377610740220142e-09,
+          "conditional_error": 0.00026318722585385706,
+          "conditional_error_leading": 0.00026700000000000004,
+          "previous_product_acceptance": 1.2637209490061521e-05
+        }
+      }
+    }
+  ]
+}

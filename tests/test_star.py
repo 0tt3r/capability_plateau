@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 
 from capability import star
-from capability.config import BASELINE, HARDWARE, STAR_BASELINE, STAR_SINGLE_QUBIT, WEEK_SECONDS
+from capability.config import BASELINE, HARDWARE, STAR_BASELINE, STAR_LEGACY, STAR_SINGLE_QUBIT, WEEK_SECONDS
 from capability.star_states import (fallback_parameters, fold_angle, ideal_tmr,
                                     repository_angle, rus_rotation_loss, state_profile,
                                     uniform_angles)
@@ -44,20 +44,18 @@ def test_corrected_channel_matches_density_matrix_calculation():
     profile = state_profile(np.array([.001, .1, .3]), 3, 9, HARDWARE['H1'], BASELINE, sc)
     rho = np.array([[.5, .5], [.5, .5]], complex)
     z = np.diag([1., -1.])
-    pf = profile.fallback_error
     for b, delta, error in zip(profile.conditional_bad, profile.delta, profile.error):
         u = np.diag(np.exp(1j*delta*np.array([1., -1.])))
         raw = (1-b)*rho + b*u @ rho @ u.conj().T
         corrected = (1-b)*raw + b*u.conj().T @ raw @ u
-        # Remove the separately charged bound on imperfections in the correction itself.
-        pauli = error - b*2*pf/(1+pf)
-        expected = (1-pauli)*rho + pauli*z @ rho @ z
+        expected = (1-error)*rho + error*z @ rho @ z
         assert corrected == pytest.approx(expected, abs=1e-14)
 
 
 def test_paper_virtual_z_coefficient_and_hardware_extension():
     virtual = replace(HARDWARE['H1'], eps_1q=0.)
-    sc = replace(STAR_BASELINE, protocol_switching=False)
+    # The virtual-Z sensitivity is outside the counted H1/H3 input table.
+    sc = replace(STAR_LEGACY, protocol_switching=False)
     phi = np.array([.001])
     p = state_profile(phi, 3, 9, virtual, BASELINE, sc)
     _, ideal, erroneous, _ = ideal_tmr(phi, 3)
@@ -117,7 +115,9 @@ def test_design_loss_and_deadline_constraints(key):
     assert loss == pytest.approx(x['loss_total'])
     assert loss <= BASELINE.threshold
     assert exp(-loss) == pytest.approx(x['success_probability_lower_bound'])
-    assert x['deadline_seconds'] == pytest.approx(x['run_seconds']/STAR_BASELINE.deadline_failure)
+    assert x['deadline_seconds'] == pytest.approx(x['run_seconds'])
+    assert x['loss_deadline'] == 0
+    assert x['loss_preparation_memory'] == 0
     assert x['copies']*int(WEEK_SECONDS/x['deadline_seconds']) >= BASELINE.executions
     assert x['resource_states'] >= 8*4*2
     assert x['preparation_attempts'] >= x['resource_states']
@@ -138,7 +138,7 @@ def test_search_matches_unpruned_design_enumeration(settings):
 
 def test_noise_floor_rejects_large_workload_before_timing():
     hw = HARDWARE['H1']
-    assert star.resource_ceiling(hw, BASELINE) < 1200
+    assert star.resource_ceiling(hw, BASELINE) < 1300
     assert star.min_qubits(100, 'deep', hw, BASELINE) is None
 
 
@@ -160,6 +160,8 @@ def test_hardware_and_model_domains_are_explicit():
         ideal_tmr(.1, 4)
     with pytest.raises(ValueError, match='acceptance'):
         star.batch_preparation_rounds([0.], 2)
+    with pytest.raises(ValueError, match='no common survival'):
+        preparation_survival(6, HARDWARE['H1'], STAR_BASELINE)
 
 
 @pytest.mark.parametrize('k', [3, 5])
