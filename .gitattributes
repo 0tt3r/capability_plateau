@@ -1,0 +1,5 @@
+# Keep generated Pinnacle data and plots collapsed in GitHub source reviews.
+results/pinnacle*.json linguist-generated=true
+results/frozen_pinnacle*.json linguist-generated=true
+figures/*pinnacle*.png linguist-generated=true
+figures/*pinnacle*.pdf linguist-generated=true
