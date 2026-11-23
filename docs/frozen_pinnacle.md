@@ -2,8 +2,8 @@
 
 This is a separate, serial estimate for the fixed-connectivity architecture in
 [Webster, Peham, and Cohen, arXiv:2609.21249v1](https://arxiv.org/html/2609.21249v1).
-All prior models, results, and figures remain unchanged. Direct, surface-code,
-and original Pinnacle curves in the new figure are cached references.
+The comparison figure uses cached direct, counted sequential surface-code PBC,
+and original Pinnacle curves.
 
 **The published Frozen engine supplies CCZ states for Toffolis, not a universal
 T-state stream.** This curve therefore includes a proposed QUOPS adaptation:

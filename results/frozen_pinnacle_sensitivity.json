@@ -27,8 +27,6 @@
   "sc_threshold_uniform": 0.01,
   "sc_threshold_bimodal": 0.015,
   "qubits_per_patch": "2d^2",
-  "tiles_per_data_patch": 2.0,
-  "cnot_layer": "parallel",
   "t_per_injection_steps": 1,
   "synthesis_charge": "squared",
   "synthesis_scale": 1.0,
@@ -83,8 +81,6 @@
     "sc_threshold_uniform": 0.01,
     "sc_threshold_bimodal": 0.015,
     "qubits_per_patch": "2d^2",
-    "tiles_per_data_patch": 2.0,
-    "cnot_layer": "parallel",
     "t_per_injection_steps": 1,
     "synthesis_charge": "squared",
     "synthesis_scale": 1.0,
@@ -1628,7 +1624,7 @@
        "loss_stochastic": 0.0005172620694148756,
        "loss_total": 0.3789818601048584,
        "q_no_fault": 0.9994828716875459,
-       "quality": 0.6845580303645392
+       "quality": 0.6845580303645391
       },
       {
        "model": "frozen_phase_catalysis",
@@ -2574,7 +2570,7 @@
        "loss_stochastic": 0.0059091866318339474,
        "loss_total": 0.39721497562177194,
        "q_no_fault": 0.9941082382722595,
-       "quality": 0.6721895057421416
+       "quality": 0.6721895057421418
       },
       {
        "model": "frozen_phase_catalysis",
@@ -9558,7 +9554,7 @@
        "loss_stochastic": 0.0005172620694148756,
        "loss_total": 0.3789818601048584,
        "q_no_fault": 0.9994828716875459,
-       "quality": 0.6845580303645392
+       "quality": 0.6845580303645391
       },
       {
        "model": "frozen_phase_catalysis",
@@ -10504,7 +10500,7 @@
        "loss_stochastic": 0.0059091866318339474,
        "loss_total": 0.39721497562177194,
        "q_no_fault": 0.9941082382722595,
-       "quality": 0.6721895057421416
+       "quality": 0.6721895057421418
       },
       {
        "model": "frozen_phase_catalysis",
@@ -15991,8 +15987,6 @@
     "sc_threshold_uniform": 0.01,
     "sc_threshold_bimodal": 0.015,
     "qubits_per_patch": "2d^2",
-    "tiles_per_data_patch": 2.0,
-    "cnot_layer": "parallel",
     "t_per_injection_steps": 1,
     "synthesis_charge": "squared",
     "synthesis_scale": 1.0,
@@ -18396,7 +18390,7 @@
        "loss_stochastic": 0.003912840707796039,
        "loss_total": 0.42238061439390584,
        "q_no_fault": 0.99609480447869,
-       "quality": 0.6554845050706646
+       "quality": 0.6554845050706645
       },
       {
        "model": "frozen_phase_catalysis",
@@ -26283,7 +26277,7 @@
        "loss_stochastic": 0.003912840707796039,
        "loss_total": 0.42238061439390584,
        "q_no_fault": 0.99609480447869,
-       "quality": 0.6554845050706646
+       "quality": 0.6554845050706645
       },
       {
        "model": "frozen_phase_catalysis",
@@ -31813,8 +31807,6 @@
     "sc_threshold_uniform": 0.01,
     "sc_threshold_bimodal": 0.015,
     "qubits_per_patch": "2d^2",
-    "tiles_per_data_patch": 2.0,
-    "cnot_layer": "parallel",
     "t_per_injection_steps": 1,
     "synthesis_charge": "squared",
     "synthesis_scale": 1.0,
@@ -32154,7 +32146,7 @@
        "loss_stochastic": 5.360810171339937e-06,
        "loss_total": 0.4303241097858125,
        "q_no_fault": 0.9999946392041977,
-       "quality": 0.65029829252333
+       "quality": 0.6502982925233299
       },
       {
        "model": "frozen_phase_catalysis",
@@ -35679,7 +35671,7 @@
        "loss_synthesis": 0.3804145062862887,
        "loss_stochastic": 3.054004627224372e-06,
        "loss_total": 0.38041756029091595,
-       "q_no_fault": 0.9999969460000362,
+       "q_no_fault": 0.9999969460000363,
        "quality": 0.6835759154529557
       },
       {
@@ -37701,7 +37693,7 @@
        "loss_stochastic": 2.975442115140533e-05,
        "loss_total": 0.3707958675951561,
        "q_no_fault": 0.999970246021507,
-       "quality": 0.6901848162660845
+       "quality": 0.6901848162660846
       },
       {
        "model": "frozen_phase_catalysis",
@@ -40084,7 +40076,7 @@
        "loss_stochastic": 5.360810171339937e-06,
        "loss_total": 0.4303241097858125,
        "q_no_fault": 0.9999946392041977,
-       "quality": 0.65029829252333
+       "quality": 0.6502982925233299
       },
       {
        "model": "frozen_phase_catalysis",
@@ -43609,7 +43601,7 @@
        "loss_synthesis": 0.3804145062862887,
        "loss_stochastic": 3.054004627224372e-06,
        "loss_total": 0.38041756029091595,
-       "q_no_fault": 0.9999969460000362,
+       "q_no_fault": 0.9999969460000363,
        "quality": 0.6835759154529557
       },
       {
@@ -45631,7 +45623,7 @@
        "loss_stochastic": 2.975442115140533e-05,
        "loss_total": 0.3707958675951561,
        "q_no_fault": 0.999970246021507,
-       "quality": 0.6901848162660845
+       "quality": 0.6901848162660846
       },
       {
        "model": "frozen_phase_catalysis",
@@ -47721,8 +47713,6 @@
     "sc_threshold_uniform": 0.01,
     "sc_threshold_bimodal": 0.015,
     "qubits_per_patch": "2d^2",
-    "tiles_per_data_patch": 2.0,
-    "cnot_layer": "parallel",
     "t_per_injection_steps": 1,
     "synthesis_charge": "squared",
     "synthesis_scale": 1.0,
@@ -49266,7 +49256,7 @@
        "loss_stochastic": 0.0005172620694148756,
        "loss_total": 0.3789818601048584,
        "q_no_fault": 0.9994828716875459,
-       "quality": 0.6845580303645392
+       "quality": 0.6845580303645391
       },
       {
        "model": "frozen_phase_catalysis",
@@ -50212,7 +50202,7 @@
        "loss_stochastic": 0.0059091866318339474,
        "loss_total": 0.39721497562177194,
        "q_no_fault": 0.9941082382722595,
-       "quality": 0.6721895057421416
+       "quality": 0.6721895057421418
       },
       {
        "model": "frozen_phase_catalysis",
@@ -57239,7 +57229,7 @@
        "loss_stochastic": 0.0005172620694148756,
        "loss_total": 0.3789818601048584,
        "q_no_fault": 0.9994828716875459,
-       "quality": 0.6845580303645392
+       "quality": 0.6845580303645391
       },
       {
        "model": "frozen_phase_catalysis",
@@ -58185,7 +58175,7 @@
        "loss_stochastic": 0.0059091866318339474,
        "loss_total": 0.39721497562177194,
        "q_no_fault": 0.9941082382722595,
-       "quality": 0.6721895057421416
+       "quality": 0.6721895057421418
       },
       {
        "model": "frozen_phase_catalysis",
@@ -63715,8 +63705,6 @@
     "sc_threshold_uniform": 0.01,
     "sc_threshold_bimodal": 0.015,
     "qubits_per_patch": "2d^2",
-    "tiles_per_data_patch": 2.0,
-    "cnot_layer": "parallel",
     "t_per_injection_steps": 1,
     "synthesis_charge": "squared",
     "synthesis_scale": 1.0,
@@ -65260,7 +65248,7 @@
        "loss_stochastic": 0.0005172620694148756,
        "loss_total": 0.3789818601048584,
        "q_no_fault": 0.9994828716875459,
-       "quality": 0.6845580303645392
+       "quality": 0.6845580303645391
       },
       {
        "model": "frozen_phase_catalysis",
@@ -70309,7 +70297,7 @@
        "loss_stochastic": 0.0005172620694148756,
        "loss_total": 0.3789818601048584,
        "q_no_fault": 0.9994828716875459,
-       "quality": 0.6845580303645392
+       "quality": 0.6845580303645391
       },
       {
        "model": "frozen_phase_catalysis",
@@ -73861,8 +73849,6 @@
     "sc_threshold_uniform": 0.01,
     "sc_threshold_bimodal": 0.015,
     "qubits_per_patch": "2d^2",
-    "tiles_per_data_patch": 2.0,
-    "cnot_layer": "parallel",
     "t_per_injection_steps": 1,
     "synthesis_charge": "squared",
     "synthesis_scale": 1.0,
@@ -75406,7 +75392,7 @@
        "loss_stochastic": 0.0005172620694148756,
        "loss_total": 0.3789818601048584,
        "q_no_fault": 0.9994828716875459,
-       "quality": 0.6845580303645392
+       "quality": 0.6845580303645391
       },
       {
        "model": "frozen_phase_catalysis",
@@ -80713,7 +80699,7 @@
        "loss_stochastic": 0.0005172620694148756,
        "loss_total": 0.3789818601048584,
        "q_no_fault": 0.9994828716875459,
-       "quality": 0.6845580303645392
+       "quality": 0.6845580303645391
       },
       {
        "model": "frozen_phase_catalysis",
@@ -84523,8 +84509,6 @@
     "sc_threshold_uniform": 0.01,
     "sc_threshold_bimodal": 0.015,
     "qubits_per_patch": "2d^2",
-    "tiles_per_data_patch": 2.0,
-    "cnot_layer": "parallel",
     "t_per_injection_steps": 1,
     "synthesis_charge": "squared",
     "synthesis_scale": 0.14,
@@ -88045,7 +88029,7 @@
        "loss_synthesis": 0.192940050413138,
        "loss_stochastic": 2.7580036669468368e-06,
        "loss_total": 0.19294280841680495,
-       "q_no_fault": 0.9999972420001363,
+       "q_no_fault": 0.9999972420001364,
        "quality": 0.8245291289169403
       },
       {
@@ -88690,7 +88674,7 @@
        "loss_synthesis": 0.37903420724715,
        "loss_stochastic": 3.505409706974118e-06,
        "loss_total": 0.37903771265685693,
-       "q_no_fault": 0.9999964945964369,
+       "q_no_fault": 0.999996494596437,
        "quality": 0.6845197971192744
       },
       {
@@ -88906,7 +88890,7 @@
        "loss_stochastic": 4.109218709105819e-06,
        "loss_total": 0.4045131158758377,
        "q_no_fault": 0.9999958907897337,
-       "quality": 0.6673016303471753
+       "quality": 0.6673016303471752
       },
       {
        "model": "frozen_phase_catalysis",
@@ -95975,7 +95959,7 @@
        "loss_synthesis": 0.192940050413138,
        "loss_stochastic": 2.7580036669468368e-06,
        "loss_total": 0.19294280841680495,
-       "q_no_fault": 0.9999972420001363,
+       "q_no_fault": 0.9999972420001364,
        "quality": 0.8245291289169403
       },
       {
@@ -96620,7 +96604,7 @@
        "loss_synthesis": 0.37903420724715,
        "loss_stochastic": 3.505409706974118e-06,
        "loss_total": 0.37903771265685693,
-       "q_no_fault": 0.9999964945964369,
+       "q_no_fault": 0.999996494596437,
        "quality": 0.6845197971192744
       },
       {
@@ -96836,7 +96820,7 @@
        "loss_stochastic": 4.109218709105819e-06,
        "loss_total": 0.4045131158758377,
        "q_no_fault": 0.9999958907897337,
-       "quality": 0.6673016303471753
+       "quality": 0.6673016303471752
       },
       {
        "model": "frozen_phase_catalysis",

@@ -26,9 +26,9 @@ def _validate(hw, ch, sc):
         raise ValueError('Toshio STAR currently supports H1/H3 (2D grid) only')
     if not 0 < sc.deadline_failure < min(1 - exp(-ch.threshold), .1):
         raise ValueError('deadline_failure must leave a positive success budget')
-    if ch.executions < 1 or ch.cycle_seconds <= 0 or ch.tiles_per_data_patch < 1:
+    if ch.executions < 1 or ch.cycle_seconds <= 0 or sc.tiles_per_data_patch < 1:
         raise ValueError('Invalid execution, cycle-time, or patch-layout settings')
-    if ch.cnot_layer not in ('parallel', 'serial'):
+    if sc.cnot_layer not in ('parallel', 'serial'):
         raise ValueError('Unknown CNOT schedule')
     if sc.max_distance < 3 or not sc.groups:
         raise ValueError('A data distance and at least one preparation design are required')
@@ -153,9 +153,9 @@ def evaluate_design(w, ensemble, hw, ch, sc, d, k, stations):
     rotation_layer = batches*times[stations] + times[remainder]
     n_rot, n_cnot = layer_counts(w, ensemble)
     rotations = w*n_rot
-    t_cnot = 2*d if ch.cnot_layer == 'parallel' else w*d
+    t_cnot = 2*d if sc.cnot_layer == 'parallel' else w*d
     cycles = float(n_rot*rotation_layer + n_cnot*t_cnot + 2*d)
-    data_routing = ceil(ch.tiles_per_data_patch*w)
+    data_routing = ceil(sc.tiles_per_data_patch*w)
     live_tiles = data_routing + stations  # one data-distance handoff/storage patch per station
     prep_qubits = (2*profile.preparation_distance - 1)**2  # unrotated preparation patch
     per_copy_qubits = live_tiles*2*d*d + stations*prep_qubits
@@ -211,21 +211,21 @@ def min_qubits(w, ensemble, hw, ch, sc=STAR_BASELINE):
         if resource_loss >= budget:
             continue
         for d in range(3, sc.max_distance + 1, 2):
-            area_min = (ceil(ch.tiles_per_data_patch*w) + 1)*2*d*d + prep_area
+            area_min = (ceil(sc.tiles_per_data_patch*w) + 1)*2*d*d + prep_area
             if best is not None and area_min >= best['qubits']:
                 break
             profile = _profile(hw, ch, sc, d, k)
             lane_cycles = _one_rotation_cycles(profile, d, sc)
-            fixed = n_cnot*(2*d if ch.cnot_layer == 'parallel' else w*d) + 2*d
+            fixed = n_cnot*(2*d if sc.cnot_layer == 'parallel' else w*d) + 2*d
             # Even unlimited stations cannot beat one lane per rotation layer.
             if (n_rot*lane_cycles + fixed)*ch.cycle_seconds/sc.deadline_failure > WEEK_SECONDS:
                 continue
             for stations in range(1, w + 1):
-                area = (ceil(ch.tiles_per_data_patch*w) + stations)*2*d*d + stations*prep_area
+                area = (ceil(sc.tiles_per_data_patch*w) + stations)*2*d*d + stations*prep_area
                 if best is not None and area >= best['qubits']:
                     break
                 cycles_min = n_rot*ceil(w/stations)*lane_cycles + fixed
-                tiles = ceil(ch.tiles_per_data_patch*w) + stations
+                tiles = ceil(sc.tiles_per_data_patch*w) + stations
                 if resource_loss + tiles*cycles_min*(-np.log1p(-p_sc(d, hw, ch))) > budget:
                     continue
                 row = evaluate_design(w, ensemble, hw, ch, sc, d, k, stations)

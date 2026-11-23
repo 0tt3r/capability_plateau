@@ -9,8 +9,8 @@ preparation and repeat-until-success (RUS) teleportation. It now compares **sing
 transversal rotations** ($m=1$, the Choi et al. protocol reviewed by Toshio et al., Sec. III A)
 and **two-qubit transversal rotations** ($m=2$, Toshio et al., Sec. III B).
 Both use the existing **uniform-angle QUOPS** workload on **H1 and H3**.
-The original Clifford+T and direct estimators, their defaults, and their saved baseline artifacts
-are unchanged.
+The Clifford+T comparator now uses counted sequential PBC. Direct and STAR numerical models
+are unchanged. STAR retains its separate gate-based schedule and uncompiled routing assumptions.
 
 **This is a first-pass analytical resource estimate.** The state/channel equations follow the
 paper, but acceptance at finite physical noise and some layout costs are declared assumptions,
@@ -38,8 +38,8 @@ and Clifford operations, including CNOTs.
 | Continuous size bound from resource-state errors alone | 902.37 | 1,155.12 | 929.53 | 2,361.66 |
 
 The direct capabilities remain 64 (H1) and 216 (H3). At one million physical qubits,
-Clifford+T reaches 59,319,000 and 135,796,744 respectively. All previously saved direct,
-Clifford+T, and $m=2$ STAR designs retain exactly the same numerical values.
+Counted sequential PBC reaches 45,882,712 and 123,505,992 respectively. Previous layered
+Clifford+T outputs are archived and are no longer supported estimates.
 The single-qubit comparison is conditional on the assumed error coefficients below;
 it does not establish a hardware-independent ranking of the protocols.
 
@@ -71,7 +71,7 @@ These are angle fractions, not fractions of preparation attempts or all consumed
 Files:
 
 - [`figures/star_comparison.png`](../figures/star_comparison.png) and
-  [PDF](../figures/star_comparison.pdf): direct, Clifford+T, and Toshio STAR capability curves.
+  [PDF](../figures/star_comparison.pdf): direct, counted sequential PBC, and Toshio STAR capability curves.
 - [`figures/star_preparation.png`](../figures/star_preparation.png) and
   [PDF](../figures/star_preparation.pdf): rotation error and preparation success probability
   for both weights at $k=3$, data distance 9. Preparation distances are 3 and 6, respectively;
@@ -89,7 +89,7 @@ Files:
 |---|---|
 | [`capability/star_states.py`](../capability/star_states.py) | Angle conventions, projected resource-state formulas, conditional error, coherent cancellation, protocol switching, and an angle-resolved RUS diagnostic. |
 | [`capability/star.py`](../capability/star.py) | Preparation/RUS timing, layout, error and deadline bounds, design search, and capability sweep. |
-| [`capability/config.py`](../capability/config.py) | `StarChoices`, `STAR_BASELINE` ($m=2$), and `STAR_SINGLE_QUBIT` ($m=1$); original `Choices` defaults remain unchanged. |
+| [`capability/config.py`](../capability/config.py) | `StarChoices`, `STAR_BASELINE` ($m=2$), and `STAR_SINGLE_QUBIT` ($m=1$); STAR-only layout and CNOT settings reside in `StarChoices`. |
 | [`scripts/make_star_comparison.py`](../scripts/make_star_comparison.py) | Runs H1/H3 comparisons, writes JSON, and produces the figures. |
 | [`tests/test_star.py`](../tests/test_star.py) | Checks state amplitudes, channel composition, stochastic timing identities, optimization, limits, and constraints. |
 | [`README.md`](../README.md) | Adds the reproduction command and links to this note. |
@@ -98,12 +98,6 @@ The saved [implementation plan](star_surface_code_plan.md) remains as the planni
 There is no standalone original-STAR capability curve in this implementation. Original injection
 is used only as Toshio's large-angle switching protocol and for the rare physical correction
 rotations.
-
-Relative to original upstream commit `36e606e`, only `README.md` and `capability/config.py`
-are modified pre-existing files. The STAR modules, script, tests, reports, JSON, and
-figures are additions. This extension updates those additions and creates
-`figures/star_single_qubit_comparison.{png,pdf}`. The workspace-root
-`../star_math_derivations.md` is also updated with the new formulas and function references.
 
 ## Physical noise assumptions
 
@@ -313,7 +307,7 @@ upper bound $2B\mathbb E[1/a]$. Timing-aware pruning also rejects designs that c
 deadline even with unlimited ancilla patches for preparation.
 
 The existing CNOT schedule is retained: by default, a random-pairing layer takes $2d$ cycles,
-assuming parallel long-range lattice surgery without congestion. `cnot_layer='serial'` remains
+assuming parallel long-range lattice surgery without congestion. `StarChoices(cnot_layer='serial')` remains
 available. As in the original estimator, the complete 2D routing layout is not compiled.
 
 ## Success criterion, deadline, and search

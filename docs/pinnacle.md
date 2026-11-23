@@ -1,10 +1,8 @@
 # QUOPS capability for the original Pinnacle architecture
 
-This adds a serial Pinnacle resource estimate and plots comparable to the
-repository's surface-code results. It implements the original architecture in
+This serial Pinnacle resource estimate uses the original architecture described in
 [arXiv:2602.11457v2](https://arxiv.org/html/2602.11457v2), revised 5 May 2026.
-It does not implement Frozen Pinnacle. All existing source, documentation, and
-baseline outputs are unchanged.
+The comparison plots use counted sequential PBC for the surface-code baseline.
 
 The calculation is an auditable count of resources and modeled fault exposure,
 not a quantum-state simulation or a compiled hardware schedule. In particular,
@@ -30,8 +28,8 @@ python -m pytest -q -p no:cacheprovider tests/test_pinnacle.py
 
 Use `--skip-sensitivity` for only the main comparison. The plotting script reads
 the committed `results/baseline.json` for direct and surface-code reference
-curves. It verifies the shared configuration and hardware, records a SHA-256
-of canonical parsed JSON, and never imports or reruns either legacy implementation.
+curves. It verifies the shared configuration and hardware and records a SHA-256
+of canonical parsed JSON.
 The `canonical-json-sha256-v1` format sorts keys and ignores line endings and
 formatting, so Windows and Linux checkouts use the same provenance. Comparisons
 under changed shared parameters need separately matched reference data; the

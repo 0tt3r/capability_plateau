@@ -1,10 +1,11 @@
 """Checks of the two models against brute force or against their own definitions."""
-from math import exp, log
+from math import exp, log1p, ceil
 
 import numpy as np
 import pytest
 
 from capability import curves, direct, quops, routing, surface
+from capability.factories import menu
 from capability.config import BASELINE, HARDWARE, WEEK_SECONDS, vary
 
 
@@ -68,13 +69,19 @@ def test_all_to_all_closed_form_by_hand():
 def test_surface_design_meets_its_own_constraints(key, w, ensemble, executions):
     hw, ch = HARDWARE[key], vary(executions=executions)
     x = surface.min_qubits(w, ensemble, hw, ch)
-    n_rot, n_cnot = quops.layer_counts(w, ensemble)
+    n_rot, _ = quops.layer_counts(w, ensemble)
     d, F = x['distance'], x['factories']
-    f = next(f for f in surface.menu(ch.factories) if f.name == x['factory'])
+    f = next(f for f in menu(ch.factories) if f.name == x['factory'])
     nT = x['T_per_rotation']
-    cycles = n_rot*max(nT*d, np.ceil(w*nT/F)*f.cycles_per_output) + n_cnot*2*d + 2*d
+    states = w*n_rot*nT
+    batch = F*f.states_per_batch
+    waves, last = divmod(states-1, batch)
+    cycles = f.batch_cycles + waves*max(f.batch_cycles, batch*d) + (last+1)*d + w*d
+    assert x['cnot_cycles'] == 0
+    assert x['data_tiles'] == surface.data_tiles(w, ch)
+    assert x['buffer_tiles'] == batch
     assert cycles == pytest.approx(x['cycles'])
-    loss = (x['tiles']*cycles*-log(1 - surface.p_sc(d, hw, ch)) + w*n_rot*nT*-log(1 - f.error)
+    loss = (x['tiles']*cycles*-log1p(-surface.p_sc(d, hw, ch)) + w*n_rot*nT*-log1p(-f.error)
             + w*n_rot*x['eps']**2)
     assert loss <= ch.threshold + 1e-12
     assert x['copies']*min(WEEK_SECONDS//(cycles*ch.cycle_seconds), executions) >= executions
@@ -84,17 +91,22 @@ def test_surface_design_meets_its_own_constraints(key, w, ensemble, executions):
 def brute_force_min_qubits(w, ensemble, hw, ch):
     """Every factory type, odd distance, T count, and factory count up to saturation, with the copy count
     set directly by K floor(week / run time) >= executions."""
-    n_rot, n_cnot = quops.layer_counts(w, ensemble)
-    R, tiles, M = w*n_rot, int(np.ceil(ch.tiles_per_data_patch*w)), ch.executions
+    R, M = w*quops.layer_counts(w, ensemble)[0], ch.executions
+    pairs = w//2
+    height = ceil(np.sqrt(pairs))
+    area = 2*w + 2*(height+ceil(pairs/height)) + 1
     week = WEEK_SECONDS/ch.cycle_seconds
     nT, eps = surface.NT[:, None], surface.EPS[:, None]
-    F = np.arange(1, w*surface.NT.max() + 1)[None, :]
+    # Well beyond saturation for all tested distances and factories.
+    F = np.arange(1, 200)[None, :]
     best = np.inf
-    for f in surface.menu(ch.factories):
+    for f in menu(ch.factories):
         for d in range(3, 61, 2):
-            lam = -log(1 - surface.p_sc(d, hw, ch))
-            cycles = n_rot*np.maximum(nT*d, np.ceil(w*nT/F)*f.cycles_per_output) + n_cnot*2*d + 2*d
-            loss = tiles*cycles*lam + R*nT*-log(1 - f.error) + R*eps**2
+            batch = F*f.states_per_batch
+            waves, last = np.divmod(R*nT-1, batch)
+            cycles = f.batch_cycles + waves*np.maximum(f.batch_cycles, batch*d) + (last+1)*d + w*d
+            tiles = area+batch
+            loss = tiles*cycles*-log1p(-surface.p_sc(d, hw, ch)) + R*nT*-log1p(-f.error) + R*eps**2
             per_copy = np.minimum(np.floor(week/cycles), M)
             ok = (loss <= ch.threshold) & (per_copy >= 1)
             qubits = np.ceil(M/np.maximum(per_copy, 1))*(tiles*2*d*d + F*f.qubits)

@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from capability import curves, direct, star, surface
-from capability.config import BASELINE, HARDWARE, N_MAX, STAR_BASELINE, STAR_SINGLE_QUBIT
+from capability.config import BASELINE, HARDWARE, N_MAX, PBC, STAR_BASELINE, STAR_SINGLE_QUBIT
 from capability.star_states import state_profile
 
 COLORS = {'direct': '#2878b5', 'surface': '#d75c28', 'star': '#7b3fa0',
@@ -37,11 +37,11 @@ def compute(angle_points=512, sensitivity=True):
     except (OSError, subprocess.CalledProcessError):
         base_commit = None
     out = dict(model='STAR m=1 (Choi) and m=2 (Toshio); analytical noise assumptions; no observable PEC',
-               base_commit=base_commit, choices=asdict(BASELINE), star_choices=asdict(sc),
+               base_commit=base_commit, choices=asdict(BASELINE), surface_architecture=asdict(PBC), star_choices=asdict(sc),
                star_single_qubit_choices=asdict(single),
                source='https://doi.org/10.1103/PhysRevX.15.021057', hardware={})
     for key in ('H1', 'H3'):
-        print(f'{key}: computing direct, Clifford+T and STAR m=1 / m=2...', flush=True)
+        print(f'{key}: computing direct, sequential PBC and STAR m=1 / m=2...', flush=True)
         hw = HARDWARE[key]
         dr = direct.sweep(hw, BASELINE)
         sr = surface.sweep(hw, BASELINE)
@@ -106,7 +106,7 @@ def plot(data):
                          'pdf.fonttype': 42})
     fig, axes = plt.subplots(1, 2, figsize=(12, 5.4), sharex=True, sharey=True)
     for ax, (key, v) in zip(axes, data['hardware'].items()):
-        for model, label in (('direct', 'Direct'), ('surface', 'Surface code + Clifford+T'),
+        for model, label in (('direct', 'Direct'), ('surface', 'Surface code: sequential PBC'),
                              ('star', 'STAR: two-qubit rotations ($m=2$)'),
                              ('star_single_qubit', 'STAR: single-qubit rotations ($m=1$)')):
             y = curves.curve(v[model]).astype(float)

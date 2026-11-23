@@ -1,8 +1,9 @@
 """Magic-state factories as black boxes (draft Sec. 3.5): output error, footprint, and output period.
 
 Each factory is used unchanged for both noise models, as the draft specifies. Output errors come from the
-source papers' own circuit-noise simulations at p = 1e-3, not from the draft's P_SC law. Moving a state from
-the factory output to the consuming patch is not charged anywhere in this model.
+source papers' own circuit-noise simulations at p = 1e-3, not from the draft's P_SC law.
+Sequential PBC adds output buffers with patch-cycle error
+and exposes extra delivery cycles; its default zero delivery time remains an uncalibrated interface.
 
   cultivation  Output error 2e-9 per T state: source estimate (Gidney, Shutty, and Jones, arXiv:2409.17595v1,
                Table 1 and Figs. 1, 15, 16, uniform depolarizing noise at p = 1e-3). The source state ends in
@@ -24,15 +25,24 @@ class Factory:
     name: str
     error: float               # logical error per delivered T state
     qubits: int
-    cycles_per_output: float   # surface-code cycles between delivered T states
+    cycles_per_output: float   # average surface-code cycles per delivered T state
+    states_per_batch: int = 1  # PBC supply schedule retains multi-output batches
+
+    @property
+    def batch_cycles(self):
+        """Declared cold-start batch latency = published period times batch size.
+
+        This deterministic service model omits random factory rejection stalls.
+        """
+        return self.cycles_per_output*self.states_per_batch
 
 
 FACTORIES = [
     Factory('cultivation', 'cultivation', 2e-9, 1024, 100.),
     Factory('litinski', '(15-to-1)_{17,7,7}', 4.5e-8, 4620, 42.6),
     Factory('litinski', '(15-to-1)_{9,5,5} x (15-to-1)_{21,9,11}', 6.1e-10, 7780, 469.),
-    Factory('litinski', '(15-to-1)^6_{13,5,5} x (20-to-4)_{23,11,13}', 1.4e-10, 43300, 130/4),
-    Factory('litinski', '(15-to-1)^4_{13,5,5} x (20-to-4)_{27,13,15}', 2.6e-11, 46800, 157/4),
+    Factory('litinski', '(15-to-1)^6_{13,5,5} x (20-to-4)_{23,11,13}', 1.4e-10, 43300, 130/4, 4),
+    Factory('litinski', '(15-to-1)^4_{13,5,5} x (20-to-4)_{27,13,15}', 2.6e-11, 46800, 157/4, 4),
     Factory('litinski', '(15-to-1)^6_{11,5,5} x (15-to-1)_{25,11,11}', 2.7e-12, 30700, 82.5),
     Factory('litinski', '(15-to-1)^6_{13,5,5} x (15-to-1)_{29,11,13}', 3.3e-14, 39100, 97.5),
     Factory('litinski', '(15-to-1)^6_{17,7,7} x (15-to-1)_{41,17,17}', 4.5e-20, 73400, 128.),
