@@ -155,18 +155,11 @@ def star_comparison(hardware):
             for name,sc in (('m1',STAR_SINGLE_QUBIT),('m2',STAR_BASELINE)):
                 print('STAR comparison',key,name,clock,flush=True)
                 rows=star.sweep(HARDWARE[key],ch,sc)
-                points=sorted({r['qubits'] for r in rows+ref+record['direct']}|{1e6})
-                above=curves.curve(rows,points)>np.maximum(curves.curve(ref,points),curves.curve(record['direct'],points))
-                intervals=[]
-                start=None
-                for i,yes in enumerate(above):
-                    if yes and start is None:
-                        start=points[i]
-                    if start is not None and (not yes or i == len(points)-1):
-                        intervals.append([start,points[i]])
-                        start=None
-                entry[name]=dict(architecture='original layered STAR reference',rows=rows,
-                                 best=star.best_at(1e6,rows),above_direct_and_sequential_pbc=intervals)
+                intervals=curves.lead_intervals(rows,ref+record['direct'])
+                # The audit historically clips the upper endpoint to its largest probe.
+                entry[name]=dict(architecture='gate-based STAR',star_choices=asdict(sc),rows=rows,
+                                 best=star.best_at(1e6,rows),above_direct_and_sequential_pbc=[
+                                     [lo,min(hi,10**6)] for lo,hi in intervals])
             output[key][str(clock)]=entry
     return output
 

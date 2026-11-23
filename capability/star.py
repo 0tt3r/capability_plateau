@@ -4,8 +4,9 @@ The schedule groups rotations over F ancilla patches for preparation. Within a g
 RUS proceeds in synchronized rounds, with geometric preparation retries. We
 calculate expected duration, including the slowest preparation and RUS paths.
 Jensen's inequality turns expected additive loss into a conservative mean
-no-fault bound *within the effective stochastic model*. A separate Markov
-deadline bound avoids claiming that expected runtime guarantees completion.
+no-fault bound *within the effective stochastic model*. The adopted comparison
+uses mean runtime against one week, matching the surface-code baseline, without
+a deadline-tail guarantee. The historical Markov convention remains selectable.
 
 Injection is a leading-order analytic model, with explicit uncalibrated yield
 and background-error assumptions. See docs/star_surface_code_estimation.md.
@@ -17,15 +18,26 @@ import numpy as np
 
 from .config import N_MAX, STAR_BASELINE, WEEK_SECONDS
 from .quops import ENSEMBLES, layer_counts, size
-from .star_states import state_profile, uniform_angles
+from .star_states import state_profile, uniform_angles, transversal_correction_resources
+from .star_data import validate_counted
 from .surface import p_sc
 
 
 def _validate(hw, ch, sc):
     if hw.connectivity != 'grid':
         raise ValueError('Toshio STAR currently supports H1/H3 (2D grid) only')
-    if not 0 < sc.deadline_failure < min(1 - exp(-ch.threshold), .1):
+    if sc.deadline_model not in ('mean', 'markov'):
+        raise ValueError('Unknown deadline_model')
+    if sc.deadline_model == 'markov' and not 0 < sc.deadline_failure < min(1 - exp(-ch.threshold), .1):
         raise ValueError('deadline_failure must leave a positive success budget')
+    if sc.state_model not in ('legacy', 'counted'):
+        raise ValueError('Unknown STAR state_model')
+    if sc.state_model == 'counted':
+        validate_counted(hw, sc)
+    elif sc.omitted_sector_stress:
+        raise ValueError('omitted_sector_stress requires the counted state model')
+    if not 1 <= sc.correction_rounds <= 48:
+        raise ValueError('correction_rounds must be between 1 and 48')
     if ch.executions < 1 or ch.cycle_seconds <= 0 or sc.tiles_per_data_patch < 1:
         raise ValueError('Invalid execution, cycle-time, or patch-layout settings')
     if sc.cnot_layer not in ('parallel', 'serial'):
@@ -111,15 +123,40 @@ def _profile(hw, ch, sc, d, k):
 
 
 @lru_cache(maxsize=256)
+def _correction_supply(hw, sc, k):
+    return transversal_correction_resources(uniform_angles(sc.angle_points), k, hw, sc)
+
+
+def _correction_terms(profile, d, k, hw, sc):
+    """Angle-resolved time, attempts and states per requested correction."""
+    trial = sc.preparation_cycles + sc.growth_steps*d
+    consume = (sc.injection_steps + sc.delivery_steps + sc.clifford_steps)*d
+    if sc.state_model == 'counted':
+        attempts, states, _ = _correction_supply(hw, sc, k)
+    else:
+        attempts = np.full_like(profile.phi, 2/profile.fallback_acceptance)
+        states = np.full_like(profile.phi, 2.)
+    return trial*attempts + consume*states, attempts, states
+
+
+def _error_budget(ch, sc):
+    return ch.threshold if sc.deadline_model == 'mean' else -log(exp(-ch.threshold) + sc.deadline_failure)
+
+
+def _deadline_seconds(mean_seconds, sc):
+    return mean_seconds if sc.deadline_model == 'mean' else mean_seconds/sc.deadline_failure
+
+
+@lru_cache(maxsize=256)
 def _batch_times(hw, ch, sc, d, k, max_batch):
     profile = _profile(hw, ch, sc, d, k)
     trial = sc.preparation_cycles + sc.growth_steps*d
     consume = (sc.injection_steps + sc.delivery_steps + sc.clifford_steps)*d
     prep = batch_preparation_rounds(profile.acceptance, max_batch, sc.timing_tail_tolerance)
     rus = batch_rus_rounds(max_batch)
-    correction_runtime = 2*(trial/profile.fallback_acceptance + consume)
+    correction_runtime, _, _ = _correction_terms(profile, d, k, hw, sc)
     # Serialize the rare physical coherent-cancellation rotations within each batch.
-    corrections = 2*np.arange(max_batch + 1)*profile.correction_probability.mean()*correction_runtime
+    corrections = 2*np.arange(max_batch + 1)*np.mean(profile.correction_probability*correction_runtime)
     return trial*prep + consume*rus + corrections
 
 
@@ -130,12 +167,12 @@ def rotation_losses(profile):
     return injection, preparation
 
 
-def _one_rotation_cycles(profile, d, sc):
+def _one_rotation_cycles(profile, d, sc, hw, k):
     """Exact mean service time of one lane; a lower bound for any nonempty batch."""
     trial = sc.preparation_cycles + sc.growth_steps*d
     consume = (sc.injection_steps + sc.delivery_steps + sc.clifford_steps)*d
-    correction = 2*(trial/profile.fallback_acceptance + consume)
-    return 2*(trial*np.mean(1/profile.acceptance) + consume) + 2*profile.correction_probability.mean()*correction
+    correction, _, _ = _correction_terms(profile, d, k, hw, sc)
+    return 2*(trial*np.mean(1/profile.acceptance) + consume) + 2*np.mean(profile.correction_probability*correction)
 
 
 def evaluate_design(w, ensemble, hw, ch, sc, d, k, stations):
@@ -167,16 +204,26 @@ def evaluate_design(w, ensemble, hw, ch, sc, d, k, stations):
     # Jensen: E[exp(-L_path)] >= exp(-E[L_path]), including time/noise correlations.
     no_fault_bound = exp(-expected_loss)
     # Markov: P(runtime > E[runtime]/delta) <= delta. Union with a logical fault.
-    success_bound = max(0., no_fault_bound - sc.deadline_failure)
-    total_loss = -log(success_bound) if success_bound else float('inf')
+    success_bound = no_fault_bound if sc.deadline_model == 'mean' else max(0., no_fault_bound - sc.deadline_failure)
+    total_loss = expected_loss if sc.deadline_model == 'mean' else (-log(success_bound) if success_bound else float('inf'))
     mean_seconds = cycles*ch.cycle_seconds
-    deadline_seconds = mean_seconds/sc.deadline_failure
+    deadline_seconds = _deadline_seconds(mean_seconds, sc)
     per_copy = min(ch.executions, int(WEEK_SECONDS/deadline_seconds))
     copies = ceil(ch.executions/max(1, per_copy))
     correction_probability = float(profile.correction_probability.mean())
+    correction_time, attempts, states = _correction_terms(profile, d, k, hw, sc)
+    b = profile.correction_probability
+    correction_states = float(2*rotations*np.mean(b*states))
+    original_states = float(2*rotations*np.mean(profile.fallback))
+    if sc.state_model == 'legacy':
+        original_states += correction_states
+    resource_states = 2*rotations + correction_states
     return dict(
         ensemble=ensemble, w=w, s=size(w, ensemble), distance=d, groups=k,
         rotation_weight=sc.rotation_weight, postselection=sc.postselection,
+        state_model=sc.state_model, deadline_model=sc.deadline_model,
+        runtime_convention=('Modeled mean, not a deadline-tail guarantee' if sc.deadline_model == 'mean'
+                            else 'Markov deadline bound'),
         preparation_distance=profile.preparation_distance, stations=stations,
         qubits=int(copies*per_copy_qubits), qubits_per_copy=int(per_copy_qubits),
         copies=copies, runs_per_copy=per_copy, passes=bool(total_loss <= ch.threshold and per_copy >= 1),
@@ -190,9 +237,15 @@ def evaluate_design(w, ensemble, hw, ch, sc, d, k, stations):
         min_state_acceptance=float(profile.acceptance.min()),
         fallback_fraction=float(profile.fallback.mean()),
         mean_correction_probability=correction_probability,
-        resource_states=float(rotations*(2 + 4*correction_probability)),
-        preparation_attempts=float(rotations*(2*np.mean(1/profile.acceptance) +
-                                             4*correction_probability/profile.fallback_acceptance)),
+        resource_states=float(resource_states),
+        preparation_attempts=float(2*rotations*(np.mean(1/profile.acceptance) + np.mean(b*attempts))),
+        correction_resources=correction_states,
+        correction_preparation_attempts=float(2*rotations*np.mean(b*attempts)),
+        correction_cycles=float(2*rotations*np.mean(b*correction_time)),
+        original_acceptance=float(profile.fallback_acceptance),
+        original_state_error=float(profile.fallback_error),
+        original_resources=original_states,
+        original_resource_fraction=original_states/resource_states,
         rotation_layer_cycles=float(rotation_layer),
     )
 
@@ -203,22 +256,24 @@ def min_qubits(w, ensemble, hw, ch, sc=STAR_BASELINE):
     if w < 2 or w % 2 or ensemble not in ENSEMBLES:
         raise ValueError('QUOPS needs an even width >= 2 and a known ensemble')
     n_rot, n_cnot = layer_counts(w, ensemble)
-    budget = -log(exp(-ch.threshold) + sc.deadline_failure)
+    budget = _error_budget(ch, sc)
     best = None
     for k in sc.groups:
         prep_area = (2*sc.rotation_weight*k - 1)**2
-        resource_loss = w*n_rot*sum(rotation_losses(_profile(hw, ch, sc, 3, k)))
-        if resource_loss >= budget:
-            continue
         for d in range(3, sc.max_distance + 1, 2):
             area_min = (ceil(sc.tiles_per_data_patch*w) + 1)*2*d*d + prep_area
             if best is not None and area_min >= best['qubits']:
                 break
             profile = _profile(hw, ch, sc, d, k)
-            lane_cycles = _one_rotation_cycles(profile, d, sc)
+            # Counted original-STAR errors depend on d; distance 3 is not a
+            # lower bound on resource loss at larger distances.
+            resource_loss = w*n_rot*sum(rotation_losses(profile))
+            if resource_loss >= budget:
+                continue
+            lane_cycles = _one_rotation_cycles(profile, d, sc, hw, k)
             fixed = n_cnot*(2*d if sc.cnot_layer == 'parallel' else w*d) + 2*d
             # Even unlimited stations cannot beat one lane per rotation layer.
-            if (n_rot*lane_cycles + fixed)*ch.cycle_seconds/sc.deadline_failure > WEEK_SECONDS:
+            if _deadline_seconds((n_rot*lane_cycles + fixed)*ch.cycle_seconds, sc) > WEEK_SECONDS:
                 continue
             for stations in range(1, w + 1):
                 area = (ceil(sc.tiles_per_data_patch*w) + stations)*2*d*d + stations*prep_area
@@ -237,8 +292,9 @@ def min_qubits(w, ensemble, hw, ch, sc=STAR_BASELINE):
 def resource_ceiling(hw, ch, sc=STAR_BASELINE):
     """Continuous QUOPS-size ceiling from resource noise alone (s=2R)."""
     _validate(hw, ch, sc)
-    loss = min(sum(rotation_losses(_profile(hw, ch, sc, 3, k))) for k in sc.groups)
-    return 2*(-log(exp(-ch.threshold) + sc.deadline_failure))/loss if loss > 0 else float('inf')
+    distances = range(3, sc.max_distance + 1, 2) if sc.state_model == 'counted' else (3,)
+    loss = min(sum(rotation_losses(_profile(hw, ch, sc, d, k))) for d in distances for k in sc.groups)
+    return 2*_error_budget(ch, sc)/loss if loss > 0 else float('inf')
 
 
 def sweep(hw, ch, sc=STAR_BASELINE):

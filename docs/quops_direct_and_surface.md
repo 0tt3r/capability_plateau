@@ -90,6 +90,15 @@ The [architecture specification](surface_architectures.md) gives the counted are
 batch schedule, synthesis charge, loss criterion, optimizer menu, and limitations. The
 [parallel-unit note](parallel_pbc_audit.md) documents the separately charged parallel PBC model.
 
+Live data, routing, and output-buffer tiles accrue memory exposure during idle periods
+and factory waits. The effective patch-cycle fit represents these faults together with
+gate and measurement faults. Its H3 improvement enters through the threshold of 0.015,
+compared with 0.01 on H1. Calibration against a specific physical idle schedule remains
+open. The STAR preparation calculations count physical idle faults in their own circuits.
+The adopted STAR estimator uses those counts for acceptance and retained state errors.
+[Patch-cycle fit](../capability/surface.py) · [Toshio preparation](star_rejection_count_derivation.md) ·
+[Original STAR preparation](original_star_rejection_count_derivation.md)
+
 ## 5. Current baseline
 
 ![Sequential PBC capability curves](../figures/quops_direct_surface.png)

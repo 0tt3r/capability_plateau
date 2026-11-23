@@ -3,7 +3,7 @@
     .venv/bin/python scripts/make_star_comparison.py
 
 Writes results/star_comparison.json and figures/star_comparison.{png,pdf},
-plus a focused single-qubit comparison and a preparation diagnostic.
+the manuscript crossover PDF, a single-qubit comparison and a preparation diagnostic.
 """
 import argparse
 from dataclasses import asdict, replace
@@ -36,27 +36,36 @@ def compute(angle_points=512, sensitivity=True):
         base_commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     except (OSError, subprocess.CalledProcessError):
         base_commit = None
-    out = dict(model='STAR m=1 (Choi) and m=2 (Toshio); analytical noise assumptions; no observable PEC',
-               base_commit=base_commit, choices=asdict(BASELINE), surface_architecture=asdict(PBC), star_choices=asdict(sc),
+    out = dict(model='Adopted optimistic counted STAR m=2; historical m=1 sensitivity; no observable PEC',
+               base_commit=base_commit, choices=asdict(BASELINE), surface_architecture=asdict(PBC),
+               star_choices=asdict(sc),
                star_single_qubit_choices=asdict(single),
+               counted_inputs='capability/data/star_acceptance.json',
+               assumption_status={'1': 'implemented: zero additional preparation allowance',
+                                  '2': 'implemented: counted A and retained b1',
+                                  '3': 'implemented: all-orders acceptance, rejected-attempt costs',
+                                  '4': 'implemented: retained 2kp/15+kq/3 mechanism',
+                                  '5': 'implemented: counted original STAR, ideal Toshio corrections with costs',
+                                  '6': 'partial: gate-based STAR assumes parallel CNOT routing, growth, storage and adaptive timing',
+                                  '7': 'implemented: mean-runtime week criterion'},
                source='https://doi.org/10.1103/PhysRevX.15.021057', hardware={})
     for key in ('H1', 'H3'):
         print(f'{key}: computing direct, sequential PBC and STAR m=1 / m=2...', flush=True)
         hw = HARDWARE[key]
         dr = direct.sweep(hw, BASELINE)
-        sr = surface.sweep(hw, BASELINE)
+        sr = surface.sweep(hw, BASELINE, PBC)
         tr = star.sweep(hw, BASELINE, sc)
         single_rows = star.sweep(hw, BASELINE, single)
         probes = {}
         for N in PROBES:
             probes[f'{N:.0e}'] = dict(star=star.best_at(N, tr),
                                      star_single_qubit=star.best_at(N, single_rows),
-                                     surface=surface.best_at(N, hw, BASELINE, sr))
-        variation = {}
+                                     surface=surface.best_at(N, hw, BASELINE, sr, PBC))
+        variation = {}  # Legacy count-scaling is invalid for the counted input model.
+        sector_stress = []
         if sensitivity:
-            for factor in (.5, 2.):
-                print(f'{key}: rejection sensitivity {factor:g}x...', flush=True)
-                variation[str(factor)] = star.sweep(hw, BASELINE, replace(sc, rejection_scale=factor))
+            print(f'{key}: omitted accepted Toshio-sector stress...', flush=True)
+            sector_stress = star.sweep(hw, BASELINE, replace(sc, omitted_sector_stress=True))
         # Quantify a second, separate uncertainty without treating it as a confidence band.
         floor_sensitivity = {}
         if sensitivity:
@@ -87,10 +96,12 @@ def compute(angle_points=512, sensitivity=True):
             hardware=asdict(hw), direct=dr, surface=sr, star=tr,
             star_single_qubit=single_rows, probes=probes,
             star_crossover=curves.crossover(dr, tr), surface_crossover=curves.crossover(dr, sr),
+            star_lead_intervals_half_open=curves.lead_intervals(tr, dr + sr),
             star_single_qubit_crossover=curves.crossover(dr, single_rows),
             star_resource_ceiling=star.resource_ceiling(hw, BASELINE, sc),
             star_single_qubit_resource_ceiling=star.resource_ceiling(hw, BASELINE, single),
             rejection_sensitivity=variation,
+            omitted_sector_stress=sector_stress,
             preparation_floor_sensitivity=floor_sensitivity,
             single_qubit_noise_sensitivity=single_noise,
             single_qubit_rejection_sensitivity=single_rejection,
@@ -101,47 +112,55 @@ def compute(angle_points=512, sensitivity=True):
     return out
 
 
-def plot(data):
+def comparison_figure(data):
     plt.rcParams.update({'font.size': 10, 'axes.spines.top': False, 'axes.spines.right': False,
                          'pdf.fonttype': 42})
     fig, axes = plt.subplots(1, 2, figsize=(12, 5.4), sharex=True, sharey=True)
     for ax, (key, v) in zip(axes, data['hardware'].items()):
-        for model, label in (('direct', 'Direct'), ('surface', 'Surface code: sequential PBC'),
-                             ('star', 'STAR: two-qubit rotations ($m=2$)'),
-                             ('star_single_qubit', 'STAR: single-qubit rotations ($m=1$)')):
+        for model, label in (('direct', 'Direct'), ('surface', 'Clifford+T, sequential PBC'),
+                             ('star', 'STAR')):
             y = curves.curve(v[model]).astype(float)
             y[y == 0] = np.nan
             ax.step(curves.N_GRID, y, where='post', color=COLORS[model], lw=2, label=label)
-        for rows in v['rejection_sensitivity'].values():
-            y = curves.curve(rows).astype(float)
-            y[y == 0] = np.nan
-            ax.step(curves.N_GRID, y, where='post', color=COLORS['star'], alpha=.45, lw=1, ls=':')
-        for rows in v['single_qubit_noise_sensitivity'].values():
-            y = curves.curve(rows).astype(float)
-            y[y == 0] = np.nan
-            ax.step(curves.N_GRID, y, where='post', color=COLORS['star_single_qubit'], alpha=.45, lw=1, ls=':')
-        for model, m, offset in (('star', 2, 2.2), ('star_single_qubit', 1, .3)):
-            top = star.best_at(N_MAX, v[model])
-            if top:
-                ax.annotate(f"m = {m}: s = {top['s']:,}", (8e5, top['s']*offset),
-                            xytext=(0, 0), textcoords='offset points', ha='right',
-                            color=COLORS[model], fontsize=9)
-            if v[f'{model}_crossover']:
-                ax.axvline(v[f'{model}_crossover'], color=COLORS[model], lw=.8, ls='--', alpha=.6)
         ax.set(xscale='log', yscale='log', xlim=(1, N_MAX), ylim=(1, 4e8),
                xlabel='Physical qubits N', title=f"{key}: {v['hardware']['name']}")
         ax.grid(which='major', alpha=.15)
     axes[0].set_ylabel('QUOPS capability s')
+    return fig, axes
+
+
+def plot(data):
+    fig, axes = comparison_figure(data)
+    for ax, v in zip(axes, data['hardware'].values()):
+        if v['omitted_sector_stress']:
+            y = curves.curve(v['omitted_sector_stress']).astype(float)
+            y[y == 0] = np.nan
+            ax.step(curves.N_GRID, y, where='post', color=COLORS['star'], alpha=.65, lw=1,
+                    ls=':', label='STAR, omitted-sector stress')
+        if v['star_crossover']:
+            ax.axvline(v['star_crossover'], color=COLORS['star'], lw=.8, ls='--', alpha=.6,
+                       label='STAR exceeds direct')
     axes[0].legend(loc='upper left', frameon=False, fontsize=9)
-    fig.suptitle('Uniform-angle QUOPS: single-qubit and two-qubit resource-state preparation', fontsize=12)
-    fig.text(.5, .015,
-             'Both STAR curves include probabilistic coherent error cancellation and original-STAR protocol switching.\n'
-             'Dotted: 0.5x / 2x assumptions (m=1 undetected errors; m=2 rejection counts), not confidence intervals.\n'
-             'm=1: full postselection; m=2: restricted postselection. Dashed: STAR/direct crossovers. No observable-level PEC.',
-             ha='center', fontsize=8, color='#555555')
-    fig.tight_layout(rect=(0, .11, 1, .94))
+    fig.tight_layout()
     for extension in ('png', 'pdf'):
         fig.savefig(ROOT/f'figures/star_comparison.{extension}', dpi=200)
+    plt.close(fig)
+
+
+def plot_manuscript_crossover(data):
+    fig, axes = comparison_figure(data)
+    for ax, v in zip(axes, data['hardware'].values()):
+        crossing = curves.crossover(v['star'], v['surface'])
+        if crossing is not None:
+            size = curves.capability(v['surface'], crossing)
+            ax.annotate(f'Surface code first exceeds STAR\nat {crossing:,.0f} physical qubits',
+                        xy=(crossing, size), xytext=(-20, 35), textcoords='offset points',
+                        ha='right', fontsize=9,
+                        arrowprops=dict(arrowstyle='->', color=COLORS['surface']))
+    axes[0].legend(loc='upper left', frameon=False, fontsize=9)
+    fig.tight_layout()
+    fig.savefig(ROOT/'figures/quops-pbc-manuscript-star.pdf',
+                metadata={'Title': 'QUOPS capability and the STAR–surface-code crossover'})
     plt.close(fig)
 
 
@@ -156,16 +175,15 @@ def plot_preparation(data):
             label = f'{key}, m={settings.rotation_weight}, d_p={p.preparation_distance}'
             axes[0].loglog(phi, p.error, color=color, ls=style, label=label)
             axes[1].semilogx(phi, p.acceptance, color=color, ls=style, label=label)
-        axes[0].axhline(p.fallback_error, color=color, lw=.7, ls=':')
     axes[0].set(xlabel=r'Residual paper angle $|\phi|$ (rad)',
                 ylabel='Rotation error per teleportation', title='After error cancellation and protocol switching')
     axes[1].set(xlabel=r'Residual paper angle $|\phi|$ (rad)',
-                ylabel='Preparation success probability', title='Assumed finite-noise preparation model', ylim=(0, 1))
+                ylabel='Preparation success probability', title='Counted m=2; historical m=1 acceptance', ylim=(0, 1))
     for ax in axes:
         ax.grid(alpha=.15)
         ax.legend(frameon=False)
     fig.suptitle('Preparation comparison: k = 3, data distance 9 (preparation distances differ)', fontsize=11)
-    fig.text(.5, .01, 'Each curve includes original-STAR switching. Logical errors during preparation are accounted for separately.',
+    fig.text(.5, .01, 'Both include original-STAR switching. The adopted m=2 model omits the additional preparation-error allowance.',
              ha='center', fontsize=8)
     fig.tight_layout(rect=(0, .04, 1, .96))
     for extension in ('png', 'pdf'):
@@ -178,8 +196,8 @@ def plot_single_qubit_comparison(data):
     fig, axes = plt.subplots(1, 2, figsize=(11, 5), sharex=True, sharey=True)
     entries = (
         ('direct', 'Direct', COLORS['direct'], '-'),
-        ('star', 'STAR: two-qubit rotations ($m=2$)', COLORS['star'], '-'),
-        ('star_single_qubit', 'STAR: single-qubit rotations ($m=1$)', COLORS['star_single_qubit'], '-'),
+        ('star', 'STAR: adopted optimistic $m=2$', COLORS['star'], '-'),
+        ('star_single_qubit', 'STAR: historical $m=1$ model', COLORS['star_single_qubit'], '-'),
         ('single_qubit_no_switching', '$m=1$, protocol switching disabled', COLORS['star_single_qubit'], '--'),
     )
     for ax, (key, v) in zip(axes, data['hardware'].items()):
@@ -195,7 +213,7 @@ def plot_single_qubit_comparison(data):
     fig.suptitle('Single-qubit transversal rotations: effect of protocol switching', fontsize=12)
     fig.text(.5, .015,
              'Dashed green disables switching for the requested rotations. Additional error-cancellation rotations still use original STAR.\n'
-             'Both variants use the same RUS schedule and deadline criterion; m=1 undetected-error coefficients are modeling assumptions.',
+             'm=1 retains its historical channel and Markov deadline; m=2 uses the adopted optimistic model and mean runtime.',
              ha='center', fontsize=8, color='#555555')
     fig.tight_layout(rect=(0, .09, 1, .94))
     for extension in ('png', 'pdf'):
@@ -213,6 +231,7 @@ def main():
     (ROOT/'figures').mkdir(exist_ok=True)
     (ROOT/'results/star_comparison.json').write_text(json.dumps(data, indent=1, allow_nan=False) + '\n')
     plot(data)
+    plot_manuscript_crossover(data)
     plot_preparation(data)
     plot_single_qubit_comparison(data)
     for key, v in data['hardware'].items():

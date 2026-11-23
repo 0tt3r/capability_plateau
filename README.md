@@ -23,6 +23,7 @@ python -m venv .venv
 .venv/bin/python scripts/make_frozen_pinnacle_curves.py
 .venv/bin/python scripts/compare_surface_architectures.py
 .venv/bin/python scripts/audit_surface_architectures.py
+.venv/bin/python scripts/package_star_inputs.py --check
 .venv/bin/python scripts/make_star_comparison.py
 .venv/bin/python -m pytest -q
 ```
@@ -63,10 +64,24 @@ using the same counted geometry; it is not a finite-buffer execution schedule.
 
 ## STAR scope
 
-`make_star_comparison.py` compares STAR preparation weights 1 and 2 against direct execution and
-the current sequential PBC baseline. STAR retains a separate gate-based resource model; its CNOT
-schedule and tile ratio are fields of `StarChoices`, not PBC settings. Its routing assumptions have
-not been established by the PBC checks. See [the STAR methods note](docs/star_surface_code_estimation.md).
+The main figure compares direct execution, Clifford+T with sequential PBC, and the adopted
+optimistic two-qubit STAR model on H1 and H3. STAR uses circuit-derived acceptance and retained
+single-fault errors. It charges preparation, retries, and supply time for ideal auxiliary
+corrections. Its gate-based layout assumes two data/routing tiles per logical qubit and parallel
+CNOT layers. Routing and adaptive scheduling remain provisional. The historical single-qubit model
+and the preparation diagnostics have separate figures. [Comparison figure](figures/star_comparison.png) ·
+[Saved designs](results/star_comparison.json)
+
+| Hardware | Physical qubits where STAR strictly leads both alternatives | Maximum STAR volume through one million qubits | Fewest qubits reaching that volume |
+|---|---:|---:|---:|
+| H1 | 1,395–11,299 | 1,156 | 31,171 |
+| H3 | 1,787–11,187 | 3,136 | 30,371 |
+
+Both endpoints in the table are inclusive. The estimator uses a 1 µs cycle, H1/H3 noise rates,
+$k=3,5,7,9$, and odd STAR computation distances 3–31. Independent reference data cover 114
+adopted and omitted-sector stress designs. [STAR methods](docs/star_surface_code_estimation.md) ·
+[Assumption decisions](docs/star_two_qubit_assumption_responses.md) ·
+[Circuit-input reproduction](analysis/star_inputs.md)
 
 ## Retired results
 

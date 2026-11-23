@@ -1,0 +1,414 @@
+{
+  "status": "Circuit acceptance-sector calculation; full logical channel not recalibrated; production defaults unchanged.",
+  "method": "Exact Fourier transfer of independent categorical Pauli fault signatures; no Monte Carlo.",
+  "rows": [
+    {
+      "distance": 6,
+      "groups": 3,
+      "detectors": 42,
+      "forward_checks": 7565,
+      "second_order": {
+        "ideal": {
+          "p": "-4862/15",
+          "q": "-1301/3",
+          "pp": "3954301/75",
+          "pq": "2123009/15",
+          "qq": "853456/9"
+        },
+        "one_group": {
+          "p": "2/5",
+          "q": "1",
+          "pp": "-832/9",
+          "pq": "-17923/45",
+          "qq": "-315"
+        },
+        "ratio_correction": {
+          "pp": "8372/225",
+          "pq": "4469/45",
+          "qq": "356/3"
+        }
+      },
+      "hardware": {
+        "H1": {
+          "p": 0.001,
+          "q": 0.001,
+          "u": 0.0014,
+          "h_product": 0.46917546611724986,
+          "H_n": [
+            0.46962956115191246,
+            0.0007815290947910554
+          ],
+          "h0": 0.47028796430193515,
+          "he": 0.5582350677078968,
+          "he_over_h0": 1.1870069193382498,
+          "H_n_without_primary_faults": [
+            0.4696294374403608,
+            0.00012297011008834574
+          ],
+          "he_contribution_with_primary_fault": 0.47039927478764976,
+          "he_contribution_without_primary_fault": 0.08783579292024696,
+          "primary_fault_prior": 0.0013992002429197084,
+          "pass_one_group_given_primary": 0.4706681463465843,
+          "mean_two_sector_bad_fraction_common": 0.0005916011685572961,
+          "mean_two_sector_bad_fraction_separate": 0.0007021391398081146,
+          "higher_sector_share_of_accepted_nonzero_sectors": 0.0,
+          "higher_sector_share_of_acceptance": 0.0,
+          "error_odds_multiplier_vs_common": 1.1870069193382495,
+          "H1_over_H0_second_order": 0.0016551866666666666,
+          "frontier": 16
+        },
+        "H3": {
+          "p": 0.001,
+          "q": 1e-06,
+          "u": 0.00040100000000000004,
+          "h_product": 0.7230130733667806,
+          "H_n": [
+            0.7229818699188824,
+            0.00031720094319102735
+          ],
+          "h0": 0.7232719019515649,
+          "he": 0.7910247959875993,
+          "he_over_h0": 1.0936755511353622,
+          "H_n_without_primary_faults": [
+            0.722981856851785,
+            2.6949987369362014e-05
+          ],
+          "he_contribution_with_primary_fault": 0.7238178449418088,
+          "he_contribution_without_primary_fault": 0.06720695104579055,
+          "primary_fault_prior": 0.00040093293899242375,
+          "pass_one_group_given_primary": 0.7239389124552574,
+          "mean_two_sector_bad_fraction_common": 0.00016937010778543356,
+          "mean_two_sector_bad_fraction_separate": 0.00018523233097348182,
+          "higher_sector_share_of_accepted_nonzero_sectors": 0.0,
+          "higher_sector_share_of_acceptance": 0.0,
+          "error_odds_multiplier_vs_common": 1.093675551135362,
+          "H1_over_H0_second_order": 0.00043830831866666667,
+          "frontier": 16
+        }
+      },
+      "small_noise_remainders": [
+        [
+          -1.7438273047787334e-11,
+          4.342245127391997e-14
+        ],
+        [
+          -2.1783685966170196e-12,
+          5.399787234324204e-15
+        ]
+      ],
+      "seconds": 0.30665563600632595
+    },
+    {
+      "distance": 10,
+      "groups": 5,
+      "detectors": 74,
+      "forward_checks": 22565,
+      "second_order": {
+        "ideal": {
+          "p": "-8546/15",
+          "q": "-2213/3",
+          "pp": "36589207/225",
+          "pq": "6327877/15",
+          "qq": "819982/3"
+        },
+        "one_group": {
+          "p": "2/3",
+          "q": "5/3",
+          "pp": "-75778/225",
+          "pq": "-19711/15",
+          "qq": "-9806/9"
+        },
+        "ratio_correction": {
+          "pp": "9682/225",
+          "pq": "1909/15",
+          "qq": "1259/9"
+        }
+      },
+      "hardware": {
+        "H1": {
+          "p": 0.001,
+          "q": 0.001,
+          "u": 0.0023333333333333335,
+          "h_product": 0.27097745990367317,
+          "H_n": [
+            0.2713920976526447,
+            0.000720298806664355,
+            4.692763141567911e-05
+          ],
+          "h0": 0.27202682691544744,
+          "he": 0.30869948857043783,
+          "he_over_h0": 1.1348126656140027,
+          "H_n_without_primary_faults": [
+            0.271391993523069,
+            8.637631856748935e-05,
+            4.6108948451147006e-05
+          ],
+          "he_contribution_with_primary_fault": 0.2716810663272281,
+          "he_contribution_without_primary_fault": 0.03701842224320972,
+          "primary_fault_prior": 0.0023309125905170056,
+          "pass_one_group_given_primary": 0.2719632176152342,
+          "mean_two_sector_bad_fraction_common": 0.0012795926018590875,
+          "mean_two_sector_bad_fraction_separate": 0.001451819552710771,
+          "higher_sector_share_of_accepted_nonzero_sectors": 0.03975087947314018,
+          "higher_sector_share_of_acceptance": 4.8565196428730595e-05,
+          "error_odds_multiplier_vs_common": 1.1348126656140027,
+          "H1_over_H0_second_order": 0.0026435200000000003,
+          "frontier": 16
+        },
+        "H3": {
+          "p": 0.001,
+          "q": 1e-06,
+          "u": 0.0006683333333333333,
+          "h_product": 0.565476019478154,
+          "H_n": [
+            0.5654433099672176,
+            0.0004025936818461311,
+            1.606306376729188e-05
+          ],
+          "h0": 0.5658214673145395,
+          "he": 0.6023845613657823,
+          "he_over_h0": 1.064619488943705,
+          "H_n_without_primary_faults": [
+            0.5654432943871283,
+            2.430785281723828e-05,
+            1.5942408905369055e-05
+          ],
+          "he_contribution_with_primary_fault": 0.5660137092701639,
+          "he_contribution_without_primary_fault": 0.036370852095618376,
+          "primary_fault_prior": 0.000668132256996534,
+          "pass_one_group_given_primary": 0.5661840527344203,
+          "mean_two_sector_bad_fraction_common": 0.0003662731910358361,
+          "mean_two_sector_bad_fraction_separate": 0.0003899313191292615,
+          "higher_sector_share_of_accepted_nonzero_sectors": 0.024724950266328576,
+          "higher_sector_share_of_acceptance": 7.98589599666385e-06,
+          "error_odds_multiplier_vs_common": 1.0646194889437048,
+          "H1_over_H0_second_order": 0.0007114918509999999,
+          "frontier": 16
+        }
+      },
+      "small_noise_remainders": [
+        [
+          -9.121436939096839e-11,
+          3.2714409451364997e-13
+        ],
+        [
+          -1.1401324329085583e-11,
+          4.088160251863475e-14
+        ]
+      ],
+      "seconds": 0.9158946959942114
+    },
+    {
+      "distance": 14,
+      "groups": 7,
+      "detectors": 106,
+      "forward_checks": 45565,
+      "second_order": {
+        "ideal": {
+          "p": "-2446/3",
+          "q": "-3125/3",
+          "pp": "74887367/225",
+          "pq": "4257539/5",
+          "qq": "4898180/9"
+        },
+        "one_group": {
+          "p": "14/15",
+          "q": "7/3",
+          "pp": "-160216/225",
+          "pq": "-122363/45",
+          "qq": "-20422/9"
+        },
+        "ratio_correction": {
+          "pp": "3668/75",
+          "pq": "6997/45",
+          "qq": "1453/9"
+        }
+      },
+      "hardware": {
+        "H1": {
+          "p": 0.001,
+          "q": 0.001,
+          "u": 0.003266666666666667,
+          "h_product": 0.15650601763881763,
+          "H_n": [
+            0.15683354875866473,
+            0.0005716242541602555,
+            2.757186043912364e-05,
+            2.6760706585929314e-05
+          ],
+          "h0": 0.1573475507578069,
+          "he": 0.17498701657967006,
+          "he_over_h0": 1.1121051184903046,
+          "H_n_without_primary_faults": [
+            0.15683346970298864,
+            5.876577339402312e-05,
+            2.6651024791119e-05,
+            2.664777863717178e-05
+          ],
+          "he_contribution_with_primary_fault": 0.15699749411211195,
+          "he_contribution_without_primary_fault": 0.017989522467558097,
+          "primary_fault_prior": 0.0032617556338849483,
+          "pass_one_group_given_primary": 0.1572338759649468,
+          "mean_two_sector_bad_fraction_common": 0.002077558367784796,
+          "mean_two_sector_bad_fraction_separate": 0.0023098907254898095,
+          "higher_sector_share_of_accepted_nonzero_sectors": 0.049620739272577666,
+          "higher_sector_share_of_acceptance": 9.608713864909354e-05,
+          "error_odds_multiplier_vs_common": 1.1121051184903046,
+          "H1_over_H0_second_order": 0.003632506666666667,
+          "frontier": 16
+        },
+        "H3": {
+          "p": 0.001,
+          "q": 1e-06,
+          "u": 0.0009356666666666667,
+          "h_product": 0.44226465659306774,
+          "H_n": [
+            0.44223257883821865,
+            0.0004357359561360666,
+            1.2657414426887682e-05,
+            1.248375056136806e-05
+          ],
+          "h0": 0.44264674864603515,
+          "he": 0.46569571371863194,
+          "he_over_h0": 1.0520707881467533,
+          "H_n_without_primary_faults": [
+            0.4422325624596056,
+            2.1537599900635346e-05,
+            1.2468857553431393e-05,
+            1.2468687758246545e-05
+          ],
+          "he_contribution_with_primary_fault": 0.4426772599594919,
+          "he_contribution_without_primary_fault": 0.02301845375914002,
+          "primary_fault_prior": 0.0009352601508888231,
+          "pass_one_group_given_primary": 0.44286967197500987,
+          "mean_two_sector_bad_fraction_common": 0.000594622803386999,
+          "mean_two_sector_bad_fraction_separate": 0.0006255646642858789,
+          "higher_sector_share_of_accepted_nonzero_sectors": 0.030689764315297033,
+          "higher_sector_share_of_acceptance": 1.5774268838540766e-05,
+          "error_odds_multiplier_vs_common": 1.0520707881467533,
+          "H1_over_H0_second_order": 0.0009847289836666666,
+          "frontier": 16
+        }
+      },
+      "small_noise_remainders": [
+        [
+          -2.633860907153007e-10,
+          1.0225042669847545e-12
+        ],
+        [
+          -3.2926217308215655e-11,
+          1.2777567712900781e-13
+        ]
+      ],
+      "seconds": 2.3249497880024137
+    },
+    {
+      "distance": 18,
+      "groups": 9,
+      "detectors": 138,
+      "forward_checks": 76565,
+      "second_order": {
+        "ideal": {
+          "p": "-15914/15",
+          "q": "-4037/3",
+          "pp": "42252461/75",
+          "pq": "21457229/15",
+          "qq": "8168158/9"
+        },
+        "one_group": {
+          "p": "6/5",
+          "q": "3",
+          "pp": "-274126/225",
+          "pq": "-41525/9",
+          "qq": "-3854"
+        },
+        "ratio_correction": {
+          "pp": "12326/225",
+          "pq": "8267/45",
+          "qq": "183"
+        }
+      },
+      "hardware": {
+        "H1": {
+          "p": 0.001,
+          "q": 0.001,
+          "u": 0.004200000000000001,
+          "h_product": 0.09039177489474234,
+          "H_n": [
+            0.09063182837297612,
+            0.00042012174946799393,
+            1.628426088226449e-05,
+            1.5481804018965602e-05,
+            1.548087410046041e-05
+          ],
+          "h0": 0.09101408754064684,
+          "he": 0.10002898796856997,
+          "he_over_h0": 1.0990495061975663,
+          "H_n_without_primary_faults": [
+            0.09063177177696466,
+            3.9074260641678364e-05,
+            1.5404610752088095e-05,
+            1.5401538929768878e-05,
+            1.5401538898870573e-05
+          ],
+          "he_contribution_with_primary_fault": 0.09072559257769416,
+          "he_contribution_without_primary_fault": 0.0093033953908758,
+          "primary_fault_prior": 0.004191730184099881,
+          "pass_one_group_given_primary": 0.09090458404782571,
+          "mean_two_sector_bad_fraction_common": 0.002925037496730577,
+          "mean_two_sector_bad_fraction_separate": 0.0032137909805952346,
+          "higher_sector_share_of_accepted_nonzero_sectors": 0.053062613986743425,
+          "higher_sector_share_of_acceptance": 0.00014332951708067812,
+          "error_odds_multiplier_vs_common": 1.0990495061975663,
+          "H1_over_H0_second_order": 0.004621493333333334,
+          "frontier": 16
+        },
+        "H3": {
+          "p": 0.001,
+          "q": 1e-06,
+          "u": 0.001203,
+          "h_product": 0.3458997724640746,
+          "H_n": [
+            0.34586960414694756,
+            0.0004353192432175161,
+            9.999111317298824e-06,
+            9.766376990727082e-06,
+            9.766302684687193e-06
+          ],
+          "h0": 0.3462861864292219,
+          "he": 0.3618613825582012,
+          "he_over_h0": 1.0449778152850542,
+          "H_n_without_primary_faults": [
+            0.345869588057566,
+            1.882047068510532e-05,
+            9.752139057763664e-06,
+            9.751939804603455e-06,
+            9.751939805806716e-06
+          ],
+          "he_contribution_with_primary_fault": 0.3462167685223697,
+          "he_contribution_without_primary_fault": 0.015644614035831523,
+          "primary_fault_prior": 0.00120231663976142,
+          "pass_one_group_given_primary": 0.3464135476117657,
+          "mean_two_sector_bad_fraction_common": 0.0008371229920975699,
+          "mean_two_sector_bad_fraction_separate": 0.0008747406380848991,
+          "higher_sector_share_of_accepted_nonzero_sectors": 0.03261672952217892,
+          "higher_sector_share_of_acceptance": 2.3462447018831006e-05,
+          "error_odds_multiplier_vs_common": 1.044977815285054,
+          "H1_over_H0_second_order": 0.0012579661163333333,
+          "frontier": 16
+        }
+      },
+      "small_noise_remainders": [
+        [
+          -5.756697341041672e-10,
+          2.3058420775896773e-12
+        ],
+        [
+          -7.197065166053562e-11,
+          2.8823821635563926e-13
+        ]
+      ],
+      "seconds": 5.814869180001551
+    }
+  ]
+}

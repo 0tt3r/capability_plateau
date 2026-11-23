@@ -1,14 +1,16 @@
-"""Leading-order Toshio et al. resource states, PRX 15, 021057 (2025), Secs. III-IV.
+"""STAR resource states in the exp(+i phi P) angle convention.
 
-Angles here follow the paper: exp(+i phi P). This module explicitly separates the
-paper's analytic state/channel formulas from uncalibrated rejection and QEC-floor
-surrogates. It is not a syndrome-circuit simulation. See the accompanying methods note.
+The adopted m=2 model uses counted acceptance, retained single-fault logical
+components, and ideal auxiliary coherent corrections with physical supply costs.
+The legacy analytic model remains explicit for historical and m=1 comparisons.
+Neither model claims a complete calibrated accepted-state logical channel.
 """
 from dataclasses import dataclass
 
 import numpy as np
 
 from .surface import p_sc
+from .star_data import original_data, transversal_data, validate_counted
 
 
 def fold_angle(phi):
@@ -71,7 +73,9 @@ def undetected_probability(k, hw, sc):
 
 
 def preparation_survival(dp, hw, sc):
-    """Declared rejection model for full or restricted postselection."""
+    """Legacy common-survival surrogate; counted acceptance is angle dependent."""
+    if sc.state_model == 'counted':
+        raise ValueError('Counted acceptance has no common survival factor; use counted_quantities')
     if sc.postselection == 'full':
         n2 = sc.full_2q_per_distance_squared*dp*dp
         n1 = sc.full_1q_per_distance_squared*dp*dp
@@ -87,19 +91,68 @@ def preparation_survival(dp, hw, sc):
 
 
 def fallback_parameters(hw, d, sc):
-    """Original CNOT/Rz injection used only as Toshio's large-angle fallback.
+    """Original-STAR acceptance and retained resource error for main switching.
 
-    9p/15 is the uniform-noise Fig. 14 upper circuit in arXiv:2303.13181.
-    Using max(eps_1q, eps_2q) deliberately retains that conservative envelope
-    for bimodal hardware; it does not pretend to be a new H3 calibration.
-    Acceptance is an exposed full-patch fault-opportunity surrogate.
+    Counted mode uses A_orig and W_1Z/A_orig from the declared circuit. Legacy
+    mode keeps the 9 max(p,q)/15 error and product-yield surrogate, including
+    their historical use for auxiliary corrections.
     """
+    if sc.state_model == 'counted':
+        if hw.eps_1q == hw.eps_2q == 0:
+            return 1., 0.
+        row = original_data(hw, d)
+        return row['acceptance'], row['conditional_error']
     error = 9/15*max(hw.eps_1q, hw.eps_2q)
     acceptance = _survival(hw.eps_2q, sc.rejection_scale*
                           sc.fallback_2q_per_distance_squared*d*d)
     acceptance *= _survival(hw.eps_1q, sc.rejection_scale*
                             sc.fallback_1q_per_distance_squared*d*d)
     return float(acceptance), float(error)
+
+
+def counted_quantities(phi, k, hw):
+    """Acceptance, retained bad-state weight, omitted nonzero-sector weight.
+
+T1 includes one nonzero signature in the known one-group sector, with arbitrary
+zero-signature background faults. Other accepted logical effects are idealized.
+"""
+    alpha, a0, ae, _ = ideal_tmr(phi, k)
+    if hw.eps_1q == hw.eps_2q == 0:
+        return a0, np.zeros_like(a0), np.zeros_like(a0)
+    row = transversal_data(hw, k)
+    s, c = np.sin(alpha), np.cos(alpha)
+    intrinsic = np.array([s**(2*n)*c**(2*(k-n)) + s**(2*(k-n))*c**(2*n)
+                          for n in range((k+1)//2)])
+    weights = np.asarray(row['H_n'])
+    acceptance = np.tensordot(weights, intrinsic, axes=(0, 0))
+    numerator = ae*row['T1']
+    omitted = (np.tensordot(weights[1:], intrinsic[1:], axes=(0, 0))-numerator)/acceptance
+    return acceptance, numerator/acceptance, np.maximum(omitted, 0.)
+
+
+def transversal_correction_resources(phi, k, hw, sc):
+    """Expected preparation attempts and states for ideal auxiliary RUS.
+
+Use the actual -Delta and doubled/folded RUS angles, the same k, no auxiliary
+switching and no recursive coherent cancellation. Add a positive tail bound.
+"""
+    if not 1 <= sc.correction_rounds <= 48:
+        raise ValueError('correction_rounds must be between 1 and 48')
+    phi = fold_angle(phi)
+    _, _, _, bad_angle = ideal_tmr(phi, k)
+    angle = fold_angle(-(bad_angle-phi))
+    attempts, states = np.zeros_like(phi), np.zeros_like(phi)
+    active = np.ones_like(phi, dtype=bool)
+    for j in range(sc.correction_rounds):
+        active &= np.abs(angle) > 1e-14
+        weight = 2.**(-j)*active
+        attempts += weight/counted_quantities(angle, k, hw)[0]
+        states += weight
+        angle = fold_angle(2*angle)
+    h0 = 1. if hw.eps_1q == hw.eps_2q == 0 else transversal_data(hw, k)['H_n'][0]
+    tail = 2.**(1-sc.correction_rounds)
+    attempt_tail = tail/(h0*2.**(1-k))
+    return attempts + active*attempt_tail, states + active*tail, attempt_tail
 
 
 @dataclass(frozen=True)
@@ -124,15 +177,11 @@ class StateProfile:
 def state_profile(phi, k, d, hw, ch, sc):
     """Conditional delivered-state model and corrected teleportation error.
 
-    m=1 uses the explicit exposure assumptions in undetected_probability.
-    m=2 uses Pud=k*(2 eps_2q/15 + eps_1q/3). The first term is the paper's
-    CNOT/Rz coefficient for virtual Z; the second explicitly models a stochastic
-    Z fault on each Rz (the Z component of a one-qubit depolarizing fault).
-    Other single faults are assumed detected. This extension needs calibration.
-
-    Coherent cancellation uses Eq. (21): 2 b(1-b) sin(delta)^2. We additionally
-    charge b times a no-fault upper bound on errors in the fallback RUS correction.
-    Unknown higher-order injection mechanisms are not claimed to be simulated.
+    Counted m=2 uses A=sum(a_n H_n), b1=a_e T1/A and ideal coherent cancellation
+    with dephasing 2 b1(1-b1) sin(delta)^2. Other accepted logical effects are
+    idealized, or omitted nonzero sectors are charged in the stress scenario.
+    Legacy mode retains common-survival conditioning and noisy original-STAR
+    corrections. m=1 remains on its explicit, uncalibrated exposure model.
     """
     if hw.connectivity != 'grid':
         raise ValueError('This STAR implementation is restricted to a 2D grid')
@@ -140,6 +189,10 @@ def state_profile(phi, k, d, hw, ch, sc):
         raise ValueError('Physical error probabilities must be in [0, 1)')
     if sc.rejection_scale < 0 or sc.preparation_floor_scale < 0:
         raise ValueError('Noise scales must be nonnegative')
+    if sc.state_model not in ('legacy', 'counted'):
+        raise ValueError('Unknown STAR state_model')
+    if sc.state_model == 'counted':
+        validate_counted(hw, sc)
     phi = fold_angle(phi)
     _, ideal, erroneous, error_angle = ideal_tmr(phi, k)
     dp = sc.rotation_weight*k
@@ -149,15 +202,20 @@ def state_profile(phi, k, d, hw, ch, sc):
     undetected = undetected_probability(k, hw, sc)
     if not 0 <= undetected < .1:
         raise ValueError('Physical noise is outside the leading-order model regime')
-    keep = preparation_survival(dp, hw, sc)
-    norm = (1 - undetected)*ideal + undetected*erroneous
-    acceptance = keep*norm
-    bad = undetected*erroneous/norm
     delta = error_angle - phi
     af, pf = fallback_parameters(hw, d, sc)
-    # Exact no-fault loss probability for a geometric(1/2) sequence of fallback states.
-    correction_error_bound = 2*pf/(1 + pf)
-    error = 2*bad*(1 - bad)*np.sin(delta)**2 + bad*correction_error_bound
+    if sc.state_model == 'counted':
+        acceptance, bad, omitted = counted_quantities(phi, k, hw)
+        error = 2*bad*(1-bad)*np.sin(delta)**2
+        if sc.omitted_sector_stress:
+            error = error + omitted
+    else:
+        keep = preparation_survival(dp, hw, sc)
+        norm = (1 - undetected)*ideal + undetected*erroneous
+        acceptance = keep*norm
+        bad = undetected*erroneous/norm
+        # Legacy: noisy original-STAR auxiliary rotations.
+        error = 2*bad*(1-bad)*np.sin(delta)**2 + bad*2*pf/(1+pf)
     use_fallback = (error > pf) & sc.protocol_switching
     error = np.where(use_fallback, pf, error)
     acceptance = np.where(use_fallback, af, acceptance)
