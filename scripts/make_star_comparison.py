@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from capability import curves, direct, star, surface
-from capability.config import BASELINE, HARDWARE, N_MAX, STAR_BASELINE, STAR_SINGLE_QUBIT
+from capability.config import BASELINE, HARDWARE, N_MAX, PBC, STAR_BASELINE, STAR_SINGLE_QUBIT
 from capability.star_states import state_profile
 
 COLORS = {'direct': '#2878b5', 'surface': '#d75c28', 'star': '#7b3fa0',
@@ -37,7 +37,8 @@ def compute(angle_points=512, sensitivity=True):
     except (OSError, subprocess.CalledProcessError):
         base_commit = None
     out = dict(model='Adopted optimistic counted STAR m=2; historical m=1 sensitivity; no observable PEC',
-               base_commit=base_commit, choices=asdict(BASELINE), star_choices=asdict(sc),
+               base_commit=base_commit, choices=asdict(BASELINE), surface_architecture=asdict(PBC),
+               star_choices=asdict(sc),
                star_single_qubit_choices=asdict(single),
                counted_inputs='capability/data/star_acceptance.json',
                assumption_status={'1': 'implemented: zero additional preparation allowance',
@@ -45,21 +46,21 @@ def compute(angle_points=512, sensitivity=True):
                                   '3': 'implemented: all-orders acceptance, rejected-attempt costs',
                                   '4': 'implemented: retained 2kp/15+kq/3 mechanism',
                                   '5': 'implemented: counted original STAR, ideal Toshio corrections with costs',
-                                  '6': 'partial: shared conventions implemented; STAR-specific factory and scheduling unresolved',
+                                  '6': 'partial: gate-based STAR assumes parallel CNOT routing, growth, storage and adaptive timing',
                                   '7': 'implemented: mean-runtime week criterion'},
                source='https://doi.org/10.1103/PhysRevX.15.021057', hardware={})
     for key in ('H1', 'H3'):
-        print(f'{key}: computing direct, Clifford+T and STAR m=1 / m=2...', flush=True)
+        print(f'{key}: computing direct, sequential PBC and STAR m=1 / m=2...', flush=True)
         hw = HARDWARE[key]
         dr = direct.sweep(hw, BASELINE)
-        sr = surface.sweep(hw, BASELINE)
+        sr = surface.sweep(hw, BASELINE, PBC)
         tr = star.sweep(hw, BASELINE, sc)
         single_rows = star.sweep(hw, BASELINE, single)
         probes = {}
         for N in PROBES:
             probes[f'{N:.0e}'] = dict(star=star.best_at(N, tr),
                                      star_single_qubit=star.best_at(N, single_rows),
-                                     surface=surface.best_at(N, hw, BASELINE, sr))
+                                     surface=surface.best_at(N, hw, BASELINE, sr, PBC))
         variation = {}  # Legacy count-scaling is invalid for the counted input model.
         sector_stress = []
         if sensitivity:
@@ -95,6 +96,7 @@ def compute(angle_points=512, sensitivity=True):
             hardware=asdict(hw), direct=dr, surface=sr, star=tr,
             star_single_qubit=single_rows, probes=probes,
             star_crossover=curves.crossover(dr, tr), surface_crossover=curves.crossover(dr, sr),
+            star_lead_intervals_half_open=curves.lead_intervals(tr, dr + sr),
             star_single_qubit_crossover=curves.crossover(dr, single_rows),
             star_resource_ceiling=star.resource_ceiling(hw, BASELINE, sc),
             star_single_qubit_resource_ceiling=star.resource_ceiling(hw, BASELINE, single),
@@ -115,34 +117,25 @@ def plot(data):
                          'pdf.fonttype': 42})
     fig, axes = plt.subplots(1, 2, figsize=(12, 5.4), sharex=True, sharey=True)
     for ax, (key, v) in zip(axes, data['hardware'].items()):
-        for model, label in (('direct', 'Direct'), ('surface', 'Surface code + Clifford+T'),
-                             ('star', 'STAR: adopted optimistic $m=2$')):
+        for model, label in (('direct', 'Direct'), ('surface', 'Clifford+T, sequential PBC'),
+                             ('star', 'STAR')):
             y = curves.curve(v[model]).astype(float)
             y[y == 0] = np.nan
             ax.step(curves.N_GRID, y, where='post', color=COLORS[model], lw=2, label=label)
         if v['omitted_sector_stress']:
             y = curves.curve(v['omitted_sector_stress']).astype(float)
             y[y == 0] = np.nan
-            ax.step(curves.N_GRID, y, where='post', color=COLORS['star'], alpha=.45, lw=1, ls=':')
-        top = star.best_at(N_MAX, v['star'])
-        if top:
-            ax.annotate(f"m = 2: s = {top['s']:,}", (8e5, top['s']*2.2),
-                        xytext=(0, 0), textcoords='offset points', ha='right',
-                        color=COLORS['star'], fontsize=9)
+            ax.step(curves.N_GRID, y, where='post', color=COLORS['star'], alpha=.65, lw=1,
+                    ls=':', label='STAR, omitted-sector stress')
         if v['star_crossover']:
-            ax.axvline(v['star_crossover'], color=COLORS['star'], lw=.8, ls='--', alpha=.6)
+            ax.axvline(v['star_crossover'], color=COLORS['star'], lw=.8, ls='--', alpha=.6,
+                       label='STAR exceeds direct')
         ax.set(xscale='log', yscale='log', xlim=(1, N_MAX), ylim=(1, 4e8),
                xlabel='Physical qubits N', title=f"{key}: {v['hardware']['name']}")
         ax.grid(which='major', alpha=.15)
     axes[0].set_ylabel('QUOPS capability s')
     axes[0].legend(loc='upper left', frameon=False, fontsize=9)
-    fig.suptitle('Uniform-angle QUOPS: two-qubit STAR resource-state preparation', fontsize=12)
-    fig.text(.5, .015,
-             'm=2: counted acceptance, ideal auxiliary corrections with supply costs, mean-runtime deadline.\n'
-             'Dotted: omitted-sector stress. Dashed: STAR/direct crossovers.\n'
-             'The stress scenario is not a confidence interval. No observable-level PEC.',
-             ha='center', fontsize=8, color='#555555')
-    fig.tight_layout(rect=(0, .11, 1, .94))
+    fig.tight_layout()
     for extension in ('png', 'pdf'):
         fig.savefig(ROOT/f'figures/star_comparison.{extension}', dpi=200)
     plt.close(fig)

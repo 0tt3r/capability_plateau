@@ -33,3 +33,18 @@ def crossover(direct_rows, surface_rows):
     a, b = curve(direct_rows, points), curve(surface_rows, points)
     above = np.nonzero(b > a)[0]
     return float(points[above[0]]) if len(above) else None
+
+
+def lead_intervals(rows, reference_rows, max_qubits=N_MAX):
+    """Half-open integer-qubit intervals where a curve strictly exceeds all pooled references."""
+    stop = int(max_qubits) + 1
+    points = sorted({int(r['qubits']) for r in rows + reference_rows
+                     if r['passes'] and 1 <= r['qubits'] < stop})
+    above = curve(rows, points) > curve(reference_rows, points)
+    intervals = []
+    for i, leads in enumerate(above):
+        if leads and (i == 0 or not above[i-1]):
+            intervals.append([points[i], stop])
+        elif not leads and i > 0 and above[i-1]:
+            intervals[-1][1] = points[i]
+    return intervals

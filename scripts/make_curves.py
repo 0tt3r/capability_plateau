@@ -16,26 +16,27 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 from capability import curves, direct, surface
-from capability.config import BASELINE, HARDWARE, N_MAX
+from capability.config import BASELINE, HARDWARE, PBC, N_MAX
 
 PROBES = (1e4, N_MAX)                       # exact capability is reported at these qubit counts
 DIRECT, SURFACE = '#2a78d6', '#eb6834'      # categorical slots 1 and 2 of the dataviz reference palette
 INK, MUTED = '#2b2b2b', '#8a8a8a'
 
 
-def compute(ch=BASELINE):
+def compute(ch=BASELINE, architecture=PBC):
     out = {}
     for key, hw in HARDWARE.items():
         d = direct.sweep(hw, ch)
-        s = surface.sweep(hw, ch)
-        probes = {f'{N:.0e}': surface.best_at(N, hw, ch, s) for N in PROBES}
+        s = surface.sweep(hw, ch, architecture)
+        probes = {f'{N:.0e}': surface.best_at(N, hw, ch, s, architecture) for N in PROBES}
         out[key] = dict(hardware=asdict(hw), direct=d, surface=s, crossover=curves.crossover(d, s), probes=probes)
     return out
 
 
 def best(rows):
+    """Largest passing size; of designs that tie, the one with the fewest qubits, where the curve first reaches it."""
     ok = [r for r in rows if r['passes']]
-    return max(ok, key=lambda r: r['s']) if ok else None
+    return max(ok, key=lambda r: (r['s'], -r['qubits'])) if ok else None
 
 
 def plot(data, path):
@@ -43,7 +44,7 @@ def plot(data, path):
     grid = curves.N_GRID
     for ax, key in zip(axes.flat, ('H1', 'H2', 'H3', 'H4')):
         v = data[key]
-        for rows, color, label in ((v['direct'], DIRECT, 'Direct'), (v['surface'], SURFACE, 'Surface code')):
+        for rows, color, label in ((v['direct'], DIRECT, 'Direct'), (v['surface'], SURFACE, 'Surface code: sequential PBC')):
             y = curves.curve(rows, grid).astype(float)
             y[y == 0] = float('nan')
             ax.step(grid, y, where='post', color=color, lw=2, label=label)
@@ -73,7 +74,7 @@ def plot(data, path):
 def main():
     data = compute()
     (ROOT/'results').mkdir(exist_ok=True)
-    (ROOT/'results/baseline.json').write_text(json.dumps(dict(choices=asdict(BASELINE), **data), indent=1) + '\n')
+    (ROOT/'results/baseline.json').write_text(json.dumps(dict(choices=asdict(BASELINE), surface_architecture=asdict(PBC), **data), indent=1) + '\n')
     (ROOT/'figures').mkdir(exist_ok=True)
     plot(data, ROOT/'figures/quops_direct_surface')
     for key, v in data.items():

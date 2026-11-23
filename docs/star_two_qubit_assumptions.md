@@ -68,8 +68,9 @@ accepted faults and decoder outcomes are idealized.
 
 ## 6. Growth, delivery, layout, and scheduling
 
-Shared routing, patch-memory law, one-step injection, free delivery, and software
-frames are implemented. STAR-specific growth time, handoff/storage footprint,
+STAR and sequential PBC share the patch-memory law, baseline cycle time, one-step
+injection cost, free delivery, and software frames. STAR's $2w$ data/routing tiles
+and parallel CNOT layers are optimistic gate-based assumptions. Growth time, handoff/storage footprint,
 synchronized batches, and serialized auxiliary corrections remain provisional.
 Relating the counted circuits to effective factory costs and allowing feasible
 adaptive supply overlap remain open.

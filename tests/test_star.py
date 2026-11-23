@@ -126,7 +126,8 @@ def test_design_loss_and_deadline_constraints(key):
     assert x['qubits'] == area*x['copies']
 
 
-@pytest.mark.parametrize('settings', [STAR_BASELINE, STAR_SINGLE_QUBIT])
+@pytest.mark.parametrize('settings', [STAR_BASELINE, STAR_SINGLE_QUBIT,
+                                     replace(STAR_BASELINE, tiles_per_data_patch=3, cnot_layer='serial')])
 def test_search_matches_unpruned_design_enumeration(settings):
     sc = replace(settings, groups=(3, 5), max_distance=9, angle_points=64)
     hw, w = HARDWARE['H1'], 6

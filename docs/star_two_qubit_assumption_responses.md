@@ -9,9 +9,9 @@ make the entire estimator a proven upper bound on physical capability.
 ## Current status
 
 Assumptions **1–5 and 7 are implemented in the main two-qubit estimator**.
-Assumption **6 is partial**: shared surface-code conventions are implemented,
-while STAR-specific growth, storage, and adaptive scheduling remain provisional.
-The direct and surface-code implementations and their configuration are unchanged.
+Assumption **6 is partial**. STAR and sequential PBC share the effective
+patch-memory law and baseline clock. STAR routing, growth, storage, and adaptive
+scheduling remain provisional.
 
 | Assumption | Adopted treatment | Implementation status |
 |---|---|---|
@@ -20,7 +20,7 @@ The direct and surface-code implementations and their configuration are unchange
 | 3. Rejection probabilities | All-orders acceptance for the specified circuits; charge rejected attempts | Implemented using packaged circuit inputs and geometric retry costs |
 | 4. Physical fault formula | Retain $k(2p/15+q/3)$ and background survival in $T_1$ | Implemented and checked against source weights |
 | 5. Original STAR and coherent corrections | Retain counted original-STAR logical error; grant ideal Toshio auxiliary rotations with supply costs | Implemented, including distance-dependent search |
-| 6. Architecture and scheduling | Reuse shared conventions; retain provisional STAR-specific factory and scheduling costs | Partial |
+| 6. Architecture and scheduling | Use shared patch costs and clock, with STAR-specific routing, factory, and scheduling assumptions | Partial |
 | 7. Deadline bound | Compare mean runtime with one week, without Markov scaling or deadline-error subtraction | Implemented directly |
 
 | Result for $N\le10^6$ | H1 | H3 |
@@ -35,15 +35,15 @@ The [main results](../results/star_comparison.json) and figure are regenerated b
 [integration tests](../tests/test_star_assumptions.py) reproduce all 114 saved
 adopted/stress designs from an [independent reference fixture](../tests/fixtures/star_reference.json).
 [Counted inputs and their reproduction](../analysis/star_inputs.md) are retained
-separately from the runtime estimator. The full suite passes 100 tests.
+separately from the runtime estimator.
 
 ## Remaining work under the shared-baseline criterion
 
-The surface-code baseline treats factories as sources described by output error,
-footprint, and effective output period. It does not provide a detailed calibration
-of STAR preparation. Shared routing, patch-memory law, injection/frame conventions,
-and estimated-runtime accounting therefore use the same assumptions in both models.
-Protocol-specific errors and yields come from the specified STAR circuits.
+Sequential PBC charges factory footprint, output error, cold-start batch latency,
+and buffer tiles. STAR obtains errors and yields from its own preparation
+circuits and charges the waiting time for angle-dependent retries. Both models
+use the same patch-memory law, clock, one-step injection cost, and week budget.
+[PBC factory schedule](surface_architectures.md)
 
 Remaining work is to connect those circuits to effective factory time/footprint
 and feasible adaptive supply overlap (assumption 6). The current distance search,
@@ -151,10 +151,12 @@ unchanged; the revised original-STAR inputs raise H3 from 2,744 to 3,136.
 
 ## 6. Growth, delivery, layout, and scheduling
 
-The implemented shared conventions are $2w$ data/routing patches, $2d^2$ physical
-qubits per patch, the common patch-error fit and cycle time, parallel CNOT layers
-in $2d$ cycles, free delivery, one $d$-cycle injection, and software frame tracking.
-All live data, routing, and required storage patches incur memory exposure.
+The gate-based STAR estimate assumes $2w$ data/routing tiles and enough access
+to execute all CNOTs in a layer in $2d$ cycles. Both encoded models charge
+$2d^2$ qubits per tile, the same patch-cycle error fit, a 1 µs cycle, and a
+$d$-cycle injection with free delivery and software frame tracking. All live
+data, routing, and required storage tiles incur memory exposure. Sequential
+PBC counts its fast-block geometry and absorbs CNOTs into measurement axes.
 
 Still provisional are $4+d$ cycles per preparation attempt, growth charges on
 rejected attempts, the additional handoff/storage patch per station, synchronized
@@ -162,7 +164,6 @@ main batches, and serialized auxiliary rotations. The surface-code baseline
 allows production/consumption overlap, but its T-state supply formula does not
 resolve adaptive STAR angle dependencies. A feasible replacement for these
 STAR-specific allowances and scheduling restrictions remains to be developed.
-They are not marked solved by the shared routing assumption.
 
 ## 7. A deliberately loose deadline bound
 

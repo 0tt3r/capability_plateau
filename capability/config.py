@@ -48,9 +48,6 @@ class Choices:
     sc_threshold_uniform: float = 0.01   # [draft]
     sc_threshold_bimodal: float = 0.015  # [draft]
     qubits_per_patch: str = '2d^2'       # [draft] approximately 2 d^2
-    tiles_per_data_patch: float = 2.0    # [choice] one data patch plus one routing patch per logical qubit
-    cnot_layer: str = 'parallel'         # [choice] 'parallel': all w/2 long-range CNOTs in 2 surgery steps
-                                         #          (no congestion); 'serial': one CNOT at a time
     t_per_injection_steps: int = 1       # [choice] surgery steps (d cycles each) to consume one T state
     synthesis_charge: str = 'squared'    # [choice] each rotation synthesized to diamond-norm tolerance eps counts
                                          #          as eps^2 ('squared', its infidelity) or eps ('linear')
@@ -67,6 +64,45 @@ BASELINE = Choices()
 
 
 @dataclass(frozen=True)
+class SurfaceArchitecture:
+    """Layout and execution policy, separate from hardware/noise/task choices.
+
+    The counted fast-column layout supports sequential Pauli-product measurements.
+    All Clifford gates, including CNOTs, are absorbed into measurement axes.
+    PBC adds one output buffer tile per state in a simultaneous factory batch.
+    Delivery and feed-forward costs are per T measurement, in code cycles.
+    """
+    layout: str = 'fast_columns'
+    schedule: str = 'pbc'
+    delivery_cycles: float = 0.
+    feedforward_cycles: float = 0.
+    supply: str = 'buffered'             # or 'throughput_bound': optimistic draft constraint only
+    units: tuple = tuple(range(2, 9))    # finite menu for the open-chain parallel PBC model
+    reaction_cycles: float = 1.          # measurement + decoding per T layer in the unit pipeline
+    pair_preparation_steps: int = 2      # added post-corrected-state conversion per factory batch
+    correction_storage_factor: int = 2   # one storage tile plus one access tile per correction qubit
+
+    def __post_init__(self):
+        object.__setattr__(self, 'units', tuple(self.units))
+        if self.schedule not in ('pbc', 'pbc_units'):
+            raise ValueError('Only PBC schedules are supported; the layered model was removed')
+        if self.layout != 'fast_columns':
+            raise ValueError('Use the counted fast_columns layout')
+
+
+PBC = SurfaceArchitecture()
+PBC_DRAFT_BOUND = replace(PBC, supply='throughput_bound')
+PBC_COLUMNS = PBC                     # existing name for the counted sequential model
+PBC_UNITS = replace(PBC_COLUMNS, schedule='pbc_units')
+SURFACE_ARCHITECTURES = {
+    'pbc': PBC,
+    'pbc_draft_bound': PBC_DRAFT_BOUND,
+    'pbc_columns': PBC_COLUMNS,
+    'pbc_units': PBC_UNITS,
+}
+
+
+@dataclass(frozen=True)
 class StarChoices:
     """Toshio STAR on a 2D grid. These are estimator choices, not calibrated device parameters.
 
@@ -74,6 +110,9 @@ class StarChoices:
     d_p = m*k; odd k avoids the extra even-k Clifford in the preparation gadget.
     See docs/star_surface_code_estimation.md for the uncalibrated noise assumptions.
     """
+    # These belong only to STAR's separate gate-based resource model, not PBC.
+    tiles_per_data_patch: float = 2.0
+    cnot_layer: str = 'parallel'        # uncompiled routing assumption; or 'serial'
     groups: tuple = (3, 5, 7, 9)
     max_distance: int = 31
     angle_points: int = 512

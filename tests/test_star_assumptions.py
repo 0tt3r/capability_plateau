@@ -11,7 +11,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from capability import star
+from capability import curves, star
 from capability.config import BASELINE, HARDWARE, STAR_BASELINE, STAR_LEGACY, WEEK_SECONDS
 from capability.star_data import tables, transversal_data
 from capability.star_states import (counted_quantities, state_profile, uniform_angles,
@@ -19,6 +19,17 @@ from capability.star_states import (counted_quantities, state_profile, uniform_a
 
 ROOT = Path(__file__).resolve().parents[1]
 REFERENCE = json.loads((Path(__file__).parent/'fixtures/star_reference.json').read_text())
+
+
+def test_strict_lead_intervals_exclude_ties_and_include_last_budget():
+    def passing(qubits, s):
+        return dict(qubits=qubits, s=s, passes=True)
+
+    rows = [passing(2, 4), passing(6, 8)]
+    references = [passing(4, 4), passing(8, 10)]
+    assert curves.lead_intervals(rows, references, max_qubits=6) == [[2, 4], [6, 7]]
+    assert curves.lead_intervals(rows, references, max_qubits=9) == [[2, 4], [6, 8]]
+    assert curves.lead_intervals(references, rows, max_qubits=6) == []
 
 
 @pytest.mark.parametrize('label', ['H1', 'H3'])

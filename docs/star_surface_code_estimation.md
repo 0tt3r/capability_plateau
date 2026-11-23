@@ -3,7 +3,7 @@
 The main two-qubit STAR estimator implements the agreed optimistic comparison
 for uniform-angle QUOPS on H1 and H3. It replaces Clifford+T synthesis and
 T-state factories with angle-dependent state preparation and repeat-until-success
-(RUS) teleportation. The direct and surface-code implementations are unchanged.
+(RUS) teleportation. The comparators are direct execution and Clifford+T with counted sequential PBC.
 The [assumption decision record](star_two_qubit_assumption_responses.md) distinguishes
 implemented idealizations from unresolved factory and scheduling choices.
 
@@ -94,11 +94,16 @@ probability on angles switched to original STAR.
 
 ## Space, schedule, and success criterion
 
-The shared surface-code conventions provide $2w$ data/routing patches, $2d^2$
-qubits per patch, the same per-patch-cycle logical-error fit, and parallel CNOT
-layers taking $2d$ cycles. Delivery and software frame updates are free; each
-state injection takes $d$ cycles. Every live data, routing, and storage patch
-incurs memory exposure during preparation and RUS waits.
+Both encoded models charge $2d^2$ physical qubits per tile, use the same effective
+patch-cycle error fit, and use a 1 µs cycle. STAR assumes $2w$ data/routing
+patches and simultaneous access for all CNOTs in a layer, which takes $2d$
+cycles. These are optimistic STAR routing assumptions configured in `StarChoices`.
+Each STAR injection takes $d$ cycles, with free delivery and software frame
+updates. Every live data, routing, and storage patch incurs memory exposure
+during preparation and RUS waits. The Clifford+T comparator absorbs CNOTs
+into measurement axes and charges serial Pauli-product measurements, transformed
+readouts, fast-block tiles, cold factory startup, and output buffers.
+[PBC architecture](surface_architectures.md)
 
 STAR-specific allowances remain provisional: each station reserves an unrotated
 $(2d_p-1)^2$-qubit preparation patch and one distance-$d$ handoff patch. Each
@@ -136,6 +141,17 @@ with the surface-code distance range remains open.
 | H1 | 1,156 | 31,171 | (15, 3, 1) | 73,123 |
 | H3 | 3,136 | 30,371 | (11, 3, 9) | 119,675 |
 
+| Hardware | Direct capability at $10^4$ qubits | STAR at $10^4$ | PBC at $10^4$ | PBC at $10^6$ | Qubit budgets where STAR strictly exceeds both |
+|---|---:|---:|---:|---:|---:|
+| H1 | 64 | 1,000 | 512 | 45,882,712 | 1,395–11,299 |
+| H3 | 216 | 2,744 | 1,728 | 123,505,992 | 1,787–11,187 |
+
+The table includes both endpoints. In the results JSON, `star_lead_intervals_half_open`
+stores the first winning budget and the first budget past the interval. PBC ties STAR
+at 11,300 qubits on H1 and 11,188 on H3. The `star_crossover` field records the first
+budget where STAR exceeds direct execution. The ranges use the step changes in the saved
+design rows. The PBC values at fixed budgets use exact width refinement.
+
 The omitted-sector stress test adds
 $[\sum_{n\ge1}a_nH_n-a_eT_1]/A$ to the transversal error before recomputing
 switching and optimizing resources. It still idealizes unmodeled original-STAR
@@ -149,7 +165,7 @@ switching can also change supply cost in either direction.
 The integration tests reproduce 114 independently saved adopted/stress designs.
 Other checks cover channel composition, projection amplitudes, preparation/RUS
 statistics, table provenance, finite-noise $q/3$ contributions, small exhaustive
-searches, and multiple-copy deadlines. The full suite has 100 tests.
+searches, and multiple-copy deadlines.
 Selected designs also passed a 2,048-angle check in the independent calculation.
 
 ## Reproduction and code map

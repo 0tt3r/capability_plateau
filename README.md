@@ -1,96 +1,89 @@
 # capability_plateau
 
-Shared calculations for *The Quantum Capability Plateau* (Overleaf draft, October 2026). This first
-version computes two capability curves for the QUOPS problem class on the four hardware classes H1 to
-H4: direct implementation and surface-code implementation. The intent is to agree on definitions and
-on what matters before adding approaches, problem classes, or sophistication.
+Shared calculations for *The Quantum Capability Plateau*. The code compares direct execution,
+counted sequential Pauli-based computation (PBC), parallel PBC units, and separate STAR,
+Pinnacle, and Frozen Pinnacle resource estimates for QUOPS.
 
-Start with the methods note, [docs/quops_direct_and_surface.md](docs/quops_direct_and_surface.md). It
-states how each number is obtained, that is, which parts are formulas, which are compiled and counted,
-which are simulated, which come from the literature, and which are declared choices. It also shows which
-choices move the curves. The notebook [notebooks/quops_walkthrough.ipynb](notebooks/quops_walkthrough.ipynb)
-computes one direct and one surface-code design by hand, checks them against the package, and builds the
-curves for one hardware class.
+The default surface-code model is `PBC` (`PBC_COLUMNS` is the same model). It absorbs all Clifford
+gates, including CNOTs, into Pauli axes and charges sequential magic-state consumption, transformed
+final measurements, a counted fast-block layout, cold factory startup, and output buffers.
 
-## Layout
-
-```
-capability/
-  config.py      every input and choice, marked [draft] (from the Overleaf) or [choice] (ours, open)
-  quops.py       QUOPS ensembles and rotation compilation
-  direct.py      direct implementation: closed form (all-to-all), routed Monte Carlo (2D grid)
-  routing.py     SWAP-network routers for the 2D grid
-  surface.py     surface-code implementation: layout, schedule, loss, design search
-  factories.py   published magic-state factories used as black boxes
-  curves.py      capability C(N) and the direct/surface-code crossover
-scripts/
-  fit_synthesis.py   gridsynth T counts -> results/synthesis_fit.json
-  make_curves.py     baseline curves -> results/baseline.json, figures/quops_direct_surface.*
-  what_matters.py    one-at-a-time choice changes -> results/what_matters.json, docs/what_matters_table.md
-  check_synthesis_accumulation.py   state-vector check of how synthesis errors add up in QUOPS circuits
-notebooks/
-  quops_walkthrough.ipynb   one width through each model by hand, checked against the package
-tests/               checks against brute force and against each model's own constraints
-```
+Read [the methods note](docs/quops_direct_and_surface.md),
+[the PBC architecture specification](docs/surface_architectures.md), and
+[the parallel-unit model](docs/parallel_pbc_audit.md) for assumptions and validation limits.
 
 ## Running
 
-```
-python -m venv .venv && .venv/bin/pip install -r requirements.txt
-.venv/bin/python scripts/fit_synthesis.py
+```bash
+python -m venv .venv
+.venv/bin/pip install -r requirements.txt
 .venv/bin/python scripts/make_curves.py
 .venv/bin/python scripts/what_matters.py
-.venv/bin/python scripts/check_synthesis_accumulation.py
+.venv/bin/python scripts/make_pinnacle_curves.py
+.venv/bin/python scripts/make_frozen_pinnacle_curves.py
+.venv/bin/python scripts/compare_surface_architectures.py
+.venv/bin/python scripts/audit_surface_architectures.py
+.venv/bin/python scripts/package_star_inputs.py --check
+.venv/bin/python scripts/make_star_comparison.py
 .venv/bin/python -m pytest -q
 ```
 
-To try a different choice, change its default in `capability/config.py` (or pass it through
-`config.vary(...)`), rerun `make_curves.py`, and compare. Adding an implementation approach means adding
-a module with a `sweep(hardware, choices)` function that returns rows with `s`, `qubits`, and `passes`;
-`curves.py` does the rest.
+`make_curves.py` writes the current PBC baseline to `results/baseline.json` and
+`figures/quops_direct_surface.*`. `what_matters.py` recomputes PBC sensitivities in
+`results/what_matters.json` and `docs/what_matters_table.md`. The comparison and audit scripts write
+`pbc_comparison_v2` and `architecture_audit_v3` output directories, respectively.
+The Pinnacle script reads the regenerated baseline. Run it before the Frozen Pinnacle script,
+which reads both the baseline and the original Pinnacle results.
+The notebook [quops_walkthrough.ipynb](notebooks/quops_walkthrough.ipynb) independently calculates
+one direct and one sequential PBC design before constructing the curves.
 
-## STAR preparation comparison on a 2D grid
+```python
+from capability import surface
+from capability.config import BASELINE, HARDWARE, PBC_UNITS
 
-The main comparison adds the adopted optimistic two-qubit STAR model to the
-existing direct and Clifford+T implementations on H1 and H3:
-
-```bash
-.venv/bin/python -B scripts/make_star_comparison.py
-.venv/bin/python -B scripts/package_star_inputs.py --check
-.venv/bin/python -B -m pytest -q
+rows = surface.sweep(HARDWARE['H1'], BASELINE)  # counted sequential PBC
+winner = surface.best_at(1e6, HARDWARE['H1'], BASELINE, rows)
+parallel = surface.sweep(HARDWARE['H1'], BASELINE, PBC_UNITS)
 ```
 
-The comparison is saved in [results/star_comparison.json](results/star_comparison.json)
-and [figures/star_comparison.png](figures/star_comparison.png)
-([PDF](figures/star_comparison.pdf)). The main figure shows direct, surface-code,
-and two-qubit STAR curves. The script also generates preparation and historical
-single-qubit diagnostics; those are separate from the main comparison.
+Every surface row carries architecture metadata. Refinement rejects missing metadata and removed
+architectures rather than interpreting old layered results as PBC. `SurfaceArchitecture()` itself
+selects counted sequential PBC. `PBC_DRAFT_BOUND` is an explicitly optimistic throughput bound
+using the same counted geometry; it is not a finite-buffer execution schedule.
 
-`STAR_BASELINE` uses circuit-derived acceptance, retained single-fault logical
-errors, ideal auxiliary coherent corrections with supply costs, and the shared
-mean-runtime week criterion. `STAR_LEGACY` and `STAR_SINGLE_QUBIT` retain their
-historical channel and Markov-deadline choices. Non-STAR implementations and
-configuration are unchanged.
+## Code layout
 
-| Hardware | Adopted maximum volume | Minimum physical qubits | Stress-test minimum qubits at the same volume |
+- `capability/surface.py`: common PBC interface, synthesis fit, and capability refinement.
+- `capability/surface_pbc.py`: sequential measurements and finite-buffer factory schedule.
+- `capability/surface_units.py`: parallel Bell-pair units, correction storage, and factory interfaces.
+- `capability/layouts.py`: counted tiles, connected ancilla region, and boundary-access checks.
+- `capability/pbc_compile.py`: small-circuit verification of Clifford elimination and final readouts.
+- `capability/direct.py` and `routing.py`: direct execution and physical SWAP routing.
+- `capability/star.py` and `star_states.py`: STAR preparation, RUS, and capability model.
+- `scripts/fit_synthesis.py` and `check_synthesis_accumulation.py`: synthesis calibration and checks.
+
+## STAR scope
+
+The main figure compares direct execution, Clifford+T with sequential PBC, and the adopted
+optimistic two-qubit STAR model on H1 and H3. STAR uses circuit-derived acceptance and retained
+single-fault errors. It charges preparation, retries, and supply time for ideal auxiliary
+corrections. Its gate-based layout assumes two data/routing tiles per logical qubit and parallel
+CNOT layers. Routing and adaptive scheduling remain provisional. The historical single-qubit model
+and the preparation diagnostics have separate figures. [Comparison figure](figures/star_comparison.png) ·
+[Saved designs](results/star_comparison.json)
+
+| Hardware | Physical qubits where STAR strictly leads both alternatives | Maximum STAR volume through one million qubits | Fewest qubits reaching that volume |
 |---|---:|---:|---:|
-| H1 | 1,156 | 31,171 | 73,123 |
-| H3 | 3,136 | 30,371 | 119,675 |
+| H1 | 1,395–11,299 | 1,156 | 31,171 |
+| H3 | 1,787–11,187 | 3,136 | 30,371 |
 
-The stress test charges omitted accepted nonzero Toshio sectors as failures;
-other unmodeled logical effects remain idealized. It is not a complete-channel
-bound. Results cover at most one million physical qubits, H1/H3 rates,
-$k=3,5,7,9$, and odd computation distances 3–31. Unsupported counted inputs
-raise an error rather than being extrapolated.
+Both endpoints in the table are inclusive. The estimator uses a 1 µs cycle, H1/H3 noise rates,
+$k=3,5,7,9$, and odd STAR computation distances 3–31. Independent reference data cover 114
+adopted and omitted-sector stress designs. [STAR methods](docs/star_surface_code_estimation.md) ·
+[Assumption decisions](docs/star_two_qubit_assumption_responses.md) ·
+[Circuit-input reproduction](analysis/star_inputs.md)
 
-- [Methods and implementation](docs/star_surface_code_estimation.md).
-- [Status and treatment of all seven assumptions](docs/star_two_qubit_assumption_responses.md).
-- [Original-STAR channel and coherent corrections](docs/original_star_channel_and_correction.md).
-- [Circuit inputs and reproduction](analysis/star_inputs.md).
+## Retired results
 
-Assumptions 1–5 and 7 are implemented for the declared optimistic comparison.
-Assumption 6 is partial: shared routing, injection, delivery, and frame conventions
-are implemented; STAR-specific growth, storage, and adaptive scheduling remain
-provisional. Aligning the distance search with the surface-code baseline also
-remains open. The main integration is checked against 114 independently saved
-designs in [the regression fixture](tests/fixtures/star_reference.json).
+The previous baseline, plots, and documentation are preserved in Git history at `9e5b00a`.
+See the [results index](results/README.md) for the current outputs.

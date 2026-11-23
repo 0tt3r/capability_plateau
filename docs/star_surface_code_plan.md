@@ -1,5 +1,7 @@
 # Plan: STAR resource estimation on a 2D surface-code grid
 
+> Historical planning record. The unsupported layered Clifford+T comparator has since been removed; current comparisons use counted sequential PBC. See `surface_architectures.md`.
+
 *Planning only. No estimator implementation has been changed.*
 
 ## Scope

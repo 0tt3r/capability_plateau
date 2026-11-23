@@ -12,17 +12,14 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from capability import curves, direct, surface
-from capability.config import BASELINE, HARDWARE, N_MAX, vary
+from capability.config import BASELINE, HARDWARE, N_MAX, PBC, vary
 
 VARIANTS = [
     ('baseline', 'all defaults in config.py', {}),
     ('direct: no idle errors', 'untouched qubits never fault', dict(idle_errors=False)),
     ('direct: native R_P', 'any R_P(theta) in one step instead of up to 5', dict(rotation_compile='native')),
     ('direct: row-column-row router', 'instead of the snake router (grid only)', dict(router='rcr')),
-    ('surface: serial CNOTs', 'one long-range CNOT at a time', dict(cnot_layer='serial')),
     ('surface: 2 steps per T', 'consuming a T state takes 2d cycles', dict(t_per_injection_steps=2)),
-    ('surface: compact layout', '1.5 tiles per logical qubit', dict(tiles_per_data_patch=1.5)),
-    ('surface: roomy layout', '3 tiles per logical qubit', dict(tiles_per_data_patch=3.0)),
     ('surface: synthesis charged linearly', 'eps instead of eps^2 per rotation', dict(synthesis_charge='linear')),
     ('surface: synthesis at measured infidelity', '0.14 eps^2 per rotation (scripts/check_synthesis_accumulation.py)',
      dict(synthesis_scale=0.14)),
@@ -69,7 +66,7 @@ def main():
     for name, note, change in VARIANTS:
         rows.append(dict(name=name, note=note, change=change, result=summarize(vary(**change))))
         print(name, {k: v['crossover'] for k, v in rows[-1]['result'].items()}, flush=True)
-    (ROOT/'results/what_matters.json').write_text(json.dumps(dict(baseline=asdict(BASELINE), rows=rows), indent=1) + '\n')
+    (ROOT/'results/what_matters.json').write_text(json.dumps(dict(baseline=asdict(BASELINE), surface_architecture=asdict(PBC), rows=rows), indent=1) + '\n')
     lines = ['| Choice | Direct s (H1 / H2 / H3 / H4) | Crossover N (H1 / H2 / H3 / H4) | '
              'Surface s at 10^4 (uniform / bimodal) | Surface s at 10^6 (uniform / bimodal) |',
              '|---|---|---|---|---|']
