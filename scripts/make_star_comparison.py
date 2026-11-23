@@ -3,7 +3,7 @@
     .venv/bin/python scripts/make_star_comparison.py
 
 Writes results/star_comparison.json and figures/star_comparison.{png,pdf},
-plus a focused single-qubit comparison and a preparation diagnostic.
+the manuscript crossover PDF, a single-qubit comparison and a preparation diagnostic.
 """
 import argparse
 from dataclasses import asdict, replace
@@ -112,7 +112,7 @@ def compute(angle_points=512, sensitivity=True):
     return out
 
 
-def plot(data):
+def comparison_figure(data):
     plt.rcParams.update({'font.size': 10, 'axes.spines.top': False, 'axes.spines.right': False,
                          'pdf.fonttype': 42})
     fig, axes = plt.subplots(1, 2, figsize=(12, 5.4), sharex=True, sharey=True)
@@ -122,6 +122,16 @@ def plot(data):
             y = curves.curve(v[model]).astype(float)
             y[y == 0] = np.nan
             ax.step(curves.N_GRID, y, where='post', color=COLORS[model], lw=2, label=label)
+        ax.set(xscale='log', yscale='log', xlim=(1, N_MAX), ylim=(1, 4e8),
+               xlabel='Physical qubits N', title=f"{key}: {v['hardware']['name']}")
+        ax.grid(which='major', alpha=.15)
+    axes[0].set_ylabel('QUOPS capability s')
+    return fig, axes
+
+
+def plot(data):
+    fig, axes = comparison_figure(data)
+    for ax, v in zip(axes, data['hardware'].values()):
         if v['omitted_sector_stress']:
             y = curves.curve(v['omitted_sector_stress']).astype(float)
             y[y == 0] = np.nan
@@ -130,14 +140,27 @@ def plot(data):
         if v['star_crossover']:
             ax.axvline(v['star_crossover'], color=COLORS['star'], lw=.8, ls='--', alpha=.6,
                        label='STAR exceeds direct')
-        ax.set(xscale='log', yscale='log', xlim=(1, N_MAX), ylim=(1, 4e8),
-               xlabel='Physical qubits N', title=f"{key}: {v['hardware']['name']}")
-        ax.grid(which='major', alpha=.15)
-    axes[0].set_ylabel('QUOPS capability s')
     axes[0].legend(loc='upper left', frameon=False, fontsize=9)
     fig.tight_layout()
     for extension in ('png', 'pdf'):
         fig.savefig(ROOT/f'figures/star_comparison.{extension}', dpi=200)
+    plt.close(fig)
+
+
+def plot_manuscript_crossover(data):
+    fig, axes = comparison_figure(data)
+    for ax, v in zip(axes, data['hardware'].values()):
+        crossing = curves.crossover(v['star'], v['surface'])
+        if crossing is not None:
+            size = curves.capability(v['surface'], crossing)
+            ax.annotate(f'Surface code first exceeds STAR\nat {crossing:,.0f} physical qubits',
+                        xy=(crossing, size), xytext=(-20, 35), textcoords='offset points',
+                        ha='right', fontsize=9,
+                        arrowprops=dict(arrowstyle='->', color=COLORS['surface']))
+    axes[0].legend(loc='upper left', frameon=False, fontsize=9)
+    fig.tight_layout()
+    fig.savefig(ROOT/'figures/quops-pbc-manuscript-star.pdf',
+                metadata={'Title': 'QUOPS capability and the STAR–surface-code crossover'})
     plt.close(fig)
 
 
@@ -208,6 +231,7 @@ def main():
     (ROOT/'figures').mkdir(exist_ok=True)
     (ROOT/'results/star_comparison.json').write_text(json.dumps(data, indent=1, allow_nan=False) + '\n')
     plot(data)
+    plot_manuscript_crossover(data)
     plot_preparation(data)
     plot_single_qubit_comparison(data)
     for key, v in data['hardware'].items():
