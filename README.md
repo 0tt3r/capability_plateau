@@ -33,6 +33,9 @@ python -m venv .venv
 `pbc_comparison_v2` and `architecture_audit_v3` output directories, respectively.
 The Pinnacle script reads the regenerated baseline. Run it before the Frozen Pinnacle script,
 which reads both the baseline and the original Pinnacle results.
+`make_pinnacle_curves.py` also computes the Frozen Pinnacle curves with an extended supply menu, the
+surface-code curve with the same factory menu, the supply comparison, and the sensitivities; see
+[the Pinnacle note](docs/pinnacle.md).
 The notebook [quops_walkthrough.ipynb](notebooks/quops_walkthrough.ipynb) independently calculates
 one direct and one sequential PBC design before constructing the curves.
 

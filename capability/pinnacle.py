@@ -1,50 +1,38 @@
-"""Original Pinnacle implementation for QUOPS (arXiv:2602.11457v2).
+"""Pinnacle fault tolerance (draft Sec. 3.6) for QUOPS, in the form of the surface-code model of surface.py.
 
-Layout [paper, Table 1 and Eqs. 9--10, 18]: one processing unit of
-ceil(w/k) bridged GB processing blocks and one 15-to-1 magic engine. All
-allocated blocks remain live; there is no separate memory. Only all-to-all
-hardware is supported here: the paper's nonlocal block connections have
-not been compiled onto the repository's nearest-neighbour grid.
+Architecture [paper: Webster et al., arXiv:2602.11457v2]: one processing unit of beta = ceil(w/k) bridged generalised-
+bicycle (GB) blocks holds the w working logical qubits; there is no separate memory. Every allocated block stays live.
+Only the all-to-all hardware classes H2 and H4 are modeled: the paper's block-scale reconfiguration has not been
+compiled onto the repository's nearest-neighbour grid, so H1 and H3 return no design (not zero capability).
 
-Schedule [paper, Sec. IV.2.1]: commute the Clifford gates into a classical
-frame, then perform one Pauli measurement per T gate and w final readouts.
-A slot lasts max(data d_t, engine d_t, engine protocol, reaction) code
-cycles. An additional slot primes the engine and prepares the data
-[choice]. Rejected engine outputs stall the data; no whole-circuit
-restart is charged. Runtime uses the paper's *expected* retry count.
+Schedule, in code cycles t_c, by the same pauli-based compilation as the surface-code model: each synthesized T gate is
+one magic-state-assisted logical measurement, the QUOPS Cliffords update a classical frame, and the w transformed final
+measurements run after the N_T consuming measurements. A slot lasts D = max(d_t, reaction time, supply slot) code cycles:
+  T_run = max[N_T D, ceil(N_T / F) t_supply] + (w + 1) D                 (cycles; 1 startup slot, w readouts)
+where F identical supplies each deliver a T state every t_supply code cycles on average, rejection included.
 
-Error model [paper, Eq. 12 and Table 2]: use the logical-measurement fit
-per GB block per native d_t cycles, including padded logical qubits.
-Stretched slots incur proportionally more exposure [choice]. The default
-factor of two accounts for X and Z errors by a symmetry approximation
-[choice]; the source simulations used ideal most-likely decoding of X-type
-detectors, not a demonstrated real-time decoder. Both hardware
-noise classes use the same p=1e-3 fit; no bimodal threshold gain is assumed.
-Engine output infidelity is a published black-box target, charged once per
-consumed state. Mean data survival is averaged over geometric retry waits.
-Synthesis uses the repository's fitted T counts and shared error-budget
-choices; its fidelity charge stays separate from q_no_fault.
+Loss (minus the log no-fault probability), the form of draft Eq. (surface-code-failure):
+  blocks      eta beta (T_run / d_t) Lambda(P_PB),  P_PB = 6.2 (p / 0.0158)^(d/2 + 0.47) per whole block per d_t cycles
+  magic       N_T [Lambda(P_supply) + Lambda(P_port)]        (supply output error, plus the interface to the unit)
+  synthesis   R eps^2 or R eps, shared with the stochastic loss exactly as in surface.py
+with Lambda(x) = -ln(1 - x). Rejections stall the unit; the live blocks are charged for the mean stall. This substitutes
+the mean for the geometric stall distribution (a relative difference below 1e-9 in the loss for the designs checked); the engine blocks
+themselves (d = 24) contribute below 1e-13 per period and are not charged, as in the paper's black-box treatment.
 
-Search is over the five published codes, two published p=1e-3 engines,
-and 5--160 T gates per rotation. Independent copies supply the requested
-executions within the week at the *mean-time* level, not a probabilistic
-deadline guarantee. See docs/pinnacle.md for formulas and limitations.
+Search: exhaustive over the GB block code, the supply (capability/pinnacle_factories.py), the T count per rotation, and
+the least number F of supplies that meets the run-time limit, for the fewest physical qubits
+  N = K (beta n_pb + F N_supply + N_port).
+The qubits needed never decrease with the width, so best_at bisects exactly as in surface.py.
 """
-import json
 from dataclasses import dataclass, replace
-from math import expm1, isclose, isfinite, log1p
-from operator import index
-from pathlib import Path
+from math import ceil, expm1, log1p
 
 import numpy as np
 
-from .config import BASELINE as SHARED_BASELINE, N_MAX, WEEK_SECONDS
+from . import pinnacle_factories as pf
+from .config import N_MAX, WEEK_SECONDS
 from .quops import ENSEMBLES, layer_counts, size
-
-PAPER = 'https://arxiv.org/html/2602.11457v2'
-FIT = json.loads((Path(__file__).resolve().parents[1]/'results/synthesis_fit.json').read_text())
-NT = np.arange(5, 161, dtype=np.int64)          # [choice] same finite synthesis menu as surface.py
-EPS = 2.**(-(NT - FIT['b'])/FIT['a'])
+from .surface import EPS, FIT, NT
 
 
 @dataclass(frozen=True)
@@ -52,119 +40,184 @@ class Code:
     n: int
     k: int
     d: int
-    code_cycles: int
-    processing_qubits: int
+    dt: int               # native logical period in code cycles
+    qubits: int           # n_pb: check qubits, four gadgets, and four bridges included
+    error: float = None   # failure per block per native period; None uses the original-Pinnacle fit
 
 
-# [paper] Table 1: processing footprints already include check qubits,
-# four measurement gadgets, and four bridges. Do not add them again.
-CODES = (
-    Code(30, 8, 4, 6, 140),
-    Code(62, 10, 6, 8, 244),
-    Code(126, 12, 10, 12, 452),
-    Code(254, 14, 16, 18, 860),
-    Code(510, 16, 24, 26, 1620),
-)
+# [paper] Pinnacle v2, Table 1. Do not add the checks, gadgets, or bridges again.
+CODES = (Code(30, 8, 4, 6, 140), Code(62, 10, 6, 8, 244), Code(126, 12, 10, 12, 452),
+         Code(254, 14, 16, 18, 860), Code(510, 16, 24, 26, 1620))
 
-
-@dataclass(frozen=True)
-class Engine:
-    name: str
-    error: float
-    qubits: int
-    rejection: float
-    code_distance: int
-    ancilla_distance: int
-    postselection_rounds: int
-
-
-# [paper] Eqs. 9--10 and Sec. V.2.2. These are p=1e-3 designs, not
-# interpolated engines at arbitrary physical error rates. Eq. 10's label
-# repeats 1e-9 in the paper; its surrounding text specifies 1e-11.
-ENGINES = (
-    Engine('15-to-1_1e-9', 1e-9, 4410, 0.10, 24, 7, 2),
-    Engine('15-to-1_1e-11', 1e-11, 5430, 0.10, 24, 9, 2),
-)
+# [paper] Frozen Pinnacle (arXiv:2609.21249v1): the [[510,16,24]] block with eight processing logical qubits, a 30-cycle
+# logical period, the full 2522-qubit block including its unused memory-access gadget, and the summed Frozen Shift and
+# Bridged Measurement fits per block per period (draft Eq. frozen-error). Used for Frozen with adapter-delivered T states.
+P_FROZEN = 4.01*(1e-3/0.0340)**12 + 5.49*(1e-3/0.0284)**12
+FROZEN_CODES = (Code(510, 8, 24, 30, 2522, P_FROZEN),)
 
 
 @dataclass(frozen=True)
 class Choices:
-    fit_a: float = 6.2                       # [paper] Table 2, logical measurements
-    fit_b: float = 0.0158                    # [paper]
-    fit_c: float = 0.47                      # [paper]
-    logical_error_scale: float = 2.0         # [choice] extend X-observable fit to X and Z
-    reaction_cycles: float = 10.0            # [paper] t_r/t_c; includes classical reaction
-    startup_logical_cycles: int = 1          # [choice] data preparation and engine priming overlap
-    code_distances: tuple = (4, 6, 10, 16, 24)
-    engines: tuple = ('15-to-1_1e-9', '15-to-1_1e-11')
+    eta: float = 2.0                   # [choice] extend the X-observable fit of the paper to both Pauli sectors
+    reaction: int = 10                 # [paper] t_r / t_c
+    codes: tuple = (4, 6, 10, 16, 24)  # GB code distances allowed
+    families: tuple = ('surface', 'surface_jws', 'reference', 'gb_cult', 'gb_inject', 'gb_inject2')
+    frozen: bool = False               # True: Frozen Pinnacle block (FROZEN_CODES) instead of the original GB blocks
+    adapter_distances: tuple = pf.ADAPTER_DISTANCES
+    supply_filter: tuple = ()          # if given, keep only supplies whose name contains one of these strings
 
 
 BASELINE = Choices()
+
+
+def runs_per_copy(M):
+    """Executions per copy worth trying: ceil(M/K) for K = 1..M copies."""
+    return np.unique(np.ceil(M/np.arange(1, M + 1)))
+
+
+def synthesis_loss(R, ch):
+    """Loss charged to the R synthesized rotations: eps^2 (infidelity) or eps per rotation, times the shared scale."""
+    return ch.synthesis_scale*R*(EPS**2 if ch.synthesis_charge == 'squared' else EPS)
 
 
 def vary(**changes):
     return replace(BASELINE, **changes)
 
 
-def support_reason(hw, pc=BASELINE):
-    """None if modeled; otherwise explain the missing mapping or parameter fit."""
+def support_reason(hw, pc=None):
+    """None if modeled; otherwise the missing mapping."""
     if hw.connectivity != 'all_to_all':
         return '2D nearest-neighbor placement, routing, and error costs are not modeled'
-    if not isclose(hw.p, 1e-3, rel_tol=1e-12, abs_tol=1e-15):
-        return 'the implemented magic-engine menu is published only for p = 1e-3'
-    if hw.noise not in ('uniform', 'bimodal'):
-        return 'no noise mapping is declared for this hardware class'
+    if hw.p != pf.P:
+        return 'the published block fits and engine parameters are for p = 1e-3 only'
     return None
 
 
-def _validate(w, ensemble, ch, pc):
-    if index(w) < 2 or w % 2:
-        raise ValueError('QUOPS width must be an even integer of at least two')
-    if ensemble not in ENSEMBLES:
-        raise ValueError(f'unknown QUOPS ensemble: {ensemble}')
-    if index(ch.executions) < 1:
-        raise ValueError('executions must be a positive integer')
-    if not isfinite(ch.cycle_seconds) or ch.cycle_seconds <= 0:
-        raise ValueError('cycle_seconds must be finite and positive')
-    if not isfinite(ch.threshold) or ch.threshold < 0:
-        raise ValueError('threshold must be finite and nonnegative')
-    if ch.synthesis_charge not in ('squared', 'linear'):
-        raise ValueError('synthesis_charge must be squared or linear')
-    if not isfinite(ch.synthesis_scale) or ch.synthesis_scale < 0:
-        raise ValueError('synthesis_scale must be finite and nonnegative')
-    if ch.synthesis_budget is not None and (not isfinite(ch.synthesis_budget) or ch.synthesis_budget < 0):
-        raise ValueError('synthesis_budget must be nonnegative or None')
-    if not isfinite(pc.logical_error_scale) or pc.logical_error_scale <= 0:
-        raise ValueError('logical_error_scale must be finite and positive')
-    if not isfinite(pc.reaction_cycles) or pc.reaction_cycles < 0:
-        raise ValueError('reaction_cycles must be finite and nonnegative')
-    if index(pc.startup_logical_cycles) < 1:
-        raise ValueError('at least one startup slot is needed for the empty engine')
-    if not pc.code_distances or not set(pc.code_distances) <= {c.d for c in CODES}:
-        raise ValueError('code_distances must select from the published code menu')
-    if not pc.engines or not set(pc.engines) <= {e.name for e in ENGINES}:
-        raise ValueError('engines must select from the published engine menu')
-    if not (isfinite(pc.fit_a) and pc.fit_a > 0 and isfinite(pc.fit_b) and pc.fit_b > 0
-            and isfinite(pc.fit_c)):
-        raise ValueError('invalid logical-error fit parameters')
+def p_block(code, hw):
+    """Failure of one whole block per native logical period. Both noise classes use the p = 1e-3 depolarizing fit."""
+    return code.error if code.error is not None else pf.p_block_d(code.d, hw.p)
 
 
-def p_block(code, hw, pc=BASELINE):
-    """Eq. 12: X-observable failure per whole block per native logical cycle."""
-    p = pc.fit_a*(hw.p/pc.fit_b)**(code.d/2 + pc.fit_c)
-    if not 0 <= p < 1:
-        raise ValueError('logical-error fit is outside the probability range')
-    return p
+_CACHE = {}
 
 
-def engine_period(engine, pc=BASELINE):
-    """Code cycles per output attempt, including Eq. 11 and engine error correction."""
-    da, r, reaction = engine.ancilla_distance, engine.postselection_rounds, pc.reaction_cycles
-    protocol = max(2*da + 4*r, reaction + 4*r, da + reaction + 3*r)
-    native = next(c.code_cycles for c in CODES if c.d == engine.code_distance)
-    return max(native, protocol, reaction)
+def supply_arrays(pc):
+    key = (pc.families, pc.adapter_distances, pc.supply_filter)
+    if key not in _CACHE:
+        S = pf.all_supplies(pc.families, pc.adapter_distances)
+        if pc.supply_filter:
+            S = [x for x in S if any(f in x.name for f in pc.supply_filter)]
+        a = lambda f, dt=float: np.array([f(s) for s in S], dtype=dt)
+        _CACHE[key] = dict(S=S, qubits=a(lambda s: s.qubits), cycles=a(lambda s: s.cycles),
+                           port=a(lambda s: s.port_qubits), slot=a(lambda s: s.min_slot),
+                           loss=a(lambda s: -log1p(-s.error) - log1p(-s.port_error)))
+    return _CACHE[key]
 
 
+def min_qubits(w, ensemble, hw, ch, pc=BASELINE):
+    """Fewest physical qubits for one QUOPS width and ensemble; None if no design passes or hw is unsupported."""
+    if support_reason(hw):
+        return None
+    n_rot, _ = layer_counts(w, ensemble)
+    R = w*n_rot
+    synthesis = synthesis_loss(R, ch)
+    if ch.synthesis_budget is None:
+        stochastic = ch.threshold - synthesis
+    else:
+        stochastic = np.where(synthesis <= ch.synthesis_budget, ch.threshold, -np.inf)
+    week = WEEK_SECONDS/ch.cycle_seconds
+    runs = runs_per_copy(ch.executions)
+    sa = supply_arrays(pc)
+    NTR = (R*NT).astype(float)                                   # T states consumed, per T count
+    magic = NTR[None, :]*sa['loss'][:, None]                     # (supplies, T counts)
+    best = None
+    for code in (FROZEN_CODES if pc.frozen else CODES):
+        if not pc.frozen and code.d not in pc.codes:
+            continue
+        beta = ceil(w/code.k)
+        per_cycle = pc.eta*beta*(-log1p(-p_block(code, hw)))/code.dt          # loss per code cycle of one block unit
+        D = np.maximum(max(code.dt, pc.reaction), sa['slot'])[:, None]         # slot per supply
+        tail = (w + 1)*D                                                       # startup plus final readouts
+        room = (stochastic - magic)/per_cycle                                  # cycles the loss budget allows
+        for r in runs:
+            limit = np.minimum(room, week/r)
+            avail = limit - tail
+            k_f = np.floor(avail/sa['cycles'][:, None])                        # states one supply delivers in time
+            ok = (avail >= NTR[None, :]*D) & (k_f >= 1)
+            if not ok.any():
+                continue
+            F = np.ceil(NTR[None, :]/np.where(ok, k_f, 1))
+            cycles = np.maximum(NTR[None, :]*D, np.ceil(NTR[None, :]/F)*sa['cycles'][:, None]) + tail
+            per_copy = np.minimum(np.floor(week/cycles), ch.executions)
+            copies = np.ceil(ch.executions/np.maximum(per_copy, 1))
+            qubits = np.where(ok, copies*(beta*code.qubits + F*sa['qubits'][:, None] + sa['port'][:, None]), np.inf)
+            i, j = np.unravel_index(np.argmin(qubits), qubits.shape)
+            if best is None or qubits[i, j] < best['qubits']:
+                s = sa['S'][i]
+                c = cycles[i, j]
+                best = dict(qubits=float(qubits[i, j]), distance=code.d, code_n=code.n, code_k=code.k, blocks=beta,
+                            factory=s.name, family=s.family, factories=int(F[i, j]), eps=float(EPS[j]),
+                            T_per_rotation=int(NT[j]), T_total=float(NTR[j]), slot=float(D[i, 0]), cycles=float(c),
+                            run_seconds=float(c*ch.cycle_seconds), copies=int(copies[i, j]),
+                            runs_per_copy=int(per_copy[i, j]),
+                            loss_blocks=float(per_cycle*c), loss_magic=float(magic[i, j]),
+                            loss_synthesis=float(synthesis[j]), supply_qubits=s.qubits, supply_cycles=s.cycles,
+                            supply_error=s.error)
+    return best
+
+
+def widths(w_max=200000):
+    small = list(range(2, 101, 2))
+    large = sorted({int(2*round(v/2)) for v in np.geomspace(102, w_max, 120)})
+    return small + [v for v in large if v > 100]
+
+
+def sweep(hw, ch, pc=BASELINE):
+    """Designs at the sampled widths up to N_MAX qubits; stops each ensemble at the first width that fails."""
+    if support_reason(hw):
+        return []
+    rows = []
+    for ensemble in ENSEMBLES:
+        for w in widths():
+            design = min_qubits(w, ensemble, hw, ch, pc)
+            if design is None or design['qubits'] > N_MAX:
+                break
+            rows.append(dict(ensemble=ensemble, w=w, s=size(w, ensemble), passes=True, **design))
+    return rows
+
+
+def best_at(N, hw, ch, rows, pc=BASELINE):
+    """Largest-s design with at most N qubits, exact over every even width (bisection, as in surface.best_at).
+
+    For a fixed code, supply, and T count, the blocks, T demand, loss, run time, copies, and area all grow with w, so a
+    design that passes at w + 2 also passes at w with no more qubits. Minima over a fixed finite menu keep this."""
+    if support_reason(hw):
+        return None
+    top = None
+    for ensemble in ENSEMBLES:
+        fit = sorted((r['w'], r) for r in rows if r['ensemble'] == ensemble and r['qubits'] <= N)
+        if not fit:
+            continue
+        lo, row = fit[-1]
+        hi = next((w for w in widths() if w > lo), lo + 2)
+        while hi - lo > 2:
+            mid = lo + 2*((hi - lo)//4)
+            x = min_qubits(mid, ensemble, hw, ch, pc)
+            if x is not None and x['qubits'] <= N:
+                lo, row = mid, dict(ensemble=ensemble, w=mid, s=size(mid, ensemble), passes=True, **x)
+            else:
+                hi = mid
+        if top is None or row['s'] > top['s']:
+            top = row
+    return top
+
+
+def capability(N, hw, ch, rows, pc=BASELINE):
+    row = best_at(N, hw, ch, rows, pc)
+    return row['s'] if row else 0
+
+
+# Used by capability/frozen_pinnacle.py (Frozen Pinnacle, from the earlier serial estimate; not part of the main model).
 def loss_for_retries(tau, fixed, h, rejection):
     """Minus log mean data survival for tau geometric waits and fixed slots.
 
@@ -176,149 +229,5 @@ def loss_for_retries(tau, fixed, h, rejection):
     return fixed*h + tau*(h + log1p(rejection*(-expm1(-h))/(1 - rejection)))
 
 
-def _designs(w, ensemble, hw, ch, code, engine, counts, pc):
-    """Vectorized candidate arithmetic. Integer products use explicit 64-bit counts."""
-    rotations = int(w)*int(layer_counts(w, ensemble)[0])
-    counts = np.asarray(counts, dtype=np.int64)
-    if rotations*int(counts.max()) > np.iinfo(np.int64).max:
-        raise OverflowError('T count exceeds the supported int64 range')
-    tau = counts*rotations
-    eps = 2.**(-(counts - FIT['b'])/FIT['a'])
-    blocks = (int(w) + code.k - 1)//code.k
-    period = max(code.code_cycles, engine_period(engine, pc))
-    fixed = int(w) + pc.startup_logical_cycles
-    slots = tau.astype(float)/(1 - engine.rejection) + fixed
-    cycles = slots*period
-    seconds = cycles*ch.cycle_seconds
-    h = blocks*(period/code.code_cycles)*pc.logical_error_scale*(-log1p(-p_block(code, hw, pc)))
-    loss_data = loss_for_retries(tau, fixed, h, engine.rejection)
-    loss_magic = tau*(-log1p(-engine.error))
-    synthesis = ch.synthesis_scale*rotations*(eps**2 if ch.synthesis_charge == 'squared' else eps)
-    stochastic = loss_data + loss_magic
-    loss = stochastic + synthesis
-    if ch.synthesis_budget is None:
-        passes = loss <= ch.threshold
-    else:
-        passes = (stochastic <= ch.threshold) & (synthesis <= ch.synthesis_budget)
-    per_copy = np.minimum(np.floor(WEEK_SECONDS/seconds), ch.executions)
-    copies = np.ceil(ch.executions/np.maximum(per_copy, 1))
-    per_machine = blocks*code.processing_qubits + engine.qubits
-    qubits = np.where(passes & (per_copy >= 1), copies*per_machine, np.inf)
-    return dict(qubits=qubits, blocks=blocks, period=period, slots=slots, cycles=cycles,
-                seconds=seconds, per_copy=per_copy, copies=copies, counts=counts, tau=tau,
-                eps=eps, data=loss_data, magic=loss_magic, synthesis=synthesis,
-                stochastic=stochastic, loss=loss, per_machine=per_machine)
-
-
-def _row(a, i, w, ensemble, code, engine):
-    return dict(ensemble=ensemble, w=int(w), s=size(int(w), ensemble), passes=True,
-                qubits=int(a['qubits'][i]), qubits_per_copy=a['per_machine'],
-                distance=code.d, code_n=code.n, code_k=code.k, blocks=a['blocks'],
-                logical_capacity=a['blocks']*code.k, engine=engine.name,
-                engine_qubits=engine.qubits, engine_error=engine.error,
-                engine_rejection=engine.rejection, eps=float(a['eps'][i]),
-                T_per_rotation=int(a['counts'][i]), T_total=int(a['tau'][i]),
-                logical_cycle_cycles=float(a['period']), logical_cycles=float(a['slots'][i]),
-                cycles=float(a['cycles'][i]), run_seconds=float(a['seconds'][i]),
-                copies=int(a['copies'][i]), runs_per_copy=int(a['per_copy'][i]),
-                loss_data=float(a['data'][i]), loss_magic=float(a['magic'][i]),
-                loss_synthesis=float(a['synthesis'][i]), loss_stochastic=float(a['stochastic'][i]),
-                loss_total=float(a['loss'][i]), q_no_fault=float(np.exp(-a['stochastic'][i])),
-                quality=float(np.exp(-a['loss'][i])))
-
-
-def evaluate(w, ensemble, hw, ch, code, engine, nT, pc=BASELINE):
-    """One finite-menu design; None if unsupported, over budget, or too slow."""
-    _validate(w, ensemble, ch, pc)
-    if support_reason(hw, pc) is not None:
-        return None
-    if index(nT) < int(NT[0]) or nT > int(NT[-1]):
-        raise ValueError('T gates per rotation must be between 5 and 160')
-    if code not in CODES or engine not in ENGINES:
-        raise ValueError('evaluate requires a published code and engine')
-    a = _designs(w, ensemble, hw, ch, code, engine, [nT], pc)
-    return _row(a, 0, w, ensemble, code, engine) if np.isfinite(a['qubits'][0]) else None
-
-
-def min_qubits(w, ensemble, hw, ch=SHARED_BASELINE, pc=BASELINE):
-    """Fewest qubits in the finite serial model; break area ties by mean runtime."""
-    _validate(w, ensemble, ch, pc)
-    if support_reason(hw, pc) is not None:
-        return None
-    best = None
-    for code in CODES:
-        if code.d not in pc.code_distances:
-            continue
-        for engine in ENGINES:
-            if engine.name not in pc.engines:
-                continue
-            a = _designs(w, ensemble, hw, ch, code, engine, NT, pc)
-            i = np.lexsort((a['loss'], a['seconds'], a['qubits']))[0]
-            if not np.isfinite(a['qubits'][i]):
-                continue
-            row = _row(a, i, w, ensemble, code, engine)
-            if best is None or (row['qubits'], row['run_seconds'], row['loss_total']) < (
-                    best['qubits'], best['run_seconds'], best['loss_total']):
-                best = row
-    return best
-
-
-def widths(w_max=200000):
-    """Same plotting resolution as surface.py: dense to 100, then about 6.5% apart."""
-    small = list(range(2, min(100, w_max) + 1, 2))
-    large = sorted({int(2*round(v/2)) for v in np.geomspace(102, max(102, w_max), 120)})
-    return small + [w for w in large if 100 < w <= w_max]
-
-
-def sweep(hw, ch=SHARED_BASELINE, pc=BASELINE):
-    """Passing sampled widths, stopping at the first infeasible or over-N_MAX width."""
-    _validate(2, 'shallow', ch, pc)
-    if support_reason(hw, pc) is not None:
-        return []
-    rows = []
-    for ensemble in ENSEMBLES:
-        for w in widths():
-            row = min_qubits(w, ensemble, hw, ch, pc)
-            if row is None or row['qubits'] > N_MAX:
-                break
-            rows.append(row)
-    return rows
-
-
-def best_at(N, hw, ch, rows, pc=BASELINE):
-    """Largest size at N, refining sampled gaps over every even width.
-
-    For each fixed code/engine/T count, blocks, T demand, slot hazard,
-    synthesis charge, mean runtime, copies, and area are nondecreasing
-    in w. Feasible designs therefore form a prefix; minima over the same
-    finite candidate menu preserve monotonicity. This justifies bisection
-    and sweep's early termination even at block-size jumps.
-    """
-    _validate(2, 'shallow', ch, pc)
-    if not isfinite(N) or N < 0 or N > N_MAX:
-        raise ValueError(f'N must lie between zero and {N_MAX:g}')
-    if support_reason(hw, pc) is not None:
-        return None
-    top = None
-    for ensemble in ENSEMBLES:
-        fit = sorted((r['w'], r) for r in rows if r['ensemble'] == ensemble
-                     and r['passes'] and r['qubits'] <= N)
-        if not fit:
-            continue
-        lo, row = fit[-1]
-        hi = next((w for w in widths() if w > lo), lo + 2)
-        while hi - lo > 2:
-            mid = lo + 2*((hi - lo)//4)
-            candidate = min_qubits(mid, ensemble, hw, ch, pc)
-            if candidate is not None and candidate['qubits'] <= N:
-                lo, row = mid, candidate
-            else:
-                hi = mid
-        if top is None or row['s'] > top['s']:
-            top = row
-    return top
-
-
-def capability(N, hw, ch, rows, pc=BASELINE):
-    row = best_at(N, hw, ch, rows, pc)
-    return row['s'] if row else 0
+# Frozen Pinnacle with adapter-delivered T states: its fixed degree-eight graph cannot host the reconfigurable GB engines.
+FROZEN_T = Choices(frozen=True, families=('surface', 'surface_jws'))

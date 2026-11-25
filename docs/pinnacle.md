@@ -1,5 +1,18 @@
 # QUOPS capability for the original Pinnacle architecture
 
+> **Update (supply menu).** `capability/pinnacle.py` now searches a menu of magic-state supplies (Sec. 3.7 of the
+> draft) instead of a single 15-to-1 engine: the published engines, cultivation or distillation factories behind a
+> surface-code adapter, the pure-T protocols of arXiv:2610.06535 as GB engines with cultivated or in-place injected
+> inputs, and surface-code layouts of those protocols (`capability/surface_factories.py`, family `jws`). The schedule
+> follows the surface-code form of Sec. 3.5, with `F` supplies, a slot `D = max(d_t, t_r, s_F)`, block volume and
+> failure probability, and the code cycle is 12 t_op = 1.2 us. With only the published engines it reproduces the
+> serial estimate below (crossover 4,862; width-84 design with 9,570 qubits) up to the plateau, where it allows several
+> engines. `scripts/make_pinnacle_curves.py` keeps the provenance fields read by `make_frozen_pinnacle_curves.py`.
+> The sections below document the original serial model, which `capability/frozen_pinnacle.py` still follows.
+> The one-at-a-time sensitivities are now stored in `results/pinnacle.json` (`extended.sensitivity`), so the former
+> `results/pinnacle_sensitivity.json` and `figures/pinnacle_sensitivity.*` were removed. `make_frozen_pinnacle_curves.py` keeps
+> the shared 1 us cycle, whereas the paper's Frozen numbers (appendix) come from `make_pinnacle_curves.py` at 1.2 us.
+
 This serial Pinnacle resource estimate uses the original architecture described in
 [arXiv:2602.11457v2](https://arxiv.org/html/2602.11457v2), revised 5 May 2026.
 The comparison plots use counted sequential PBC for the surface-code baseline.

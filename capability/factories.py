@@ -50,4 +50,8 @@ FACTORIES = [
 
 
 def menu(families):
-    return [f for f in FACTORIES if f.family in families]
+    out = [f for f in FACTORIES if f.family in families]
+    if 'jws' in families:              # surface-code layouts of the arXiv:2610.06535 protocols (capability/surface_factories.py)
+        from .surface_factories import factories
+        out += list(factories())
+    return out
