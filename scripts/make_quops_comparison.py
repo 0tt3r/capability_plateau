@@ -1,7 +1,8 @@
 """Combined QUOPS capability figure of the draft: direct, surface code, STAR, and Pinnacle on the four hardware classes.
 
     .venv/bin/python scripts/make_quops_comparison.py
-reads the cached results/baseline.json (direct and sequential-PBC surface code), results/quops_comparison_star.json (STAR on the
+reads the cached results/baseline.json (direct and sequential-PBC surface code; on H2 and H4 the surface code is the same
+model with fold-transversal cultivation, surface_fig7 of results/pinnacle.json), results/quops_comparison_star.json (STAR on the
 2D-grid classes H1 and H3, the steps of the draft's figure; see that file for its source), and results/pinnacle.json (Pinnacle on the all-to-all classes H2 and H4), and writes
 figures/quops_comparison.{pdf,png}. Nothing is recomputed. The layout, fonts, colors, and line styles reproduce the
 comparison figure of the draft (8.1 x 5.0 in, one-row legend above the panels); the Pinnacle curve is the best over the
@@ -55,7 +56,9 @@ def main(out=ROOT/'figures/quops_comparison'):
     fig, axes = plt.subplots(2, 2, figsize=(8.1, 5.0), sharex=True, sharey=True)
     for ax, key in zip(axes.flat, KEYS):
         ax.plot(*step(with_probes(base[key]['direct'], [])), color=DIRECT, lw=1.9, label='Direct')
-        ax.plot(*step(with_probes(base[key]['surface'], base[key]['probes'].values())), color=SURFACE, lw=1.9, label='Surface code (sequential PBC)')
+        sc = pin[key].get('surface_fig7')      # all-to-all: the same model with fold-transversal cultivation
+        rows = sc['rows'] if sc else with_probes(base[key]['surface'], base[key]['probes'].values())
+        ax.plot(*step(rows), color=SURFACE, lw=1.9, label='Surface code (sequential PBC)')
         if key in star:
             ax.plot(*step([dict(qubits=q, s=v, passes=True) for q, v in star[key]]), color=STAR, lw=1.9, ls='--', label='STAR')
         if pin[key]['supported']:

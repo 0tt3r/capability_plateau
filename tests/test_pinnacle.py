@@ -57,6 +57,15 @@ def test_surface_supply_adapter():
     assert s.min_slot == 15
 
 
+def test_fold_transversal_cultivation_behind_the_adapter():
+    """All-to-all baseline: fold-transversal cultivation (arXiv:2509.05212) replaces color-code cultivation."""
+    from capability.factories import FOLD_F5
+    s = next(x for x in pf.all_supplies(('surface_fold',), (11,)) if x.name.startswith('fold-transversal'))
+    assert (s.qubits, s.error) == (449, 1e-9)
+    assert s.cycles == pytest.approx(3.6e4*(1024*100/6.6e4)/6/449) == pytest.approx(FOLD_F5['volume']/449)
+    assert not any(x.name.startswith('cultivation') for x in P.supply_arrays(P.BASELINE)['S'])
+
+
 def test_two_level_supply_is_cleaner_but_bigger():
     one = next(s for s in pf.injected_supplies() if s.name == '[[15,1,3]], injected, 1 level')
     two = next(s for s in pf.injected_supplies() if s.name == '[[15,1,3]], injected, 2 levels, F1=16')
@@ -87,7 +96,7 @@ def hand_design(w, ensemble, code, s, NTc, F, hw=H2, ch=BASELINE, eta=2.0):
     NT_total = R*NTc
     beta = ceil(w/code.k)
     D = max(code.dt, 10, s.min_slot)
-    period = s.cycles*(6e-7/ch.cycle_seconds if s.family in ('surface', 'surface_jws') else 1)   # surface code at 600 ns
+    period = s.cycles*(6e-7/ch.cycle_seconds if s.family in P.SURFACE_FAMILIES else 1)   # surface code at 600 ns
     cycles = max(NT_total*D, ceil(NT_total/F)*period) + D                                   # N_M = 0 for QUOPS
     N = beta*code.qubits + F*s.qubits + s.port_qubits
     p_pb = 6.2*(hw.p/0.0158)**(code.d/2 + 0.47)
@@ -100,7 +109,7 @@ def hand_design(w, ensemble, code, s, NTc, F, hw=H2, ch=BASELINE, eta=2.0):
 def test_hand_computed_design():
     r = P.min_qubits(84, 'deep', H2, BASELINE, P.BASELINE)
     code = next(c for c in P.CODES if c.d == r['distance'])
-    s = next(x for x in pf.all_supplies() if x.name == r['factory'])
+    s = next(x for x in pf.all_supplies(P.BASELINE.families) if x.name == r['factory'])
     N, cycles, total = hand_design(84, 'deep', code, s, r['T_per_rotation'], r['factories'])
     assert N == r['qubits'] and cycles == pytest.approx(r['cycles'])
     assert total <= 0.5 + 1e-12
@@ -201,7 +210,7 @@ def test_extended_surface_menu_is_never_worse_than_the_cached_menu():
 def test_surface_supplies_run_at_the_surface_code_cycle():
     """A cultivation factory of 100 surface-code cycles delivers every 50 Pinnacle cycles at 1.2 us (600 ns / 1.2 us)."""
     from dataclasses import replace
-    pc = P.vary(supply_filter=('cultivation, adapter d_a=15',))
+    pc = P.vary(families=('surface',), supply_filter=('cultivation, adapter d_a=15',))
     sa = P.supply_arrays(pc)
     assert P.supply_periods(sa, pc, replace(BASELINE, cycle_seconds=1.2e-6)) == pytest.approx([50.])
     assert P.supply_periods(sa, P.vary(supply_filter=('15-to-1 (Pinnacle, d_a=7)',)), BASELINE)[0] != 50.

@@ -80,6 +80,19 @@ CATALOGUE_WINNERS = ('[[14,1,2]] T0, faulty T, d=(11,5,5)',
                      '[[8,3,2]] CCZ012, faulty T, d=(9,5,5)',)
 
 
+# All-to-all hardware (fold-transversal f = 3 inputs allowed): the layouts that set a point on the exact optimized
+# surface-code curves of H2 and H4 (scripts/find_winners.py), together with fold-transversal cultivation.
+FOLD_JWS_WINNERS = ('[[15,1,3]], fold f=3, d=(19,5,5)',
+                    '[[15,1,3]], fold f=3, d=(21,5,5)',
+                    '[[15,1,3]], fold f=3, d=(23,5,5)',)
+FOLD_CATALOGUE_WINNERS = ('[[14,1,2]] T0, fold f=3, d=(19,5,5)',
+                          '[[14,1,2]] T0, fold f=3, d=(21,5,5)',
+                          '[[14,2,2]] T0,T1, fold f=3, d=(19,5,5)',
+                          '[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)',
+                          '[[14,2,2]] T0,T1, fold f=3, d=(23,5,5)',
+                          '[[8,3,2]] CCZ012, fold f=3, d=(19,5,5)',)
+
+
 def catalogue(names=None):
     """Surface-code layouts of the distance-2 and distance-3 catalogue factories (scripts/catalogue_factories.py),
     per delivered T state, with the T states of one run as its batch, as for the multi-output rows of Litinski.
@@ -101,6 +114,11 @@ def menu(families):
     if 'jws' in families or 'jws_winners' in families:   # surface-code layouts of the arXiv:2610.06535 protocols
         from .surface_factories import factories
         out += [f for f in factories() if 'jws' in families or f.name in JWS_WINNERS]
+    if 'jws_fold_winners' in families:                     # all-to-all hardware (fold-transversal f = 3 inputs allowed)
+        from .surface_factories import factories
+        out += [f for f in factories() if f.name in FOLD_JWS_WINNERS]
     if 'catalogue' in families or 'catalogue_winners' in families:
         out += catalogue(None if 'catalogue' in families else CATALOGUE_WINNERS)
+    if 'catalogue_fold_winners' in families:
+        out += catalogue(FOLD_CATALOGUE_WINNERS)
     return out

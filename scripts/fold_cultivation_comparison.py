@@ -10,7 +10,8 @@ Fold-transversal cultivation uses non-local operations, so it is used only on H2
   Frozen         the adapter path of Frozen Pinnacle with the same factories (the CCZ engine is unchanged)
 Writes results/fold_cultivation.json with crossovers, capabilities at 1e4 and 1e6, and the designs on each staircase.
 
-    .venv/bin/python scripts/fold_cultivation_comparison.py
+    .venv/bin/python scripts/fold_cultivation_comparison.py [OUT_JSON]
+With CATALOGUE_JSON set to a catalogue written with --yield-rule tcount, this is the T-count upper-bound check of Sec. 3.7.
 """
 import json
 import sys
@@ -93,8 +94,9 @@ def main():
         res['frozen_adapter'] = summarize(rows, probes, s_direct)
         print(key, 'frozen', res['frozen_adapter']['crossover'], {k: v and v['s'] for k, v in probes.items()}, flush=True)
         out[key] = res
-    (ROOT/'results/fold_cultivation.json').write_text(json.dumps(out, indent=1, default=str) + '\n')
-    print('written results/fold_cultivation.json')
+    path = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT/'results/fold_cultivation.json'
+    path.write_text(json.dumps(out, indent=1, default=str) + '\n')
+    print('written', path)
 
 
 if __name__ == '__main__':

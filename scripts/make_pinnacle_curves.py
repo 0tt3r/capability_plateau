@@ -47,21 +47,23 @@ PINNACLE_CH = replace(BASELINE, cycle_seconds=PINNACLE_CYCLE)
 SURFACE_CYCLE = 6e-7                                        # 6 t_op: the surface-code cycle of Sec. 3.5
 SURFACE_CH = replace(BASELINE, cycle_seconds=SURFACE_CYCLE)   # the surface-code comparison curve (cached model, 600 ns)
 SURFACE_OPTIMIZED = replace(SURFACE_CH, factories=('cultivation', 'jws_winners', 'catalogue_winners'))   # the options that set a point on the extended curve
+# All-to-all hardware: fold-transversal cultivation (Sahay, Tsai, Chang, arXiv:2509.05212) replaces color-code cultivation,
+# which it outperforms, because it needs the non-local operations that only H2 and H4 provide.
+ALL_TO_ALL_FACTORIES = ('fold_cultivation', 'litinski')
+SURFACE_OPTIMIZED_A2A = replace(SURFACE_CH, factories=ALL_TO_ALL_FACTORIES + ('jws_fold_winners', 'catalogue_fold_winners'))
 FROZEN_QUOPS = frozen_pinnacle.vary(final_measurements=False)  # N_M = 0 for QUOPS, as in the surface-code model
-FAMILIES = ('reference', 'surface', 'surface_jws', 'surface_catalogue', 'gb_cat_cult')
+FAMILIES = ('reference', 'surface_fold', 'surface_jws', 'surface_catalogue', 'gb_cat_cult')
 PLATEAU_WIDTH = 936                                         # largest deep width that completes within the week at 1.2 us
 # One row per supply that can win somewhere on the Pinnacle curve; the filters are substrings of the supply names of
 # capability/pinnacle_factories.py.
-VERDICT = (('Cultivation behind an adapter', ('cultivation, adapter',), None),
+VERDICT = (('Fold-transversal cultivation behind an adapter', ('fold-transversal cultivation, adapter',), ('surface_fold',)),
            ('Published 15-to-1 engines', ('15-to-1 (Pinnacle',), None),
            ('[[28,1,3]] engine with cultivated inputs', ('[[28,1,3]] T0, cultivated engine d_a=7',), ('gb_cat_cult',)),
            ('[[32,1,3]] engine with cultivated inputs', ('[[32,1,3]] T0, cultivated engine d_a=7',), ('gb_cat_cult',)),
            ('[[47,5,3]] engine with cultivated inputs', ('[[47,5,3]] T0·T1·T2·T3·T4, cultivated engine d_a=9',), ('gb_cat_cult',)),
            ('[[56,8,3]] engine with cultivated inputs', ('[[56,8,3]] T0·T1·T2·T3·T4·T5·T6·T7, cultivated engine d_a=9',), ('gb_cat_cult',)),
-           ('Layout of [[14,1,2]] with faulty T, behind an adapter', ('[[14,1,2]] T0, faulty T, d=(7,5,5)',), ('surface_catalogue',)),
-           ('Layout of [[8,3,2]] (CCZ, catalysed to T) with faulty T, behind an adapter', ('[[8,3,2]] CCZ012, faulty T, d=(7,5,5)',), ('surface_catalogue',)),
-           ('Two-level layout of [[14,2,2]] fed by 15-to-1 factories, behind an adapter', ('[[14,2,2]] T0,T1, two levels',), ('surface_catalogue',)),
-           ('Two-level layout of [[20,3,2]] fed by 15-to-1 factories, behind an adapter', ('[[20,3,2]] T0,T1,T2, two levels',), ('surface_catalogue',)))
+           ('Layout of [[14,1,2]] with fold-transversal f=3 inputs, behind an adapter', ('[[14,1,2]] T0, fold f=3',), ('surface_catalogue',)),
+           ('Layout of [[15,1,3]] with fold-transversal f=3 inputs, behind an adapter', ('[[15,1,3]], fold f=3',), ('surface_jws',)))
 MODELING_NOTES = [
     'Serial Pauli-based computation on one processing unit; the supply (magic engine, surface-code factory behind an adapter, or in-place injection) is a searched black box.',
     'Logical measurement and magic-engine inputs are from arXiv:2602.11457v2, Sections IV-V; the code cycle is 12 t_op = 1.2 us.',
@@ -71,6 +73,7 @@ MODELING_NOTES = [
     'The baseline counts both Pauli error sectors using eta=2; this is a declared choice.',
     'Synthesis infidelity is charged within the shared loss budget, separately from the stochastic no-fault loss.',
     'Direct and surface-code curves are cached baseline references; the optimized surface-code curve reruns only the cached surface-code model with more factories.',
+    'On all-to-all hardware (H2, H4) fold-transversal cultivation (arXiv:2509.05212) replaces color-code cultivation for the surface code, behind the Pinnacle adapter, and for Frozen; its f = 3 states are also inputs of the surface-code distillation layouts.',
 ]
 
 
@@ -183,22 +186,33 @@ def winners(hw):
             r = pinnacle.min_qubits(w, ensemble, hw, PINNACLE_CH)
             if r is None:
                 break
-            name = 'cultivation' if r['factory'].startswith('cultivation') else r['factory']
+            name = r['factory'].split(', adapter')[0] if 'cultivation, adapter' in r['factory'] else r['factory']
             counts.setdefault(name, []).append((ensemble, w, r['qubits']))
     return {k: dict(widths=len(v), min_qubits=min(x[2] for x in v), max_qubits=max(x[2] for x in v)) for k, v in counts.items()}
 
 
-def surface_sc(hw, direct):
+def all_to_all(hw):
+    return hw.connectivity == 'all_to_all'
+
+
+def surface_ch(hw, ch=SURFACE_CH):
+    """Surface-code choices for hw: on all-to-all hardware fold-transversal cultivation replaces color-code cultivation."""
+    return replace(ch, factories=ALL_TO_ALL_FACTORIES) if all_to_all(hw) else ch
+
+
+def surface_sc(hw, direct, ch=SURFACE_CH):
     """The cached surface-code model at the 600 ns cycle of Sec. 3.5, the curve that Pinnacle is compared with."""
-    rows = surface.sweep(hw, SURFACE_CH)
-    probes = {f'{N:.0e}': surface.best_at(N, hw, SURFACE_CH, rows) for N in PROBES}
+    c = surface_ch(hw, ch)
+    rows = surface.sweep(hw, c)
+    probes = {f'{N:.0e}': surface.best_at(N, hw, c, rows) for N in PROBES}
     return dict(rows=with_probes(rows, probes), probes=probes, crossover=curves.crossover(direct, rows))
 
 
 def surface_optimized(key, hw, base):
     """Cached surface-code model with the surface-code factories of the 2610.06535 protocols added to its menu."""
-    rows = surface.sweep(hw, SURFACE_OPTIMIZED)
-    probes = {f'{N:.0e}': surface.best_at(N, hw, SURFACE_OPTIMIZED, rows) for N in PROBES}
+    c = SURFACE_OPTIMIZED_A2A if all_to_all(hw) else SURFACE_OPTIMIZED
+    rows = surface.sweep(hw, c)
+    probes = {f'{N:.0e}': surface.best_at(N, hw, c, rows) for N in PROBES}
     return dict(rows=with_probes(rows, probes), probes=probes, crossover=curves.crossover(base[key]['direct'], rows))
 
 
@@ -216,6 +230,8 @@ def compute(ch=BASELINE, pc=pinnacle.BASELINE, extended=True):
         record.update(hardware=asdict(hw), direct=reference[key]['direct'],
                       surface=reference[key]['surface'], reference_probes=reference[key]['probes'])
         record['surface_sc'] = surface_sc(hw, record['direct'])
+        if all_to_all(hw):     # the surface-code curve of the combined figure (cached choices) with fold-transversal cultivation
+            record['surface_fig7'] = surface_sc(hw, record['direct'], BASELINE)
         record['crossover_vs_direct'] = (curves.crossover(record['direct'], record['pinnacle'])
                                          if record['supported'] else None)
         if extended:

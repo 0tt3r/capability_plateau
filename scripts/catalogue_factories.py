@@ -16,7 +16,8 @@ T-state yield per run [choice]: only outputs with a known conversion into T stat
   products of CCZ on disjoint qubits                   yield = 2 per CCZ (catalysed CCZ -> 3 T, one reused)
   everything else (CS terms, overlapping products)    not a T-state supply; skipped
 Each protocol is costed exactly as the 'jws' layouts of capability/surface_factories.py: faulty-T inputs, the
-cultivated inputs of the Pinnacle engines (d_a = 7, 9), and two levels fed by faulty-T 15-to-1 factories, over the same
+cultivated inputs of the Pinnacle engines (d_a = 7, 9), fold-transversal f = 3 inputs ('fold f=3', all-to-all hardware
+only, kept on their own Pareto front), and two levels fed by faulty-T 15-to-1 factories, over the same
 d_X, d_Z grid (d_Z <= d_X), dropping designs with rejection >= 0.99 or error >= 1e-3, with the error and period divided
 by the yield instead of k. The designs not dominated in (qubits, cycles per T state, error) are written to
 results/catalogue_factories.json.
