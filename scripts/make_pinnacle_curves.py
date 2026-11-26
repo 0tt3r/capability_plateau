@@ -38,24 +38,27 @@ PROBES = (1e4, N_MAX)
 KEYS = ('H1', 'H2', 'H3', 'H4')
 SUPPORTED_KEYS = ('H2', 'H4')
 DIRECT, SURFACE = '#2a78d6', '#eb6834'
-PINNACLE, PINNACLE_LIGHT, FROZEN = '#c2185b', '#e48bb0', '#8c564b'   # STAR uses purple, direct blue, surface orange
+PINNACLE, PINNACLE_LIGHT, FROZEN = '#087858', '#6fbfa6', '#8c564b'   # the green of Fig. 7; STAR uses purple, direct blue, surface orange
 INK, MUTED = '#2b2b2b', '#8a8a8a'
 PAPER = 'https://arxiv.org/html/2602.11457v2'
 HASH_FORMAT = 'canonical-json-sha256-v1'
 PINNACLE_CYCLE = 12*1e-7                                   # 12 t_op with t_op = 100 ns
 PINNACLE_CH = replace(BASELINE, cycle_seconds=PINNACLE_CYCLE)
-SURFACE_OPTIMIZED = replace(BASELINE, factories=('cultivation', 'litinski', 'jws'))
+SURFACE_CYCLE = 6e-7                                        # 6 t_op: the surface-code cycle of Sec. 3.5
+SURFACE_CH = replace(BASELINE, cycle_seconds=SURFACE_CYCLE)   # the surface-code comparison curve (cached model, 600 ns)
+SURFACE_OPTIMIZED = replace(SURFACE_CH, factories=('cultivation', 'litinski', 'jws'))
+FROZEN_QUOPS = frozen_pinnacle.vary(final_measurements=False)  # N_M = 0 for QUOPS, as in the surface-code model
 FAMILIES = ('reference', 'surface', 'surface_jws', 'gb_cult', 'gb_inject', 'gb_inject2')
 PLATEAU_WIDTH = 936                                         # largest deep width that completes within the week at 1.2 us
 # One row per supply that can win somewhere on the Pinnacle curve; the filters are substrings of the supply names of
 # capability/pinnacle_factories.py.
-VERDICT = (('Cultivation behind an adapter', ('cultivation, adapter',)),
-           ('Published 15-to-1 engines', ('15-to-1 (Pinnacle',)),
-           ('In-place injection, [[15,1,3]], one level', ('[[15,1,3]], injected, 1 level',)),
-           ('In-place injection, [[125,3,5]], one level', ('[[125,3,5]], injected, 1 level',)),
-           ('In-place injection, [[63,11,3]], two levels', ('[[63,11,3]], injected, 2 levels, F1=8',)),
-           ('Litinski distillation factories behind an adapter', ('(15-to-1)^', '(15-to-1)_')),
-           ('Surface-code layouts of the 2610.06535 protocols behind an adapter', ('faulty T', 'cultivated d_a')))
+VERDICT = (('Cultivation behind an adapter', ('cultivation, adapter',), None),
+           ('Published 15-to-1 engines', ('15-to-1 (Pinnacle',), None),
+           ('In-place injection, [[15,1,3]], one level', ('[[15,1,3]], injected, 1 level',), None),
+           ('In-place injection, [[125,3,5]], one level', ('[[125,3,5]], injected, 1 level',), None),
+           ('In-place injection, [[63,11,3]], two levels', ('[[63,11,3]], injected, 2 levels, F1=8',), None),
+           ('Litinski distillation factories behind an adapter', ('(15-to-1)^', '(15-to-1)_'), ('surface',)),
+           ('Surface-code layouts of the 2610.06535 protocols behind an adapter', (), ('surface_jws',)))
 MODELING_NOTES = [
     'Serial Pauli-based computation on one processing unit; the supply (magic engine, surface-code factory behind an adapter, or in-place injection) is a searched black box.',
     'Logical measurement and magic-engine inputs are from arXiv:2602.11457v2, Sections IV-V; the code cycle is 12 t_op = 1.2 us.',
@@ -116,16 +119,16 @@ def compute_pinnacle(hw, ch=PINNACLE_CH, pc=pinnacle.BASELINE):
 
 def frozen_curves(hw, ch, direct):
     """Frozen Pinnacle: its published CCZ engine with catalysis, and T states delivered through an adapter."""
-    cc = frozen_pinnacle.sweep(hw, ch)
+    cc = frozen_pinnacle.sweep(hw, ch, FROZEN_QUOPS)
     tt = pinnacle.sweep(hw, ch, pinnacle.FROZEN_T)
     both = cc + tt
-    probes = lambda rows, pc=None: {f'{N:.0e}': (probe_row(N, hw, rows, pc, ch) if pc else frozen_pinnacle.best_at(N, hw, ch, rows))
+    probes = lambda rows, pc=None: {f'{N:.0e}': (probe_row(N, hw, rows, pc, ch) if pc else frozen_pinnacle.best_at(N, hw, ch, rows, FROZEN_QUOPS))
                                     for N in PROBES}
     sens = {}
-    for name, c2, fc in (('four scratch slots per pair', ch, frozen_pinnacle.vary(extra_batch_slots=4)),
-                         ('code cycle 1 us (published)', replace(ch, cycle_seconds=1e-6), frozen_pinnacle.BASELINE),
-                         ('code cycle 1 ms', replace(ch, cycle_seconds=1e-3), frozen_pinnacle.BASELINE),
-                         ('10^4 executions', replace(ch, executions=10**4), frozen_pinnacle.BASELINE)):
+    for name, c2, fc in (('four scratch slots per pair', ch, replace(FROZEN_QUOPS, extra_batch_slots=4)),
+                         ('code cycle 1 us (published)', replace(ch, cycle_seconds=1e-6), FROZEN_QUOPS),
+                         ('code cycle 1 ms', replace(ch, cycle_seconds=1e-3), FROZEN_QUOPS),
+                         ('10^4 executions', replace(ch, executions=10**4), FROZEN_QUOPS)):
         r2 = frozen_pinnacle.sweep(hw, c2, fc)
         sens[name] = dict(crossover=curves.crossover(direct, r2),
                           probes={f'{N:.0e}': frozen_pinnacle.best_at(N, hw, c2, r2, fc) for N in PROBES})
@@ -141,8 +144,10 @@ def sensitivities(hw, direct):
     cases['eta = 1'] = (pinnacle.vary(eta=1.0), PINNACLE_CH)
     cases['reaction 20 t_c'] = (pinnacle.vary(reaction=20), PINNACLE_CH)
     cases['adapter d_a = 15 only'] = (pinnacle.vary(adapter_distances=(15,)), PINNACLE_CH)
-    for label, seconds in (('code cycle 1 us (published)', 1e-6), ('code cycle 0.8 us', 0.8e-6), ('code cycle 1 ms', 1e-3)):
-        cases[label] = (pinnacle.BASELINE, replace(BASELINE, cycle_seconds=seconds))
+    for label, seconds in (('code cycle 1 us (published)', 1e-6), ('code cycle 0.8 us', 0.8e-6)):
+        cases[label] = (pinnacle.BASELINE, replace(BASELINE, cycle_seconds=seconds))   # t_op fixed: surface code stays at 600 ns
+    # A 1 ms Pinnacle cycle means t_op = 1 ms / 12, so the 6-step surface-code cycle of the factories becomes 0.5 ms.
+    cases['code cycle 1 ms'] = (pinnacle.vary(surface_cycle_seconds=0.5e-3), replace(BASELINE, cycle_seconds=1e-3))
     cases['linear synthesis charge'] = (pinnacle.BASELINE, replace(PINNACLE_CH, synthesis_charge='linear'))
     cases['10^4 executions'] = (pinnacle.BASELINE, replace(PINNACLE_CH, executions=10**4))
     out = {}
@@ -156,8 +161,8 @@ def sensitivities(hw, direct):
 def supply_verdict(hw, direct):
     """Each supply used alone: crossover with direct, capability at the probes, qubits for the plateau design."""
     out = {}
-    for name, flt in VERDICT:
-        pc = pinnacle.vary(supply_filter=flt)
+    for name, flt, fam in VERDICT:
+        pc = pinnacle.vary(supply_filter=flt, families=fam) if fam else pinnacle.vary(supply_filter=flt)
         rows = pinnacle.sweep(hw, PINNACLE_CH, pc)
         plateau = pinnacle.min_qubits(PLATEAU_WIDTH, 'deep', hw, PINNACLE_CH, pc)
         p = {f'{N:.0e}': probe_row(N, hw, rows, pc, PINNACLE_CH) for N in PROBES}
@@ -180,6 +185,13 @@ def winners(hw):
     return {k: dict(widths=len(v), min_qubits=min(x[2] for x in v), max_qubits=max(x[2] for x in v)) for k, v in counts.items()}
 
 
+def surface_sc(hw, direct):
+    """The cached surface-code model at the 600 ns cycle of Sec. 3.5, the curve that Pinnacle is compared with."""
+    rows = surface.sweep(hw, SURFACE_CH)
+    probes = {f'{N:.0e}': surface.best_at(N, hw, SURFACE_CH, rows) for N in PROBES}
+    return dict(rows=with_probes(rows, probes), probes=probes, crossover=curves.crossover(direct, rows))
+
+
 def surface_optimized(key, hw, base):
     """Cached surface-code model with the surface-code factories of the 2610.06535 protocols added to its menu."""
     rows = surface.sweep(hw, SURFACE_OPTIMIZED)
@@ -200,12 +212,13 @@ def compute(ch=BASELINE, pc=pinnacle.BASELINE, extended=True):
         record = compute_pinnacle(hw, PINNACLE_CH, pc)
         record.update(hardware=asdict(hw), direct=reference[key]['direct'],
                       surface=reference[key]['surface'], reference_probes=reference[key]['probes'])
+        record['surface_sc'] = surface_sc(hw, record['direct'])
         record['crossover_vs_direct'] = (curves.crossover(record['direct'], record['pinnacle'])
                                          if record['supported'] else None)
         if extended:
             ext = dict(surface_optimized=surface_optimized(key, hw, reference))
             if record['supported']:
-                rivals = record['direct'] + record['surface']      # the cached surface code; the extended menu is in the appendix
+                rivals = record['direct'] + record['surface_sc']['rows']   # surface code at 600 ns; the extended menu is in the appendix
                 record['crossover_vs_all'] = curves.crossover(rivals, record['pinnacle'])
                 ext.update(per_family={f: dict(rows=pinnacle.sweep(hw, PINNACLE_CH, pinnacle.vary(families=(f,))))
                                        for f in FAMILIES},
@@ -256,13 +269,13 @@ def plot_main(data, path):
     for ax, key in zip(axes.flat, KEYS):
         v = data[key]
         draw_curve(ax, v['direct'], DIRECT, 'Direct', lw=2)
-        draw_curve(ax, v['surface'], SURFACE, 'Surface code', lw=2)
+        draw_curve(ax, v['surface_sc']['rows'], SURFACE, 'Surface code', lw=2)
         if v['supported']:
             draw_curve(ax, v['pinnacle'], PINNACLE, 'Pinnacle, best of supply menu', lw=2.2)
             crossover_line(ax, v['crossover_vs_all'], PINNACLE, 'Pinnacle crossover', 4e8, ha='right')
         else:
             ax.text(3, 3e5, 'Pinnacle: 2D-grid mapping\nnot modeled', color=PINNACLE, fontsize=8)
-        crossover = curves.crossover(v['direct'], v['surface'])
+        crossover = curves.crossover(v['direct'], v['surface_sc']['rows'])
         if crossover:
             crossover_line(ax, crossover, SURFACE, 'surface-code crossover', 4e8 if not v['supported'] else 30)
         label_direct(ax, v['direct'])
@@ -282,7 +295,7 @@ def plot_appendix(data, path):
     for ax, key in zip(axes, SUPPORTED_KEYS):
         v = data[key]; e = v['extended']
         draw_curve(ax, v['direct'], DIRECT, 'Direct', lw=2)
-        draw_curve(ax, v['surface'], SURFACE, 'Surface code', lw=2)
+        draw_curve(ax, v['surface_sc']['rows'], SURFACE, 'Surface code', lw=2)
         draw_curve(ax, e['surface_optimized']['rows'], SURFACE, 'Surface code, extended factory menu', lw=1.6, ls='--')
         draw_curve(ax, v['pinnacle'], PINNACLE, 'Pinnacle, best of supply menu', lw=1.4)
         draw_curve(ax, e['per_family']['reference']['rows'], PINNACLE_LIGHT, 'Pinnacle, published 15-to-1 engines only', lw=1.6, ls='--')
@@ -323,7 +336,7 @@ def main():
         for key in SUPPORTED_KEYS:
             e = data[key]['extended']
             print(key, 'crossover vs direct and cached surface', data[key]['crossover_vs_all'],
-                  '| surface (cached) crossover', curves.crossover(data[key]['direct'], data[key]['surface']),
+                  '| surface (600 ns) crossover', data[key]['surface_sc']['crossover'],
                   '| surface (extended menu) crossover', e['surface_optimized']['crossover'],
                   '| surface extended s at probes', {N: (r['s'] if r else 0) for N, r in e['surface_optimized']['probes'].items()},
                   '| Frozen ccz', e['frozen']['ccz']['crossover'], 'adapter-T', e['frozen']['adapter_t']['crossover'],

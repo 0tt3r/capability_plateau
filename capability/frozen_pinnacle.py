@@ -84,6 +84,7 @@ class Choices:
     seed_transfer_slots: int = 6              # [choice] seed transfer, internal teleport, port reset
     engine_startup_slots: int = 3             # [choice] first Toffoli completes at slot eight, then every five
     seed_patch_error_per_cycle: float = 3e-10  # [choice] uniform d=15 surface-law storage estimate
+    final_measurements: bool = True           # [choice] w readout slots; False gives N_M = 0, as for QUOPS in the paper
 
 
 BASELINE = Choices()
@@ -150,7 +151,7 @@ def _designs(w, ensemble, hw, ch, counts, fc):
     eps = 2.**(-(counts - FIT['b'])/FIT['a'])
     blocks = max(3, (int(w) + ANCILLA_LOGICALS + CODE.processing_k - 1)//CODE.processing_k)
     period = max(CODE.code_cycles, fc.reaction_cycles)
-    fixed = int(w) + fc.seed_transfer_slots + fc.engine_startup_slots + fc.extra_batch_slots*batches
+    fixed = (int(w) if fc.final_measurements else 0) + fc.seed_transfer_slots + fc.engine_startup_slots + fc.extra_batch_slots*batches
     slots = fixed + ENGINE.toffoli_slots*batches.astype(float)/(1 - ENGINE.rejection)
     seed_wait = fc.seed_attempt_cycles/fc.seed_success
     cycles = period*slots + seed_wait

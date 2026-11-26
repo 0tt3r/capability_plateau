@@ -24,6 +24,7 @@ python -m venv .venv
 .venv/bin/python scripts/compare_surface_architectures.py
 .venv/bin/python scripts/audit_surface_architectures.py
 .venv/bin/python scripts/make_star_comparison.py
+.venv/bin/python scripts/make_quops_comparison.py
 .venv/bin/python -m pytest -q
 ```
 
@@ -36,6 +37,9 @@ which reads both the baseline and the original Pinnacle results.
 `make_pinnacle_curves.py` also computes the Frozen Pinnacle curves with an extended supply menu, the
 surface-code curve with the same factory menu, the supply comparison, and the sensitivities; see
 [the Pinnacle note](docs/pinnacle.md).
+`make_quops_comparison.py` draws the combined capability figure of the draft (`figures/quops_comparison.*`)
+from the cached direct, surface-code, and Pinnacle results and the STAR steps in
+`results/quops_comparison_star.json`; it recomputes nothing.
 The notebook [quops_walkthrough.ipynb](notebooks/quops_walkthrough.ipynb) independently calculates
 one direct and one sequential PBC design before constructing the curves.
 

@@ -86,7 +86,8 @@ def hand_design(w, ensemble, code, s, NTc, F, hw=H2, ch=BASELINE, eta=2.0):
     NT_total = R*NTc
     beta = ceil(w/code.k)
     D = max(code.dt, 10, s.min_slot)
-    cycles = max(NT_total*D, ceil(NT_total/F)*s.cycles) + (w + 1)*D
+    period = s.cycles*(6e-7/ch.cycle_seconds if s.family in ('surface', 'surface_jws') else 1)   # surface code at 600 ns
+    cycles = max(NT_total*D, ceil(NT_total/F)*period) + D                                   # N_M = 0 for QUOPS
     N = beta*code.qubits + F*s.qubits + s.port_qubits
     p_pb = 6.2*(hw.p/0.0158)**(code.d/2 + 0.47)
     volume = beta*cycles/code.dt
@@ -169,9 +170,10 @@ def test_eta_one_lowers_the_qubit_need():
 
 
 def test_cycle_time_scales_runtime_exactly_and_leaves_qubits_unchanged_when_not_time_limited():
+    """With engine supplies only; surface-code supplies keep their own 600 ns cycle."""
     from dataclasses import replace
-    a = P.min_qubits(60, 'deep', H2, BASELINE)
-    b = P.min_qubits(60, 'deep', H2, replace(BASELINE, cycle_seconds=1.2e-6))
+    a = P.min_qubits(60, 'deep', H2, BASELINE, REF)
+    b = P.min_qubits(60, 'deep', H2, replace(BASELINE, cycle_seconds=1.2e-6), REF)
     assert b['cycles'] == pytest.approx(a['cycles']) and b['run_seconds'] == pytest.approx(1.2*a['run_seconds'])
     assert b['qubits'] == a['qubits']
 
@@ -191,3 +193,19 @@ def test_extended_surface_menu_is_never_worse_than_the_cached_menu():
     for w, e in ((6, 'deep'), (40, 'deep'), (300, 'shallow')):
         a, b = surface.min_qubits(w, e, H2, BASELINE), surface.min_qubits(w, e, H2, ext)
         assert b['qubits'] <= a['qubits']
+
+
+def test_surface_supplies_run_at_the_surface_code_cycle():
+    """A cultivation factory of 100 surface-code cycles delivers every 50 Pinnacle cycles at 1.2 us (600 ns / 1.2 us)."""
+    from dataclasses import replace
+    pc = P.vary(supply_filter=('cultivation, adapter d_a=15',))
+    sa = P.supply_arrays(pc)
+    assert P.supply_periods(sa, pc, replace(BASELINE, cycle_seconds=1.2e-6)) == pytest.approx([50.])
+    assert P.supply_periods(sa, P.vary(supply_filter=('15-to-1 (Pinnacle, d_a=7)',)), BASELINE)[0] != 50.
+
+
+def test_quops_has_no_final_measurement_slots():
+    """N_M = 0 for QUOPS (draft Sec. 2.2), as in the surface-code runtime of Sec. 4.8: only the startup slot is added."""
+    a = P.min_qubits(40, 'deep', H2, BASELINE, REF)
+    b = P.min_qubits(40, 'deep', H2, BASELINE, P.vary(families=('reference',), final_measurements=True))
+    assert b['cycles'] - a['cycles'] == pytest.approx(40*a['slot'])

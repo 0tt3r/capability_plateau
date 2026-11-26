@@ -8,8 +8,11 @@ compiled onto the repository's nearest-neighbour grid, so H1 and H3 return no de
 Schedule, in code cycles t_c, by the same pauli-based compilation as the surface-code model: each synthesized T gate is
 one magic-state-assisted logical measurement, the QUOPS Cliffords update a classical frame, and the w transformed final
 measurements run after the N_T consuming measurements. A slot lasts D = max(d_t, reaction time, supply slot) code cycles:
-  T_run = max[N_T D, ceil(N_T / F) t_supply] + (w + 1) D                 (cycles; 1 startup slot, w readouts)
-where F identical supplies each deliver a T state every t_supply code cycles on average, rejection included.
+  T_run = max[N_T D, ceil(N_T / F) t_supply] + (N_M + 1) D                (cycles; 1 startup slot, N_M readouts)
+where F identical supplies each deliver a T state every t_supply code cycles on average, rejection included. For QUOPS
+N_M = 0, as in the surface-code model (Choices.final_measurements). Surface-code factories and layouts behind the
+adapter run at the surface-code cycle (Choices.surface_cycle_seconds, 600 ns) and their periods are converted to
+Pinnacle code cycles.
 
 Loss (minus the log no-fault probability), the form of draft Eq. (surface-code-failure):
   blocks      eta beta (T_run / d_t) Lambda(P_PB),  P_PB = 6.2 (p / 0.0158)^(d/2 + 0.47) per whole block per d_t cycles
@@ -65,6 +68,8 @@ class Choices:
     frozen: bool = False               # True: Frozen Pinnacle block (FROZEN_CODES) instead of the original GB blocks
     adapter_distances: tuple = pf.ADAPTER_DISTANCES
     supply_filter: tuple = ()          # if given, keep only supplies whose name contains one of these strings
+    surface_cycle_seconds: float = 6e-7  # [draft] 6 t_op: cycle of the surface-code factories and layouts behind the adapter
+    final_measurements: bool = False   # [draft] QUOPS has no final measurements (Sec. 2.2), so N_M = 0 as in Sec. 4.8
 
 
 BASELINE = Choices()
@@ -109,9 +114,18 @@ def supply_arrays(pc):
             S = [x for x in S if any(f in x.name for f in pc.supply_filter)]
         a = lambda f, dt=float: np.array([f(s) for s in S], dtype=dt)
         _CACHE[key] = dict(S=S, qubits=a(lambda s: s.qubits), cycles=a(lambda s: s.cycles),
+                           surface=a(lambda s: s.family in SURFACE_FAMILIES, bool),
                            port=a(lambda s: s.port_qubits), slot=a(lambda s: s.min_slot),
                            loss=a(lambda s: -log1p(-s.error) - log1p(-s.port_error)))
     return _CACHE[key]
+
+
+SURFACE_FAMILIES = ('surface', 'surface_jws')
+
+
+def supply_periods(sa, pc, ch):
+    """Supply periods in Pinnacle code cycles: surface-code supplies count surface-code cycles of pc.surface_cycle_seconds."""
+    return np.where(sa['surface'], sa['cycles']*pc.surface_cycle_seconds/ch.cycle_seconds, sa['cycles'])
 
 
 def min_qubits(w, ensemble, hw, ch, pc=BASELINE):
@@ -128,6 +142,7 @@ def min_qubits(w, ensemble, hw, ch, pc=BASELINE):
     week = WEEK_SECONDS/ch.cycle_seconds
     runs = runs_per_copy(ch.executions)
     sa = supply_arrays(pc)
+    supply_cycles = supply_periods(sa, pc, ch)                    # Pinnacle code cycles per delivered state
     NTR = (R*NT).astype(float)                                   # T states consumed, per T count
     magic = NTR[None, :]*sa['loss'][:, None]                     # (supplies, T counts)
     best = None
@@ -137,17 +152,17 @@ def min_qubits(w, ensemble, hw, ch, pc=BASELINE):
         beta = ceil(w/code.k)
         per_cycle = pc.eta*beta*(-log1p(-p_block(code, hw)))/code.dt          # loss per code cycle of one block unit
         D = np.maximum(max(code.dt, pc.reaction), sa['slot'])[:, None]         # slot per supply
-        tail = (w + 1)*D                                                       # startup plus final readouts
+        tail = ((w if pc.final_measurements else 0) + 1)*D                     # startup plus final readouts
         room = (stochastic - magic)/per_cycle                                  # cycles the loss budget allows
         for r in runs:
             limit = np.minimum(room, week/r)
             avail = limit - tail
-            k_f = np.floor(avail/sa['cycles'][:, None])                        # states one supply delivers in time
+            k_f = np.floor(avail/supply_cycles[:, None])                        # states one supply delivers in time
             ok = (avail >= NTR[None, :]*D) & (k_f >= 1)
             if not ok.any():
                 continue
             F = np.ceil(NTR[None, :]/np.where(ok, k_f, 1))
-            cycles = np.maximum(NTR[None, :]*D, np.ceil(NTR[None, :]/F)*sa['cycles'][:, None]) + tail
+            cycles = np.maximum(NTR[None, :]*D, np.ceil(NTR[None, :]/F)*supply_cycles[:, None]) + tail
             per_copy = np.minimum(np.floor(week/cycles), ch.executions)
             copies = np.ceil(ch.executions/np.maximum(per_copy, 1))
             qubits = np.where(ok, copies*(beta*code.qubits + F*sa['qubits'][:, None] + sa['port'][:, None]), np.inf)
@@ -161,7 +176,7 @@ def min_qubits(w, ensemble, hw, ch, pc=BASELINE):
                             run_seconds=float(c*ch.cycle_seconds), copies=int(copies[i, j]),
                             runs_per_copy=int(per_copy[i, j]),
                             loss_blocks=float(per_cycle*c), loss_magic=float(magic[i, j]),
-                            loss_synthesis=float(synthesis[j]), supply_qubits=s.qubits, supply_cycles=s.cycles,
+                            loss_synthesis=float(synthesis[j]), supply_qubits=s.qubits, supply_cycles=float(supply_cycles[i]),
                             supply_error=s.error)
     return best
 

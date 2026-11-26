@@ -12,6 +12,11 @@
 > The one-at-a-time sensitivities are now stored in `results/pinnacle.json` (`extended.sensitivity`), so the former
 > `results/pinnacle_sensitivity.json` and `figures/pinnacle_sensitivity.*` were removed. `make_frozen_pinnacle_curves.py` keeps
 > the shared 1 us cycle, whereas the paper's Frozen numbers (appendix) come from `make_pinnacle_curves.py` at 1.2 us.
+> Cycle times follow 100 ns per time step: the Pinnacle unit runs at 12 t_op = 1.2 us, while surface-code factories and
+> layouts behind the adapter run at the 6 t_op = 600 ns surface-code cycle (`Choices.surface_cycle_seconds`), and the
+> surface-code comparison curve (`surface_sc` in `results/pinnacle.json`) is the cached model at 600 ns. QUOPS has no
+> final measurements, so the schedule adds only the startup slot (`Choices.final_measurements=False`, N_M = 0, as in the
+> surface-code QUOPS runtime); the Frozen CCZ runs use `frozen_pinnacle.vary(final_measurements=False)`.
 
 This serial Pinnacle resource estimate uses the original architecture described in
 [arXiv:2602.11457v2](https://arxiv.org/html/2602.11457v2), revised 5 May 2026.
