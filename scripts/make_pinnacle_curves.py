@@ -46,19 +46,22 @@ PINNACLE_CYCLE = 12*1e-7                                   # 12 t_op with t_op =
 PINNACLE_CH = replace(BASELINE, cycle_seconds=PINNACLE_CYCLE)
 SURFACE_CYCLE = 6e-7                                        # 6 t_op: the surface-code cycle of Sec. 3.5
 SURFACE_CH = replace(BASELINE, cycle_seconds=SURFACE_CYCLE)   # the surface-code comparison curve (cached model, 600 ns)
-SURFACE_OPTIMIZED = replace(SURFACE_CH, factories=('cultivation', 'litinski', 'jws'))
+SURFACE_OPTIMIZED = replace(SURFACE_CH, factories=('cultivation', 'jws_winners', 'catalogue_winners'))   # the options that set a point on the extended curve
 FROZEN_QUOPS = frozen_pinnacle.vary(final_measurements=False)  # N_M = 0 for QUOPS, as in the surface-code model
-FAMILIES = ('reference', 'surface', 'surface_jws', 'gb_cult', 'gb_inject', 'gb_inject2')
+FAMILIES = ('reference', 'surface', 'surface_jws', 'surface_catalogue', 'gb_cat_cult')
 PLATEAU_WIDTH = 936                                         # largest deep width that completes within the week at 1.2 us
 # One row per supply that can win somewhere on the Pinnacle curve; the filters are substrings of the supply names of
 # capability/pinnacle_factories.py.
 VERDICT = (('Cultivation behind an adapter', ('cultivation, adapter',), None),
            ('Published 15-to-1 engines', ('15-to-1 (Pinnacle',), None),
-           ('In-place injection, [[15,1,3]], one level', ('[[15,1,3]], injected, 1 level',), None),
-           ('In-place injection, [[125,3,5]], one level', ('[[125,3,5]], injected, 1 level',), None),
-           ('In-place injection, [[63,11,3]], two levels', ('[[63,11,3]], injected, 2 levels, F1=8',), None),
-           ('Litinski distillation factories behind an adapter', ('(15-to-1)^', '(15-to-1)_'), ('surface',)),
-           ('Surface-code layouts of the 2610.06535 protocols behind an adapter', (), ('surface_jws',)))
+           ('[[28,1,3]] engine with cultivated inputs', ('[[28,1,3]] T0, cultivated engine d_a=7',), ('gb_cat_cult',)),
+           ('[[32,1,3]] engine with cultivated inputs', ('[[32,1,3]] T0, cultivated engine d_a=7',), ('gb_cat_cult',)),
+           ('[[47,5,3]] engine with cultivated inputs', ('[[47,5,3]] T0·T1·T2·T3·T4, cultivated engine d_a=9',), ('gb_cat_cult',)),
+           ('[[56,8,3]] engine with cultivated inputs', ('[[56,8,3]] T0·T1·T2·T3·T4·T5·T6·T7, cultivated engine d_a=9',), ('gb_cat_cult',)),
+           ('Layout of [[14,1,2]] with faulty T, behind an adapter', ('[[14,1,2]] T0, faulty T, d=(7,5,5)',), ('surface_catalogue',)),
+           ('Layout of [[8,3,2]] (CCZ, catalysed to T) with faulty T, behind an adapter', ('[[8,3,2]] CCZ012, faulty T, d=(7,5,5)',), ('surface_catalogue',)),
+           ('Two-level layout of [[14,2,2]] fed by 15-to-1 factories, behind an adapter', ('[[14,2,2]] T0,T1, two levels',), ('surface_catalogue',)),
+           ('Two-level layout of [[20,3,2]] fed by 15-to-1 factories, behind an adapter', ('[[20,3,2]] T0,T1,T2, two levels',), ('surface_catalogue',)))
 MODELING_NOTES = [
     'Serial Pauli-based computation on one processing unit; the supply (magic engine, surface-code factory behind an adapter, or in-place injection) is a searched black box.',
     'Logical measurement and magic-engine inputs are from arXiv:2602.11457v2, Sections IV-V; the code cycle is 12 t_op = 1.2 us.',
@@ -271,7 +274,7 @@ def plot_main(data, path):
         draw_curve(ax, v['direct'], DIRECT, 'Direct', lw=2)
         draw_curve(ax, v['surface_sc']['rows'], SURFACE, 'Surface code', lw=2)
         if v['supported']:
-            draw_curve(ax, v['pinnacle'], PINNACLE, 'Pinnacle, best of supply menu', lw=2.2)
+            draw_curve(ax, v['pinnacle'], PINNACLE, 'Pinnacle, optimized magic engines', lw=2.2)
             crossover_line(ax, v['crossover_vs_all'], PINNACLE, 'Pinnacle crossover', 4e8, ha='right')
         else:
             ax.text(3, 3e5, 'Pinnacle: 2D-grid mapping\nnot modeled', color=PINNACLE, fontsize=8)
@@ -296,11 +299,11 @@ def plot_appendix(data, path):
         v = data[key]; e = v['extended']
         draw_curve(ax, v['direct'], DIRECT, 'Direct', lw=2)
         draw_curve(ax, v['surface_sc']['rows'], SURFACE, 'Surface code', lw=2)
-        draw_curve(ax, e['surface_optimized']['rows'], SURFACE, 'Surface code, extended factory menu', lw=1.6, ls='--')
-        draw_curve(ax, v['pinnacle'], PINNACLE, 'Pinnacle, best of supply menu', lw=1.4)
+        draw_curve(ax, e['surface_optimized']['rows'], SURFACE, 'Surface code, optimized magic-state factories', lw=1.6, ls='--')
+        draw_curve(ax, v['pinnacle'], PINNACLE, 'Pinnacle, optimized magic engines', lw=1.4)
         draw_curve(ax, e['per_family']['reference']['rows'], PINNACLE_LIGHT, 'Pinnacle, published 15-to-1 engines only', lw=1.6, ls='--')
         draw_curve(ax, e['frozen']['ccz']['rows'], FROZEN, 'Frozen Pinnacle, published CCZ engine with catalysis', lw=2.2)
-        draw_curve(ax, e['frozen']['optimized']['rows'], FROZEN, 'Frozen Pinnacle, optimized supply menu', lw=1.6, ls='--')
+        draw_curve(ax, e['frozen']['optimized']['rows'], FROZEN, 'Frozen Pinnacle, optimized magic engines', lw=1.6, ls='--')
         decorate(ax, f"{key}: {v['hardware']['name']}")
         ax.set_xlabel('Physical qubits N')
         label_direct(ax, v['direct'])

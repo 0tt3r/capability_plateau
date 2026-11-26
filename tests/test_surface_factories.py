@@ -39,7 +39,30 @@ def test_jws_menu_is_pareto_and_multi_output_are_batches():
     assert F and all(f.family == 'jws' for f in F)
     for f in F:
         assert f.states_per_batch >= 1 and f.cycles_per_output > 0 and 0 < f.error < 1e-3
-    for f in F:       # no entry is dominated by another
-        assert not any(g is not f and g.qubits <= f.qubits and g.cycles_per_output <= f.cycles_per_output
-                       and g.error <= f.error and (g.qubits, g.cycles_per_output, g.error) != (f.qubits, f.cycles_per_output, f.error)
-                       for g in F)
+    fold = [f for f in F if sf.FOLD_LABEL in f.name]       # fold-transversal inputs: all-to-all hardware only
+    assert fold
+    for front in ([f for f in F if sf.FOLD_LABEL not in f.name], fold):
+        for f in front:       # no entry is dominated by another of the same hardware front
+            assert not any(g is not f and g.qubits <= f.qubits and g.cycles_per_output <= f.cycles_per_output
+                           and g.error <= f.error and (g.qubits, g.cycles_per_output, g.error) != (f.qubits, f.cycles_per_output, f.error)
+                           for g in front)
+
+
+def test_catalogue_error_coefficients_and_yields():
+    """scripts/catalogue_factories.py counts the published error coefficients and applies the T-yield rule."""
+    import json
+    from pathlib import Path
+    rows = json.loads((Path(__file__).resolve().parents[1]/'results/catalogue_factories.json').read_text())['designs']
+    by = {(r['n'], r['k'], r['d'], r['gate']): r for r in rows}
+    ccz = by[(8, 3, 2, 'CCZ012')]
+    assert ccz['A_d'] == 28 and ccz['T_per_run'] == 2          # 8T -> CCZ, kappa = 28; catalysed CCZ -> 2 T
+    t14 = by[(14, 1, 2, 'T0')]
+    assert t14['A_d'] == 7 and t14['T_per_run'] == 1           # the catalogue's c = 7
+    for r in rows:
+        assert r['error'] < 1e-3 and r['T_per_run'] >= 1
+
+
+def test_catalogue_winners_are_in_the_extended_menu():
+    from capability.factories import CATALOGUE_WINNERS, menu
+    names = {f.name for f in menu(('catalogue_winners',))}
+    assert names == set(CATALOGUE_WINNERS)

@@ -1,13 +1,26 @@
 # QUOPS capability for the original Pinnacle architecture
 
-> **Update (supply menu).** `capability/pinnacle.py` now searches a menu of magic-state supplies (Sec. 3.7 of the
-> draft) instead of a single 15-to-1 engine: the published engines, cultivation or distillation factories behind a
-> surface-code adapter, the pure-T protocols of arXiv:2610.06535 as GB engines with cultivated or in-place injected
-> inputs, and surface-code layouts of those protocols (`capability/surface_factories.py`, family `jws`). The schedule
-> follows the surface-code form of Sec. 3.5, with `F` supplies, a slot `D = max(d_t, t_r, s_F)`, block volume and
-> failure probability, and the code cycle is 12 t_op = 1.2 us. With only the published engines it reproduces the
-> serial estimate below (crossover 4,862; width-84 design with 9,570 qubits) up to the plateau, where it allows several
-> engines. `scripts/make_pinnacle_curves.py` keeps the provenance fields read by `make_frozen_pinnacle_curves.py`.
+> **Update (final menus).** `capability/pinnacle.py` searches magic engines and factories (Sec. 3.7 of the draft) along
+> three pathways: (A) physical T states injected in place into a GB-block engine, (B) cultivated inputs distilled in a
+> GB-block engine with the template of the published 15-to-1 engine, and (C) cultivation and distillation on surface-code
+> patches, delivered to the unit through an adapter. Every protocol of the factory catalogues (arXiv:2610.06535 with the
+> classification of arXiv:2609.30860, and the distance-2 catalogue of Singh, Gidney and Jones) is costed along A, B, and C
+> by `scripts/catalogue_factories.py`, which writes `results/catalogue_factories.json` (A_d counted from each circuit; T
+> yield = T count for outputs Clifford-equivalent to T states, 2 per CCZ for disjoint CCZ products). Only the entries that
+> set a point on the exact curves (every even width) are kept (`PINNACLE_WINNERS`): the published 15-to-1 engines
+> (d_a = 7, 9), engines with cultivated inputs for [[28,1,3]] and [[32,1,3]] (d_a = 7) and [[47,5,3]] and [[56,8,3]]
+> (d_a = 9) (B), cultivation behind adapters d_a = 11, 15, 19, 23 (C), and surface-code layouts of [[14,1,2]] and [[8,3,2]]
+> with faulty T and two-level (15-to-1)^4 x [[20,3,2]] and (15-to-1)^6 x [[14,2,2]] layouts (C). Pathway A never sets a
+> point at the best quoted in-place rejection (0.875 per attempt, arXiv:2606.28518). All engines, the published ones included,
+> are charged the template's output error (6.2e-10 and 1.2e-11 for the published engines). The GB code distances are
+> d = 6, 10, 16, 24. The optimized Frozen menu (`FROZEN_WINNERS`) and the extended surface-code menu (`JWS_WINNERS`,
+> `CATALOGUE_WINNERS` in `capability/factories.py`) keep their own winners. The schedule follows Sec. 3.5 with `F` magic
+> engines or factories, a slot `D = max(d_t, t_r, s_F)`, and no final-measurement slots for QUOPS; surface-code factories
+> and layouts run at the 600 ns surface-code cycle, the Pinnacle unit at 12 t_op = 1.2 us. Crediting every catalogue output
+> with its full T count (`--yield-rule tcount`) leaves the crossovers and the capabilities at 1e4 and 1e6 unchanged.
+> With only the published engines it reproduces the serial estimate below (crossover 4,862; width-84 design with 9,570
+> qubits) up to the plateau, where it allows several engines. `scripts/make_pinnacle_curves.py` keeps the provenance fields
+> read by `make_frozen_pinnacle_curves.py`.
 > The sections below document the original serial model, which `capability/frozen_pinnacle.py` still follows.
 > The one-at-a-time sensitivities are now stored in `results/pinnacle.json` (`extended.sensitivity`), so the former
 > `results/pinnacle_sensitivity.json` and `figures/pinnacle_sensitivity.*` were removed. `make_frozen_pinnacle_curves.py` keeps
@@ -83,7 +96,7 @@ This is an explicit uniform-noise proxy, not a separately simulated bimodal fit.
 ## 2. Layout and available designs
 
 Each execution copy has one processing unit and one magic engine, with no
-separate memory. The code menu is from Table 1 of the paper:
+separate memory. The code menu is from Table 1 of the paper, restricted to the four distances that set a point on the curves (d = 6, 10, 16, 24):
 
 | Code `[[n,k,d]]` | Native logical cycle `d_t` | Physical qubits per processing block |
 |---|---:|---:|

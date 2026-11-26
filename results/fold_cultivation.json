@@ -1,0 +1,2765 @@
+{
+ "H2": {
+  "direct": 144,
+  "surface": {
+   "crossover": 4013.0,
+   "probes": {
+    "1e+04": {
+     "w": 12,
+     "s": 1728,
+     "ensemble": "deep",
+     "qubits": 9161.0,
+     "distance": 11,
+     "factory": "fold-transversal cultivation",
+     "factories": 1,
+     "run_seconds": 0.2365408556792873,
+     "loss_magic": 1.9008000009504003e-05,
+     "loss_synthesis": 0.07012239041897914
+    },
+    "1e+06": {
+     "w": 358,
+     "s": 45882712,
+     "ensemble": "deep",
+     "qubits": 995700.0,
+     "distance": 25,
+     "factory": "(15-to-1)^6_{11,5,5} x (15-to-1)_{25,11,11}",
+     "factories": 1,
+     "run_seconds": 47695.084509,
+     "loss_magic": 0.002601549770403512,
+     "loss_synthesis": 0.22699039042310773
+    }
+   },
+   "winners": [
+    "(15-to-1)^6_{11,5,5} x (15-to-1)_{25,11,11}",
+    "(15-to-1)^6_{13,5,5} x (20-to-4)_{23,11,13}",
+    "fold-transversal cultivation"
+   ],
+   "steps": [
+    [
+     949.0,
+     8,
+     "fold-transversal cultivation"
+    ],
+    [
+     2017.0,
+     16,
+     "fold-transversal cultivation"
+    ],
+    [
+     2564.0,
+     64,
+     "fold-transversal cultivation"
+    ],
+    [
+     4013.0,
+     216,
+     "fold-transversal cultivation"
+    ],
+    [
+     5272.0,
+     512,
+     "fold-transversal cultivation"
+    ],
+    [
+     8193.0,
+     1000,
+     "fold-transversal cultivation"
+    ],
+    [
+     9161.0,
+     1728,
+     "fold-transversal cultivation"
+    ],
+    [
+     14645.0,
+     2744,
+     "fold-transversal cultivation"
+    ],
+    [
+     15997.0,
+     4096,
+     "fold-transversal cultivation"
+    ],
+    [
+     17349.0,
+     5832,
+     "fold-transversal cultivation"
+    ],
+    [
+     19377.0,
+     8000,
+     "fold-transversal cultivation"
+    ],
+    [
+     21516.0,
+     10648,
+     "fold-transversal cultivation"
+    ],
+    [
+     29249.0,
+     13824,
+     "fold-transversal cultivation"
+    ],
+    [
+     31949.0,
+     17576,
+     "fold-transversal cultivation"
+    ],
+    [
+     33749.0,
+     21952,
+     "fold-transversal cultivation"
+    ],
+    [
+     35549.0,
+     27000,
+     "fold-transversal cultivation"
+    ],
+    [
+     37349.0,
+     32768,
+     "fold-transversal cultivation"
+    ],
+    [
+     40049.0,
+     39304,
+     "fold-transversal cultivation"
+    ],
+    [
+     41849.0,
+     46656,
+     "fold-transversal cultivation"
+    ],
+    [
+     44548.0,
+     54872,
+     "fold-transversal cultivation"
+    ],
+    [
+     46348.0,
+     64000,
+     "fold-transversal cultivation"
+    ],
+    [
+     61717.0,
+     74088,
+     "fold-transversal cultivation"
+    ],
+    [
+     64029.0,
+     85184,
+     "fold-transversal cultivation"
+    ],
+    [
+     66341.0,
+     97336,
+     "fold-transversal cultivation"
+    ],
+    [
+     68653.0,
+     110592,
+     "fold-transversal cultivation"
+    ],
+    [
+     70965.0,
+     125000,
+     "fold-transversal cultivation"
+    ],
+    [
+     74433.0,
+     140608,
+     "fold-transversal cultivation"
+    ],
+    [
+     76745.0,
+     157464,
+     "fold-transversal cultivation"
+    ],
+    [
+     79057.0,
+     175616,
+     "fold-transversal cultivation"
+    ],
+    [
+     81369.0,
+     195112,
+     "fold-transversal cultivation"
+    ],
+    [
+     83681.0,
+     216000,
+     "fold-transversal cultivation"
+    ],
+    [
+     87149.0,
+     238328,
+     "fold-transversal cultivation"
+    ],
+    [
+     89461.0,
+     262144,
+     "fold-transversal cultivation"
+    ],
+    [
+     92800.0,
+     287496,
+     "fold-transversal cultivation"
+    ],
+    [
+     95112.0,
+     314432,
+     "fold-transversal cultivation"
+    ],
+    [
+     120301.0,
+     343000,
+     "fold-transversal cultivation"
+    ],
+    [
+     123189.0,
+     373248,
+     "fold-transversal cultivation"
+    ],
+    [
+     127521.0,
+     405224,
+     "fold-transversal cultivation"
+    ],
+    [
+     130409.0,
+     438976,
+     "fold-transversal cultivation"
+    ],
+    [
+     133297.0,
+     474552,
+     "fold-transversal cultivation"
+    ],
+    [
+     136185.0,
+     512000,
+     "fold-transversal cultivation"
+    ],
+    [
+     139073.0,
+     551368,
+     "fold-transversal cultivation"
+    ],
+    [
+     141961.0,
+     592704,
+     "fold-transversal cultivation"
+    ],
+    [
+     146293.0,
+     636056,
+     "fold-transversal cultivation"
+    ],
+    [
+     149181.0,
+     681472,
+     "fold-transversal cultivation"
+    ],
+    [
+     152069.0,
+     729000,
+     "fold-transversal cultivation"
+    ],
+    [
+     154957.0,
+     778688,
+     "fold-transversal cultivation"
+    ],
+    [
+     157845.0,
+     830584,
+     "fold-transversal cultivation"
+    ],
+    [
+     160733.0,
+     884736,
+     "fold-transversal cultivation"
+    ],
+    [
+     163621.0,
+     941192,
+     "fold-transversal cultivation"
+    ],
+    [
+     167953.0,
+     1000000,
+     "fold-transversal cultivation"
+    ],
+    [
+     170841.0,
+     1061208,
+     "fold-transversal cultivation"
+    ],
+    [
+     179505.0,
+     1259712,
+     "fold-transversal cultivation"
+    ],
+    [
+     235061.0,
+     1560896,
+     "fold-transversal cultivation"
+    ],
+    [
+     249173.0,
+     1906624,
+     "fold-transversal cultivation"
+    ],
+    [
+     265049.0,
+     2299968,
+     "fold-transversal cultivation"
+    ],
+    [
+     279161.0,
+     2744000,
+     "fold-transversal cultivation"
+    ],
+    [
+     298565.0,
+     3375000,
+     "fold-transversal cultivation"
+    ],
+    [
+     316205.0,
+     4096000,
+     "fold-transversal cultivation"
+    ],
+    [
+     335609.0,
+     4913000,
+     "fold-transversal cultivation"
+    ],
+    [
+     353249.0,
+     5832000,
+     "fold-transversal cultivation"
+    ],
+    [
+     451157.0,
+     7077888,
+     "fold-transversal cultivation"
+    ],
+    [
+     482897.0,
+     8741816,
+     "fold-transversal cultivation"
+    ],
+    [
+     512521.0,
+     10648000,
+     "fold-transversal cultivation"
+    ],
+    [
+     544261.0,
+     12812904,
+     "fold-transversal cultivation"
+    ],
+    [
+     576001.0,
+     15252992,
+     "fold-transversal cultivation"
+    ],
+    [
+     662230.0,
+     18821096,
+     "(15-to-1)^6_{13,5,5} x (20-to-4)_{23,11,13}"
+    ],
+    [
+     696086.0,
+     22425768,
+     "(15-to-1)^6_{13,5,5} x (20-to-4)_{23,11,13}"
+    ],
+    [
+     788054.0,
+     27543608,
+     "(15-to-1)^6_{13,5,5} x (20-to-4)_{23,11,13}"
+    ],
+    [
+     832700.0,
+     33386248,
+     "(15-to-1)^6_{11,5,5} x (15-to-1)_{25,11,11}"
+    ],
+    [
+     955700.0,
+     40001688,
+     "(15-to-1)^6_{11,5,5} x (15-to-1)_{25,11,11}"
+    ],
+    [
+     995700.0,
+     45882712,
+     "(15-to-1)^6_{11,5,5} x (15-to-1)_{25,11,11}"
+    ]
+   ]
+  },
+  "surface_optimized": {
+   "crossover": 4013.0,
+   "probes": {
+    "1e+04": {
+     "w": 12,
+     "s": 1728,
+     "ensemble": "deep",
+     "qubits": 9161.0,
+     "distance": 11,
+     "factory": "fold-transversal cultivation",
+     "factories": 1,
+     "run_seconds": 0.2365408556792873,
+     "loss_magic": 1.9008000009504003e-05,
+     "loss_synthesis": 0.07012239041897914
+    },
+    "1e+06": {
+     "w": 368,
+     "s": 49836032,
+     "ensemble": "deep",
+     "qubits": 997407.0,
+     "distance": 25,
+     "factory": "[[14,1,2]] T0, fold f=3, d=(19,5,5)",
+     "factories": 1,
+     "run_seconds": 19386.557151530415,
+     "loss_magic": 0.21493664403417118,
+     "loss_synthesis": 0.15711010497927963
+    }
+   },
+   "winners": [
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)",
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)",
+    "[[14,2,2]] T0,T1, fold f=3, d=(19,5,5)",
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)",
+    "fold-transversal cultivation"
+   ],
+   "steps": [
+    [
+     949.0,
+     8,
+     "fold-transversal cultivation"
+    ],
+    [
+     2017.0,
+     16,
+     "fold-transversal cultivation"
+    ],
+    [
+     2564.0,
+     64,
+     "fold-transversal cultivation"
+    ],
+    [
+     4013.0,
+     216,
+     "fold-transversal cultivation"
+    ],
+    [
+     5272.0,
+     512,
+     "fold-transversal cultivation"
+    ],
+    [
+     8193.0,
+     1000,
+     "fold-transversal cultivation"
+    ],
+    [
+     9161.0,
+     1728,
+     "fold-transversal cultivation"
+    ],
+    [
+     14645.0,
+     2744,
+     "fold-transversal cultivation"
+    ],
+    [
+     15997.0,
+     4096,
+     "fold-transversal cultivation"
+    ],
+    [
+     17349.0,
+     5832,
+     "fold-transversal cultivation"
+    ],
+    [
+     19377.0,
+     8000,
+     "fold-transversal cultivation"
+    ],
+    [
+     21516.0,
+     10648,
+     "fold-transversal cultivation"
+    ],
+    [
+     29249.0,
+     13824,
+     "fold-transversal cultivation"
+    ],
+    [
+     31949.0,
+     17576,
+     "fold-transversal cultivation"
+    ],
+    [
+     33749.0,
+     21952,
+     "fold-transversal cultivation"
+    ],
+    [
+     35549.0,
+     27000,
+     "fold-transversal cultivation"
+    ],
+    [
+     37349.0,
+     32768,
+     "fold-transversal cultivation"
+    ],
+    [
+     40049.0,
+     39304,
+     "fold-transversal cultivation"
+    ],
+    [
+     41849.0,
+     46656,
+     "fold-transversal cultivation"
+    ],
+    [
+     44548.0,
+     54872,
+     "fold-transversal cultivation"
+    ],
+    [
+     46348.0,
+     64000,
+     "fold-transversal cultivation"
+    ],
+    [
+     61717.0,
+     74088,
+     "fold-transversal cultivation"
+    ],
+    [
+     64029.0,
+     85184,
+     "fold-transversal cultivation"
+    ],
+    [
+     66341.0,
+     97336,
+     "fold-transversal cultivation"
+    ],
+    [
+     68653.0,
+     110592,
+     "fold-transversal cultivation"
+    ],
+    [
+     70965.0,
+     125000,
+     "fold-transversal cultivation"
+    ],
+    [
+     74433.0,
+     140608,
+     "fold-transversal cultivation"
+    ],
+    [
+     76745.0,
+     157464,
+     "fold-transversal cultivation"
+    ],
+    [
+     79057.0,
+     175616,
+     "fold-transversal cultivation"
+    ],
+    [
+     81369.0,
+     195112,
+     "fold-transversal cultivation"
+    ],
+    [
+     83681.0,
+     216000,
+     "fold-transversal cultivation"
+    ],
+    [
+     87149.0,
+     238328,
+     "fold-transversal cultivation"
+    ],
+    [
+     89461.0,
+     262144,
+     "fold-transversal cultivation"
+    ],
+    [
+     92800.0,
+     287496,
+     "fold-transversal cultivation"
+    ],
+    [
+     95112.0,
+     314432,
+     "fold-transversal cultivation"
+    ],
+    [
+     120301.0,
+     343000,
+     "fold-transversal cultivation"
+    ],
+    [
+     123189.0,
+     373248,
+     "fold-transversal cultivation"
+    ],
+    [
+     127521.0,
+     405224,
+     "fold-transversal cultivation"
+    ],
+    [
+     130409.0,
+     438976,
+     "fold-transversal cultivation"
+    ],
+    [
+     133297.0,
+     474552,
+     "fold-transversal cultivation"
+    ],
+    [
+     136185.0,
+     512000,
+     "fold-transversal cultivation"
+    ],
+    [
+     139073.0,
+     551368,
+     "fold-transversal cultivation"
+    ],
+    [
+     141961.0,
+     592704,
+     "fold-transversal cultivation"
+    ],
+    [
+     146293.0,
+     636056,
+     "fold-transversal cultivation"
+    ],
+    [
+     149181.0,
+     681472,
+     "fold-transversal cultivation"
+    ],
+    [
+     152069.0,
+     729000,
+     "fold-transversal cultivation"
+    ],
+    [
+     154957.0,
+     778688,
+     "fold-transversal cultivation"
+    ],
+    [
+     157845.0,
+     830584,
+     "fold-transversal cultivation"
+    ],
+    [
+     160733.0,
+     884736,
+     "fold-transversal cultivation"
+    ],
+    [
+     163621.0,
+     941192,
+     "fold-transversal cultivation"
+    ],
+    [
+     167953.0,
+     1000000,
+     "fold-transversal cultivation"
+    ],
+    [
+     170841.0,
+     1061208,
+     "fold-transversal cultivation"
+    ],
+    [
+     179505.0,
+     1259712,
+     "fold-transversal cultivation"
+    ],
+    [
+     200650.0,
+     1560896,
+     "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+    ],
+    [
+     249173.0,
+     1906624,
+     "fold-transversal cultivation"
+    ],
+    [
+     265049.0,
+     2299968,
+     "fold-transversal cultivation"
+    ],
+    [
+     279161.0,
+     2744000,
+     "fold-transversal cultivation"
+    ],
+    [
+     298565.0,
+     3375000,
+     "fold-transversal cultivation"
+    ],
+    [
+     316205.0,
+     4096000,
+     "fold-transversal cultivation"
+    ],
+    [
+     335609.0,
+     4913000,
+     "fold-transversal cultivation"
+    ],
+    [
+     353249.0,
+     5832000,
+     "fold-transversal cultivation"
+    ],
+    [
+     383350.0,
+     7077888,
+     "[[14,2,2]] T0,T1, fold f=3, d=(19,5,5)"
+    ],
+    [
+     482897.0,
+     8741816,
+     "fold-transversal cultivation"
+    ],
+    [
+     512521.0,
+     10648000,
+     "fold-transversal cultivation"
+    ],
+    [
+     544261.0,
+     12812904,
+     "fold-transversal cultivation"
+    ],
+    [
+     576001.0,
+     15252992,
+     "fold-transversal cultivation"
+    ],
+    [
+     620663.0,
+     18821096,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+    ],
+    [
+     654519.0,
+     22425768,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+    ],
+    [
+     699615.0,
+     27543608,
+     "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+    ],
+    [
+     747418.0,
+     33386248,
+     "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+    ],
+    [
+     929907.0,
+     40001688,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+    ],
+    [
+     984907.0,
+     48228544,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+    ],
+    [
+     997407.0,
+     49836032,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+    ]
+   ]
+  },
+  "pinnacle": {
+   "crossover": 1168.0,
+   "probes": {
+    "1e+04": {
+     "w": 130,
+     "s": 2197000,
+     "ensemble": "deep",
+     "qubits": 9812.0,
+     "distance": 16,
+     "factory": "fold-transversal cultivation, adapter d_a=19",
+     "factories": 1,
+     "run_seconds": 951.7404227999999,
+     "loss_blocks": 0.3844686412820962,
+     "loss_magic": 0.04424758002094664,
+     "loss_synthesis": 0.06591425765726186
+    },
+    "1e+06": {
+     "w": 936,
+     "s": 820025856,
+     "ensemble": "deep",
+     "qubits": 103652.0,
+     "distance": 24,
+     "factory": "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23",
+     "factories": 1,
+     "run_seconds": 601242.9576504,
+     "loss_blocks": 0.015918979775720956,
+     "loss_magic": 0.047717781662903795,
+     "loss_synthesis": 0.4262822923308245
+    }
+   },
+   "winners": [
+    "15-to-1 (Pinnacle, d_a=7)",
+    "15-to-1 (Pinnacle, d_a=9)",
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19",
+    "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23",
+    "[[28,1,3]] T0, cultivated engine d_a=7",
+    "fold-transversal cultivation, adapter d_a=11",
+    "fold-transversal cultivation, adapter d_a=15",
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   "steps": [
+    [
+     960.0,
+     36,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     1168.0,
+     1728,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     1576.0,
+     2744,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     1620.0,
+     4096,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     2436.0,
+     21952,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     3296.0,
+     74088,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     4372.0,
+     175616,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     5232.0,
+     343000,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     6092.0,
+     592704,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     6952.0,
+     941192,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     7812.0,
+     1259712,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     8672.0,
+     1560896,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     8952.0,
+     1906624,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     9812.0,
+     2197000,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     14270.0,
+     2299968,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+    ],
+    [
+     15512.0,
+     2744000,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     17132.0,
+     3375000,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     17412.0,
+     4096000,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     19032.0,
+     4913000,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     20652.0,
+     7077888,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     22272.0,
+     8741816,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     23892.0,
+     10648000,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     25512.0,
+     12812904,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     27132.0,
+     15252992,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     28752.0,
+     18821096,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     33570.0,
+     22425768,
+     "15-to-1 (Pinnacle, d_a=7)"
+    ],
+    [
+     35190.0,
+     27543608,
+     "15-to-1 (Pinnacle, d_a=7)"
+    ],
+    [
+     38430.0,
+     33386248,
+     "15-to-1 (Pinnacle, d_a=7)"
+    ],
+    [
+     40050.0,
+     40001688,
+     "[[28,1,3]] T0, cultivated engine d_a=7"
+    ],
+    [
+     42690.0,
+     48228544,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     45930.0,
+     58411072,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     47550.0,
+     70957944,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     50790.0,
+     86350888,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     54030.0,
+     103823000,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     57270.0,
+     126506008,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     60510.0,
+     152273304,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     63750.0,
+     185193000,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     66990.0,
+     224755712,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     71850.0,
+     272097792,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     76710.0,
+     328509000,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     79950.0,
+     398688256,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     84810.0,
+     481890304,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     91290.0,
+     580093704,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     96150.0,
+     704969000,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     103652.0,
+     820025856,
+     "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23"
+    ]
+   ]
+  },
+  "frozen_adapter": {
+   "crossover": 3238.0,
+   "probes": {
+    "1e+04": {
+     "w": 24,
+     "s": 13824,
+     "ensemble": "deep",
+     "qubits": 8282.0,
+     "distance": 24,
+     "factory": "fold-transversal cultivation, adapter d_a=11",
+     "factories": 1,
+     "run_seconds": 5.723172,
+     "loss_blocks": 2.0624008820522522e-11,
+     "loss_magic": 0.057390346301726784,
+     "loss_synthesis": 0.35747771257761407
+    },
+    "1e+06": {
+     "w": 894,
+     "s": 714516984,
+     "ensemble": "deep",
+     "qubits": 290536.0,
+     "distance": 24,
+     "factory": "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23",
+     "factories": 1,
+     "run_seconds": 604481.3685,
+     "loss_blocks": 8.132348381212253e-05,
+     "loss_magic": 0.04157815901471834,
+     "loss_synthesis": 0.3714345537036664
+    }
+   },
+   "winners": [
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19",
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=23",
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19",
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23",
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23",
+    "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23",
+    "fold-transversal cultivation, adapter d_a=11",
+    "fold-transversal cultivation, adapter d_a=15",
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   "steps": [
+    [
+     3238.0,
+     512,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     5760.0,
+     4096,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     8282.0,
+     13824,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     10804.0,
+     32768,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     13326.0,
+     64000,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     15848.0,
+     74088,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     16064.0,
+     110592,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     18586.0,
+     175616,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     21108.0,
+     262144,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     23630.0,
+     373248,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     26152.0,
+     512000,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     28674.0,
+     681472,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     31196.0,
+     884736,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     33718.0,
+     1061208,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     36240.0,
+     1259712,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     38762.0,
+     1560896,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     41284.0,
+     1906624,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     43806.0,
+     2299968,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     46328.0,
+     2744000,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     48850.0,
+     3375000,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     51652.0,
+     4096000,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     56696.0,
+     4913000,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     59218.0,
+     5832000,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     61740.0,
+     7077888,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     66784.0,
+     8741816,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     71828.0,
+     10648000,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     76872.0,
+     12812904,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     79394.0,
+     15252992,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     86960.0,
+     18821096,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     96462.0,
+     22425768,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+    ],
+    [
+     101506.0,
+     27543608,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+    ],
+    [
+     109072.0,
+     33386248,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+    ],
+    [
+     114116.0,
+     40001688,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+    ],
+    [
+     121682.0,
+     48228544,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+    ],
+    [
+     129248.0,
+     58411072,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+    ],
+    [
+     136814.0,
+     70957944,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+    ],
+    [
+     147246.0,
+     86350888,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=23"
+    ],
+    [
+     155128.0,
+     103823000,
+     "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+    ],
+    [
+     165216.0,
+     126506008,
+     "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+    ],
+    [
+     175304.0,
+     152273304,
+     "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+    ],
+    [
+     188258.0,
+     185193000,
+     "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+    ],
+    [
+     198346.0,
+     224755712,
+     "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+    ],
+    [
+     210956.0,
+     272097792,
+     "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+    ],
+    [
+     226088.0,
+     328509000,
+     "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+    ],
+    [
+     239328.0,
+     398688256,
+     "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+    ],
+    [
+     254460.0,
+     481890304,
+     "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+    ],
+    [
+     272114.0,
+     580093704,
+     "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+    ],
+    [
+     290536.0,
+     714516984,
+     "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23"
+    ]
+   ]
+  }
+ },
+ "H4": {
+  "direct": 1728,
+  "surface": {
+   "crossover": 10613.0,
+   "probes": {
+    "1e+04": {
+     "w": 12,
+     "s": 1728,
+     "ensemble": "deep",
+     "qubits": 6892.0,
+     "distance": 9,
+     "factory": "fold-transversal cultivation",
+     "factories": 2,
+     "run_seconds": 0.10755517076331242,
+     "loss_magic": 1.728000000864e-05,
+     "loss_synthesis": 0.17268402811759787
+    },
+    "1e+06": {
+     "w": 498,
+     "s": 123505992,
+     "ensemble": "deep",
+     "qubits": 998966.0,
+     "distance": 21,
+     "factory": "(15-to-1)^6_{11,5,5} x (15-to-1)_{25,11,11}",
+     "factories": 2,
+     "run_seconds": 73362.565548,
+     "loss_magic": 0.008003188281610804,
+     "loss_synthesis": 0.04091287937816365
+    }
+   },
+   "winners": [
+    "(15-to-1)^4_{13,5,5} x (20-to-4)_{27,13,15}",
+    "(15-to-1)^6_{11,5,5} x (15-to-1)_{25,11,11}",
+    "(15-to-1)^6_{13,5,5} x (20-to-4)_{23,11,13}",
+    "fold-transversal cultivation"
+   ],
+   "steps": [
+    [
+     949.0,
+     8,
+     "fold-transversal cultivation"
+    ],
+    [
+     1249.0,
+     16,
+     "fold-transversal cultivation"
+    ],
+    [
+     2017.0,
+     64,
+     "fold-transversal cultivation"
+    ],
+    [
+     3152.0,
+     216,
+     "fold-transversal cultivation"
+    ],
+    [
+     4661.0,
+     512,
+     "fold-transversal cultivation"
+    ],
+    [
+     5633.0,
+     1000,
+     "fold-transversal cultivation"
+    ],
+    [
+     6892.0,
+     1728,
+     "fold-transversal cultivation"
+    ],
+    [
+     10613.0,
+     2744,
+     "fold-transversal cultivation"
+    ],
+    [
+     11581.0,
+     4096,
+     "fold-transversal cultivation"
+    ],
+    [
+     12549.0,
+     5832,
+     "fold-transversal cultivation"
+    ],
+    [
+     14001.0,
+     8000,
+     "fold-transversal cultivation"
+    ],
+    [
+     15660.0,
+     10648,
+     "fold-transversal cultivation"
+    ],
+    [
+     16628.0,
+     13824,
+     "fold-transversal cultivation"
+    ],
+    [
+     24109.0,
+     17576,
+     "fold-transversal cultivation"
+    ],
+    [
+     25461.0,
+     21952,
+     "fold-transversal cultivation"
+    ],
+    [
+     26813.0,
+     27000,
+     "fold-transversal cultivation"
+    ],
+    [
+     28165.0,
+     32768,
+     "fold-transversal cultivation"
+    ],
+    [
+     30193.0,
+     39304,
+     "fold-transversal cultivation"
+    ],
+    [
+     31545.0,
+     46656,
+     "fold-transversal cultivation"
+    ],
+    [
+     32897.0,
+     54872,
+     "fold-transversal cultivation"
+    ],
+    [
+     34249.0,
+     64000,
+     "fold-transversal cultivation"
+    ],
+    [
+     36277.0,
+     74088,
+     "fold-transversal cultivation"
+    ],
+    [
+     38416.0,
+     85184,
+     "fold-transversal cultivation"
+    ],
+    [
+     39768.0,
+     97336,
+     "fold-transversal cultivation"
+    ],
+    [
+     53549.0,
+     110592,
+     "fold-transversal cultivation"
+    ],
+    [
+     55349.0,
+     125000,
+     "fold-transversal cultivation"
+    ],
+    [
+     58049.0,
+     140608,
+     "fold-transversal cultivation"
+    ],
+    [
+     59849.0,
+     157464,
+     "fold-transversal cultivation"
+    ],
+    [
+     61649.0,
+     175616,
+     "fold-transversal cultivation"
+    ],
+    [
+     63449.0,
+     195112,
+     "fold-transversal cultivation"
+    ],
+    [
+     65249.0,
+     216000,
+     "fold-transversal cultivation"
+    ],
+    [
+     67949.0,
+     238328,
+     "fold-transversal cultivation"
+    ],
+    [
+     69749.0,
+     262144,
+     "fold-transversal cultivation"
+    ],
+    [
+     71549.0,
+     287496,
+     "fold-transversal cultivation"
+    ],
+    [
+     73349.0,
+     314432,
+     "fold-transversal cultivation"
+    ],
+    [
+     75149.0,
+     343000,
+     "fold-transversal cultivation"
+    ],
+    [
+     76949.0,
+     373248,
+     "fold-transversal cultivation"
+    ],
+    [
+     79649.0,
+     405224,
+     "fold-transversal cultivation"
+    ],
+    [
+     81449.0,
+     438976,
+     "fold-transversal cultivation"
+    ],
+    [
+     83249.0,
+     474552,
+     "fold-transversal cultivation"
+    ],
+    [
+     85049.0,
+     512000,
+     "fold-transversal cultivation"
+    ],
+    [
+     87748.0,
+     551368,
+     "fold-transversal cultivation"
+    ],
+    [
+     89548.0,
+     592704,
+     "fold-transversal cultivation"
+    ],
+    [
+     92248.0,
+     636056,
+     "fold-transversal cultivation"
+    ],
+    [
+     119517.0,
+     681472,
+     "fold-transversal cultivation"
+    ],
+    [
+     121829.0,
+     729000,
+     "fold-transversal cultivation"
+    ],
+    [
+     124141.0,
+     778688,
+     "fold-transversal cultivation"
+    ],
+    [
+     126453.0,
+     830584,
+     "fold-transversal cultivation"
+    ],
+    [
+     128765.0,
+     884736,
+     "fold-transversal cultivation"
+    ],
+    [
+     131077.0,
+     941192,
+     "fold-transversal cultivation"
+    ],
+    [
+     134545.0,
+     1000000,
+     "fold-transversal cultivation"
+    ],
+    [
+     136857.0,
+     1061208,
+     "fold-transversal cultivation"
+    ],
+    [
+     143793.0,
+     1259712,
+     "fold-transversal cultivation"
+    ],
+    [
+     154197.0,
+     1560896,
+     "fold-transversal cultivation"
+    ],
+    [
+     163445.0,
+     1906624,
+     "fold-transversal cultivation"
+    ],
+    [
+     173849.0,
+     2299968,
+     "fold-transversal cultivation"
+    ],
+    [
+     183097.0,
+     2744000,
+     "fold-transversal cultivation"
+    ],
+    [
+     195813.0,
+     3375000,
+     "fold-transversal cultivation"
+    ],
+    [
+     258925.0,
+     4096000,
+     "fold-transversal cultivation"
+    ],
+    [
+     274809.0,
+     4913000,
+     "fold-transversal cultivation"
+    ],
+    [
+     289249.0,
+     5832000,
+     "fold-transversal cultivation"
+    ],
+    [
+     308021.0,
+     7077888,
+     "fold-transversal cultivation"
+    ],
+    [
+     329681.0,
+     8741816,
+     "fold-transversal cultivation"
+    ],
+    [
+     349897.0,
+     10648000,
+     "fold-transversal cultivation"
+    ],
+    [
+     371557.0,
+     12812904,
+     "fold-transversal cultivation"
+    ],
+    [
+     438234.0,
+     15252992,
+     "(15-to-1)^6_{13,5,5} x (20-to-4)_{23,11,13}"
+    ],
+    [
+     511858.0,
+     18821096,
+     "(15-to-1)^6_{13,5,5} x (20-to-4)_{23,11,13}"
+    ],
+    [
+     534962.0,
+     22425768,
+     "(15-to-1)^6_{13,5,5} x (20-to-4)_{23,11,13}"
+    ],
+    [
+     572286.0,
+     27543608,
+     "(15-to-1)^4_{13,5,5} x (20-to-4)_{27,13,15}"
+    ],
+    [
+     646336.0,
+     33386248,
+     "(15-to-1)^6_{11,5,5} x (15-to-1)_{25,11,11}"
+    ],
+    [
+     683380.0,
+     40001688,
+     "(15-to-1)^6_{11,5,5} x (15-to-1)_{25,11,11}"
+    ],
+    [
+     722188.0,
+     48228544,
+     "(15-to-1)^6_{11,5,5} x (15-to-1)_{25,11,11}"
+    ],
+    [
+     766288.0,
+     58411072,
+     "(15-to-1)^6_{11,5,5} x (15-to-1)_{25,11,11}"
+    ],
+    [
+     813916.0,
+     70957944,
+     "(15-to-1)^6_{11,5,5} x (15-to-1)_{25,11,11}"
+    ],
+    [
+     883818.0,
+     86350888,
+     "(15-to-1)^4_{13,5,5} x (20-to-4)_{27,13,15}"
+    ],
+    [
+     934974.0,
+     103823000,
+     "(15-to-1)^4_{13,5,5} x (20-to-4)_{27,13,15}"
+    ],
+    [
+     998966.0,
+     123505992,
+     "(15-to-1)^6_{11,5,5} x (15-to-1)_{25,11,11}"
+    ]
+   ]
+  },
+  "surface_optimized": {
+   "crossover": 10613.0,
+   "probes": {
+    "1e+04": {
+     "w": 12,
+     "s": 1728,
+     "ensemble": "deep",
+     "qubits": 6892.0,
+     "distance": 9,
+     "factory": "fold-transversal cultivation",
+     "factories": 2,
+     "run_seconds": 0.10755517076331242,
+     "loss_magic": 1.728000000864e-05,
+     "loss_synthesis": 0.17268402811759787
+    },
+    "1e+06": {
+     "w": 528,
+     "s": 147197952,
+     "ensemble": "deep",
+     "qubits": 998333.0,
+     "distance": 21,
+     "factory": "[[15,1,3]], fold f=3, d=(23,5,5)",
+     "factories": 1,
+     "run_seconds": 62786.53597548023,
+     "loss_magic": 0.00607494512082175,
+     "loss_synthesis": 0.07651939258481463
+    }
+   },
+   "winners": [
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)",
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)",
+    "[[14,2,2]] T0,T1, fold f=3, d=(19,5,5)",
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)",
+    "[[15,1,3]], fold f=3, d=(19,5,5)",
+    "[[15,1,3]], fold f=3, d=(21,5,5)",
+    "[[15,1,3]], fold f=3, d=(23,5,5)",
+    "[[8,3,2]] CCZ012, fold f=3, d=(19,5,5)",
+    "fold-transversal cultivation"
+   ],
+   "steps": [
+    [
+     949.0,
+     8,
+     "fold-transversal cultivation"
+    ],
+    [
+     1249.0,
+     16,
+     "fold-transversal cultivation"
+    ],
+    [
+     2017.0,
+     64,
+     "fold-transversal cultivation"
+    ],
+    [
+     3152.0,
+     216,
+     "fold-transversal cultivation"
+    ],
+    [
+     4661.0,
+     512,
+     "fold-transversal cultivation"
+    ],
+    [
+     5633.0,
+     1000,
+     "fold-transversal cultivation"
+    ],
+    [
+     6892.0,
+     1728,
+     "fold-transversal cultivation"
+    ],
+    [
+     10613.0,
+     2744,
+     "fold-transversal cultivation"
+    ],
+    [
+     11581.0,
+     4096,
+     "fold-transversal cultivation"
+    ],
+    [
+     12549.0,
+     5832,
+     "fold-transversal cultivation"
+    ],
+    [
+     14001.0,
+     8000,
+     "fold-transversal cultivation"
+    ],
+    [
+     15660.0,
+     10648,
+     "fold-transversal cultivation"
+    ],
+    [
+     16628.0,
+     13824,
+     "fold-transversal cultivation"
+    ],
+    [
+     24109.0,
+     17576,
+     "fold-transversal cultivation"
+    ],
+    [
+     25461.0,
+     21952,
+     "fold-transversal cultivation"
+    ],
+    [
+     26813.0,
+     27000,
+     "fold-transversal cultivation"
+    ],
+    [
+     28165.0,
+     32768,
+     "fold-transversal cultivation"
+    ],
+    [
+     30193.0,
+     39304,
+     "fold-transversal cultivation"
+    ],
+    [
+     31545.0,
+     46656,
+     "fold-transversal cultivation"
+    ],
+    [
+     32897.0,
+     54872,
+     "fold-transversal cultivation"
+    ],
+    [
+     34249.0,
+     64000,
+     "fold-transversal cultivation"
+    ],
+    [
+     36277.0,
+     74088,
+     "fold-transversal cultivation"
+    ],
+    [
+     38416.0,
+     85184,
+     "fold-transversal cultivation"
+    ],
+    [
+     39768.0,
+     97336,
+     "fold-transversal cultivation"
+    ],
+    [
+     53549.0,
+     110592,
+     "fold-transversal cultivation"
+    ],
+    [
+     55349.0,
+     125000,
+     "fold-transversal cultivation"
+    ],
+    [
+     58049.0,
+     140608,
+     "fold-transversal cultivation"
+    ],
+    [
+     59849.0,
+     157464,
+     "fold-transversal cultivation"
+    ],
+    [
+     61649.0,
+     175616,
+     "fold-transversal cultivation"
+    ],
+    [
+     63449.0,
+     195112,
+     "fold-transversal cultivation"
+    ],
+    [
+     65249.0,
+     216000,
+     "fold-transversal cultivation"
+    ],
+    [
+     67949.0,
+     238328,
+     "fold-transversal cultivation"
+    ],
+    [
+     69749.0,
+     262144,
+     "fold-transversal cultivation"
+    ],
+    [
+     71549.0,
+     287496,
+     "fold-transversal cultivation"
+    ],
+    [
+     73349.0,
+     314432,
+     "fold-transversal cultivation"
+    ],
+    [
+     75149.0,
+     343000,
+     "fold-transversal cultivation"
+    ],
+    [
+     76949.0,
+     373248,
+     "fold-transversal cultivation"
+    ],
+    [
+     79649.0,
+     405224,
+     "fold-transversal cultivation"
+    ],
+    [
+     81449.0,
+     438976,
+     "fold-transversal cultivation"
+    ],
+    [
+     83249.0,
+     474552,
+     "fold-transversal cultivation"
+    ],
+    [
+     85049.0,
+     512000,
+     "fold-transversal cultivation"
+    ],
+    [
+     87748.0,
+     551368,
+     "fold-transversal cultivation"
+    ],
+    [
+     89548.0,
+     592704,
+     "fold-transversal cultivation"
+    ],
+    [
+     92248.0,
+     636056,
+     "fold-transversal cultivation"
+    ],
+    [
+     100912.0,
+     681472,
+     "[[8,3,2]] CCZ012, fold f=3, d=(19,5,5)"
+    ],
+    [
+     121829.0,
+     729000,
+     "fold-transversal cultivation"
+    ],
+    [
+     124141.0,
+     778688,
+     "fold-transversal cultivation"
+    ],
+    [
+     126453.0,
+     830584,
+     "fold-transversal cultivation"
+    ],
+    [
+     128765.0,
+     884736,
+     "fold-transversal cultivation"
+    ],
+    [
+     131077.0,
+     941192,
+     "fold-transversal cultivation"
+    ],
+    [
+     134545.0,
+     1000000,
+     "fold-transversal cultivation"
+    ],
+    [
+     136857.0,
+     1061208,
+     "fold-transversal cultivation"
+    ],
+    [
+     143793.0,
+     1259712,
+     "fold-transversal cultivation"
+    ],
+    [
+     154197.0,
+     1560896,
+     "fold-transversal cultivation"
+    ],
+    [
+     163445.0,
+     1906624,
+     "fold-transversal cultivation"
+    ],
+    [
+     173849.0,
+     2299968,
+     "fold-transversal cultivation"
+    ],
+    [
+     183097.0,
+     2744000,
+     "fold-transversal cultivation"
+    ],
+    [
+     195813.0,
+     3375000,
+     "fold-transversal cultivation"
+    ],
+    [
+     214238.0,
+     4096000,
+     "[[14,2,2]] T0,T1, fold f=3, d=(19,5,5)"
+    ],
+    [
+     274809.0,
+     4913000,
+     "fold-transversal cultivation"
+    ],
+    [
+     289249.0,
+     5832000,
+     "fold-transversal cultivation"
+    ],
+    [
+     308021.0,
+     7077888,
+     "fold-transversal cultivation"
+    ],
+    [
+     329681.0,
+     8741816,
+     "fold-transversal cultivation"
+    ],
+    [
+     349897.0,
+     10648000,
+     "fold-transversal cultivation"
+    ],
+    [
+     371557.0,
+     12812904,
+     "fold-transversal cultivation"
+    ],
+    [
+     397675.0,
+     15252992,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+    ],
+    [
+     425111.0,
+     18821096,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+    ],
+    [
+     450766.0,
+     22425768,
+     "[[14,2,2]] T0,T1, fold f=3, d=(19,5,5)"
+    ],
+    [
+     482230.0,
+     27543608,
+     "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+    ],
+    [
+     620543.0,
+     33386248,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+    ],
+    [
+     657587.0,
+     40001688,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+    ],
+    [
+     696395.0,
+     48228544,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+    ],
+    [
+     740495.0,
+     58411072,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+    ],
+    [
+     788693.0,
+     70957944,
+     "[[15,1,3]], fold f=3, d=(19,5,5)"
+    ],
+    [
+     839939.0,
+     86350888,
+     "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+    ],
+    [
+     891095.0,
+     103823000,
+     "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+    ],
+    [
+     949937.0,
+     126506008,
+     "[[15,1,3]], fold f=3, d=(21,5,5)"
+    ],
+    [
+     998333.0,
+     147197952,
+     "[[15,1,3]], fold f=3, d=(23,5,5)"
+    ]
+   ]
+  },
+  "pinnacle": {
+   "crossover": 1576.0,
+   "probes": {
+    "1e+04": {
+     "w": 130,
+     "s": 2197000,
+     "ensemble": "deep",
+     "qubits": 9812.0,
+     "distance": 16,
+     "factory": "fold-transversal cultivation, adapter d_a=19",
+     "factories": 1,
+     "run_seconds": 951.7404227999999,
+     "loss_blocks": 0.3844686412820962,
+     "loss_magic": 0.04424758002094664,
+     "loss_synthesis": 0.06591425765726186
+    },
+    "1e+06": {
+     "w": 936,
+     "s": 820025856,
+     "ensemble": "deep",
+     "qubits": 103652.0,
+     "distance": 24,
+     "factory": "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23",
+     "factories": 1,
+     "run_seconds": 601242.9576504,
+     "loss_blocks": 0.015918979775720956,
+     "loss_magic": 0.047717781662903795,
+     "loss_synthesis": 0.4262822923308245
+    }
+   },
+   "winners": [
+    "15-to-1 (Pinnacle, d_a=7)",
+    "15-to-1 (Pinnacle, d_a=9)",
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19",
+    "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23",
+    "[[28,1,3]] T0, cultivated engine d_a=7",
+    "fold-transversal cultivation, adapter d_a=11",
+    "fold-transversal cultivation, adapter d_a=15",
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   "steps": [
+    [
+     960.0,
+     36,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     1168.0,
+     1728,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     1576.0,
+     2744,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     1620.0,
+     4096,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     2436.0,
+     21952,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     3296.0,
+     74088,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     4372.0,
+     175616,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     5232.0,
+     343000,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     6092.0,
+     592704,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     6952.0,
+     941192,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     7812.0,
+     1259712,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     8672.0,
+     1560896,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     8952.0,
+     1906624,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     9812.0,
+     2197000,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     14270.0,
+     2299968,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+    ],
+    [
+     15512.0,
+     2744000,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     17132.0,
+     3375000,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     17412.0,
+     4096000,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     19032.0,
+     4913000,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     20652.0,
+     7077888,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     22272.0,
+     8741816,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     23892.0,
+     10648000,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     25512.0,
+     12812904,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     27132.0,
+     15252992,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     28752.0,
+     18821096,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     33570.0,
+     22425768,
+     "15-to-1 (Pinnacle, d_a=7)"
+    ],
+    [
+     35190.0,
+     27543608,
+     "15-to-1 (Pinnacle, d_a=7)"
+    ],
+    [
+     38430.0,
+     33386248,
+     "15-to-1 (Pinnacle, d_a=7)"
+    ],
+    [
+     40050.0,
+     40001688,
+     "[[28,1,3]] T0, cultivated engine d_a=7"
+    ],
+    [
+     42690.0,
+     48228544,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     45930.0,
+     58411072,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     47550.0,
+     70957944,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     50790.0,
+     86350888,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     54030.0,
+     103823000,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     57270.0,
+     126506008,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     60510.0,
+     152273304,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     63750.0,
+     185193000,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     66990.0,
+     224755712,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     71850.0,
+     272097792,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     76710.0,
+     328509000,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     79950.0,
+     398688256,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     84810.0,
+     481890304,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     91290.0,
+     580093704,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     96150.0,
+     704969000,
+     "15-to-1 (Pinnacle, d_a=9)"
+    ],
+    [
+     103652.0,
+     820025856,
+     "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23"
+    ]
+   ]
+  },
+  "frozen_adapter": {
+   "crossover": 5760.0,
+   "probes": {
+    "1e+04": {
+     "w": 24,
+     "s": 13824,
+     "ensemble": "deep",
+     "qubits": 8282.0,
+     "distance": 24,
+     "factory": "fold-transversal cultivation, adapter d_a=11",
+     "factories": 1,
+     "run_seconds": 5.723172,
+     "loss_blocks": 2.0624008820522522e-11,
+     "loss_magic": 0.057390346301726784,
+     "loss_synthesis": 0.35747771257761407
+    },
+    "1e+06": {
+     "w": 894,
+     "s": 714516984,
+     "ensemble": "deep",
+     "qubits": 290536.0,
+     "distance": 24,
+     "factory": "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23",
+     "factories": 1,
+     "run_seconds": 604481.3685,
+     "loss_blocks": 8.132348381212253e-05,
+     "loss_magic": 0.04157815901471834,
+     "loss_synthesis": 0.3714345537036664
+    }
+   },
+   "winners": [
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19",
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=23",
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19",
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23",
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23",
+    "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23",
+    "fold-transversal cultivation, adapter d_a=11",
+    "fold-transversal cultivation, adapter d_a=15",
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   "steps": [
+    [
+     3238.0,
+     512,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     5760.0,
+     4096,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     8282.0,
+     13824,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     10804.0,
+     32768,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     13326.0,
+     64000,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     15848.0,
+     74088,
+     "fold-transversal cultivation, adapter d_a=11"
+    ],
+    [
+     16064.0,
+     110592,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     18586.0,
+     175616,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     21108.0,
+     262144,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     23630.0,
+     373248,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     26152.0,
+     512000,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     28674.0,
+     681472,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     31196.0,
+     884736,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     33718.0,
+     1061208,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     36240.0,
+     1259712,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     38762.0,
+     1560896,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     41284.0,
+     1906624,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     43806.0,
+     2299968,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     46328.0,
+     2744000,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     48850.0,
+     3375000,
+     "fold-transversal cultivation, adapter d_a=15"
+    ],
+    [
+     51652.0,
+     4096000,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     56696.0,
+     4913000,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     59218.0,
+     5832000,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     61740.0,
+     7077888,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     66784.0,
+     8741816,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     71828.0,
+     10648000,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     76872.0,
+     12812904,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     79394.0,
+     15252992,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     86960.0,
+     18821096,
+     "fold-transversal cultivation, adapter d_a=19"
+    ],
+    [
+     96462.0,
+     22425768,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+    ],
+    [
+     101506.0,
+     27543608,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+    ],
+    [
+     109072.0,
+     33386248,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+    ],
+    [
+     114116.0,
+     40001688,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+    ],
+    [
+     121682.0,
+     48228544,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+    ],
+    [
+     129248.0,
+     58411072,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+    ],
+    [
+     136814.0,
+     70957944,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+    ],
+    [
+     147246.0,
+     86350888,
+     "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=23"
+    ],
+    [
+     155128.0,
+     103823000,
+     "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+    ],
+    [
+     165216.0,
+     126506008,
+     "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+    ],
+    [
+     175304.0,
+     152273304,
+     "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+    ],
+    [
+     188258.0,
+     185193000,
+     "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+    ],
+    [
+     198346.0,
+     224755712,
+     "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+    ],
+    [
+     210956.0,
+     272097792,
+     "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+    ],
+    [
+     226088.0,
+     328509000,
+     "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+    ],
+    [
+     239328.0,
+     398688256,
+     "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+    ],
+    [
+     254460.0,
+     481890304,
+     "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+    ],
+    [
+     272114.0,
+     580093704,
+     "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+    ],
+    [
+     290536.0,
+     714516984,
+     "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23"
+    ]
+   ]
+  }
+ }
+}

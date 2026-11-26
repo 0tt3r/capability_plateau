@@ -33,7 +33,7 @@ Engine template (n inputs, k outputs, N wires, m = N - k postselected checks, r_
            most 8 parallel injections per logical cycle). Mean delivery period = attempt / (k (1 - reject)).
 """
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from math import ceil
 from pathlib import Path
 
@@ -99,11 +99,12 @@ def engine(proto, d_a, p_a, p_in, cultivated, p=P, n_alpha=None, published=None,
 
 
 def reference_supplies():
-    """The two published 15-to-1 engines, with their published output-error targets."""
+    """The two published 15-to-1 engines, with the output error of the engine template (Eq. pinnacle-engine-error), the
+    same estimate as every other engine; the published targets PUBLISHED_TARGET (1e-9, 1e-11) are not used."""
     proto = next(q for q in PROTOCOLS if q['name'] == '[[15,1,3]]')
     out = []
     for d_a, (p_a, p_in) in CULTIVATED.items():
-        s, _, _ = engine(proto, d_a, p_a, p_in, True, published=PUBLISHED_TARGET[d_a])
+        s, _, _ = engine(proto, d_a, p_a, p_in, True)
         out.append(Supply('reference', f'15-to-1 (Pinnacle, d_a={d_a})', s.qubits, s.cycles, s.error, 0, 0,
                           s.min_slot, s.reject))
     return out
@@ -121,13 +122,21 @@ def cultivated_supplies():
     return out
 
 
-def injected_supplies(p=P, level1_engines=(2, 4, 8, 16, 32)):
-    """Direct in-place injection: one level, and two levels with F1 level-1 15-to-1 engines feeding a level-2 engine."""
+def _with_rejection(s, attempt, k, rej):
+    """The same engine with a stated rejection rate per attempt instead of the first-order estimate."""
+    return replace(s, cycles=attempt/(k*(1 - rej)), reject=rej)
+
+
+def injected_supplies(p=P, level1_engines=(2, 4, 8, 16, 32), inplace_reject=None):
+    """Direct in-place injection: one level, and two levels with F1 level-1 15-to-1 engines feeding a level-2 engine.
+    inplace_reject, if given, replaces the first-order rejection of every in-place attempt (both levels)."""
     ref = next(q for q in PROTOCOLS if q['name'] == '[[15,1,3]]')
     out = []
     one = {}
     for proto in PROTOCOLS:
         s, att, p_rot = engine(proto, 1, p, p, False, p=p)
+        if inplace_reject is not None:
+            s = _with_rejection(s, att, proto['k'], inplace_reject)
         one[proto['name']] = (s, att)
         out.append(Supply('gb_inject', f"{proto['name']}, injected, 1 level", s.qubits, s.cycles, s.error, 0, 0,
                           s.min_slot, s.reject))
@@ -137,6 +146,8 @@ def injected_supplies(p=P, level1_engines=(2, 4, 8, 16, 32)):
         for f1 in level1_engines:
             p_in2 = s1.error + port
             s2, att2, _ = engine(proto, 1, 0., p_in2, False, p=p, n_alpha=0)
+            if inplace_reject is not None:
+                s2 = _with_rejection(s2, att2, proto['k'], inplace_reject)
             feed = proto['n']*s1.cycles/f1                    # cycles for F1 engines to supply one attempt
             period = max(att2, feed)/(proto['k']*(1 - s2.reject))
             out.append(Supply('gb_inject2', f"{proto['name']}, injected, 2 levels, F1={f1}",
@@ -163,17 +174,74 @@ class _Uniform:
 _UNIFORM = _Uniform()
 
 
+def _catalogue_protocols():
+    """Distance-2 and distance-3 catalogue protocols (scripts/catalogue_factories.py) with their T yield per run."""
+    import os
+    path = Path(os.environ.get('CATALOGUE_JSON', Path(__file__).resolve().parents[1]/'results/catalogue_factories.json'))
+    if not path.exists():
+        return []
+    return [dict(name=f"[[{q['n']},{q['k']},{q['d']}]] {q['gate']}", n=q['n'], k=q['k'], d=q['d'], wires=q['wires'],
+                 A_d=q['A_d'], yield_=q['T_per_run']) for q in json.loads(path.read_text()).get('protocols', [])]
+
+
+def _per_T(s, attempt, proto, family, name, rej=None):
+    """An engine delivering proto['yield_'] T states per accepted run instead of k."""
+    y, k = proto['yield_'], proto['k']
+    rej = s.reject if rej is None else rej
+    return replace(s, family=family, name=name, cycles=attempt/(y*(1 - rej)), error=s.error*k/y, reject=rej)
+
+
+def catalogue_engines(families, p=P, level1_engines=(2, 4, 8, 16, 32), inplace_reject=None):
+    """The catalogue protocols as Pinnacle magic engines, with the template of the published 15-to-1 engine:
+      gb_cat_cult     cultivated inputs in ancilla codes, injected by generalized surgery (d_a = 7, 9)
+      gb_cat_inject   physical T states injected in place, one level
+      gb_cat_inject2  two levels: F1 one-level in-place [[15,1,3]] engines feed the protocol's engine"""
+    out = []
+    protos = _catalogue_protocols()
+    ref = next(q for q in PROTOCOLS if q['name'] == '[[15,1,3]]')
+    s1, att1, _ = engine(ref, 1, p, p, False, p=p)
+    if inplace_reject is not None:
+        s1 = _with_rejection(s1, att1, 1, inplace_reject)
+    port = 2*p_block_d(24, p)
+    for proto in protos:
+        if (proto['n'], proto['k'], proto['d']) == (15, 1, 3):
+            continue                          # the published 15-to-1 engines, with their quoted errors
+        if 'gb_cat_cult' in families:
+            for d_a, (p_a, p_in) in CULTIVATED.items():
+                s, att, _ = engine(proto, d_a, p_a, p_in, True, p=p)
+                out.append(_per_T(s, att, proto, 'gb_cat_cult', f"{proto['name']}, cultivated engine d_a={d_a}"))
+        if 'gb_cat_inject' in families:
+            s, att, _ = engine(proto, 1, p, p, False, p=p)
+            out.append(_per_T(s, att, proto, 'gb_cat_inject', f"{proto['name']}, in place, 1 level", inplace_reject))
+        if 'gb_cat_inject2' in families:
+            for f1 in level1_engines:
+                s2, att2, _ = engine(proto, 1, 0., s1.error + port, False, p=p, n_alpha=0)
+                rej2 = s2.reject if inplace_reject is None else inplace_reject
+                feed = proto['n']*s1.cycles/f1
+                y = proto['yield_']
+                out.append(replace(s2, family='gb_cat_inject2', name=f"{proto['name']}, in place, 2 levels, F1={f1}",
+                                   qubits=f1*s1.qubits + s2.qubits, cycles=max(att2, feed)/(y*(1 - rej2)),
+                                   error=s2.error*proto['k']/y, reject=rej2))
+    return [s for s in out if s.error < 1e-3 and s.reject < 0.99]    # the filter of the surface-code layouts
+
+
 def all_supplies(families=('surface', 'surface_jws', 'reference', 'gb_cult', 'gb_inject', 'gb_inject2'),
-                 distances=ADAPTER_DISTANCES):
+                 distances=ADAPTER_DISTANCES, inplace_reject=None):
     out = []
     if 'surface' in families:
         out += surface_supplies(distances=distances)
+    if 'surface_fold' in families:       # Table-1 factories with fold-transversal cultivation (all-to-all), behind the adapter
+        out += surface_supplies(distances=distances, families=('fold_cultivation', 'litinski'), label='surface_fold')
     if 'surface_jws' in families:        # surface-code layouts of the arXiv:2610.06535 protocols, behind the same adapter
         out += surface_supplies(distances=distances, families=('jws',), label='surface_jws')
+    if 'surface_catalogue' in families:  # surface-code layouts of the distance-2 and distance-3 catalogue factories
+        out += surface_supplies(distances=distances, families=('catalogue',), label='surface_catalogue')
     if 'reference' in families:
         out += reference_supplies()
     if 'gb_cult' in families:
         out += cultivated_supplies()
+    if any(f in families for f in ('gb_cat_cult', 'gb_cat_inject', 'gb_cat_inject2')):
+        out += catalogue_engines(families, inplace_reject=inplace_reject)
     if 'gb_inject' in families or 'gb_inject2' in families:
-        out += [s for s in injected_supplies() if s.family in families]
+        out += [s for s in injected_supplies(inplace_reject=inplace_reject) if s.family in families]
     return out

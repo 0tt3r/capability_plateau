@@ -51,6 +51,20 @@ def p_sc(d, p=P):
     return BASELINE.sc_prefactor*(p/BASELINE.sc_threshold_uniform)**((d + 1)/2)
 
 
+FOLD_LABEL = 'fold f=3'          # inputs from fold-transversal f = 3 cultivation (all-to-all hardware only)
+
+
+def fold_input(n, t0, p=P):
+    """(p_rot, rho, extra qubits) for inputs from a pool of fold-transversal f = 3 cultivation units.
+
+    Each unit is a Rot(13) patch delivering one state per V3/N_u cycles on average, with its discards inside V3; the pool
+    has the fewest units whose mean rate meets the n inputs per t0 cycles of one attempt [choice: mean rate, no buffer].
+    The state waits at most d_fin + 1 cycles in its distance-13 patch before the rotation."""
+    from .factories import FOLD_F3
+    units = ceil(n/t0*FOLD_F3['volume']/FOLD_F3['qubits'])
+    return FOLD_F3['error'] + 14*p_sc(13, p), 0., units*FOLD_F3['qubits']
+
+
 def single(proto, dX, dZ, dm, p_rot, rho=0., extra=0, p=P):
     """(qubits, cycles per attempt, rejection, error per delivered state) of a one-level factory."""
     n, k, d, A = proto['n'], proto['k'], proto['d'], proto['A_d']
@@ -105,6 +119,9 @@ def factories(p=P):
                 cand = [('faulty T', p, 0., 0)] + [(f'cultivated d_a={da}', pin + (da + 1)*pa, RHO_CULT,
                                                      30*(da*da + da - 1) + CULT_POOL)
                                                     for da, (pa, pin) in CULTIVATED.items()]
+                m = proto['wires'] - k
+                t0 = (ceil((proto['n'] - m)/2) + (1 if k > 1 else 0))*dZ
+                cand.append((FOLD_LABEL, *fold_input(proto['n'], t0, p)))
                 for label, p_rot, rho, extra in cand:
                     q, t, rej, e = single(proto, dX, dZ, dZ, p_rot, rho, extra, p)
                     if rej >= 0.99 or e >= 1e-3:
@@ -125,4 +142,5 @@ def factories(p=P):
                                     e, q, t/k, k))
         for rows in groups.values():
             out += pareto(rows)
-    return tuple(pareto(out))
+    # fold-transversal inputs need all-to-all hardware, so the 2D-grid designs are kept on their own Pareto front
+    return tuple(pareto([f for f in out if FOLD_LABEL not in f.name]) + pareto([f for f in out if FOLD_LABEL in f.name]))

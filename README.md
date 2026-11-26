@@ -34,8 +34,12 @@ python -m venv .venv
 `pbc_comparison_v2` and `architecture_audit_v3` output directories, respectively.
 The Pinnacle script reads the regenerated baseline. Run it before the Frozen Pinnacle script,
 which reads both the baseline and the original Pinnacle results.
-`make_pinnacle_curves.py` also computes the Frozen Pinnacle curves with an extended supply menu, the
-surface-code curve with the same factory menu, the supply comparison, and the sensitivities; see
+`catalogue_factories.py --master MASTER_CATALOG_JSON --search SEARCH_OUTPUTS_DIR` costs the distance-2 and distance-3
+catalogue factories (from the repositories of arXiv:2610.06535 and of Singh, Gidney and Jones) as surface-code layouts and as
+Pinnacle engine inputs, and writes `results/catalogue_factories.json`, which the Pinnacle and extended surface-code menus read.
+`make_pinnacle_curves.py` also computes the Frozen Pinnacle curves with the options that set a point on their curves,
+the surface-code curve with its extended menu (cultivation and the layouts that set a point on it), the supply
+comparison (`supply_verdict`), and the sensitivities; see
 [the Pinnacle note](docs/pinnacle.md).
 `make_quops_comparison.py` draws the combined capability figure of the draft (`figures/quops_comparison.*`)
 from the cached direct, surface-code, and Pinnacle results and the STAR steps in

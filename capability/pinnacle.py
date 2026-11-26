@@ -63,16 +63,51 @@ FROZEN_CODES = (Code(510, 8, 24, 30, 2522, P_FROZEN),)
 class Choices:
     eta: float = 2.0                   # [choice] extend the X-observable fit of the paper to both Pauli sectors
     reaction: int = 10                 # [paper] t_r / t_c
-    codes: tuple = (4, 6, 10, 16, 24)  # GB code distances allowed
-    families: tuple = ('surface', 'surface_jws', 'reference', 'gb_cult', 'gb_inject', 'gb_inject2')
+    codes: tuple = (6, 10, 16, 24)     # GB code distances that set a point on the curves (d = 4 never does)
+    families: tuple = ('surface', 'surface_jws', 'surface_catalogue', 'reference', 'gb_cat_cult')   # families with winners
     frozen: bool = False               # True: Frozen Pinnacle block (FROZEN_CODES) instead of the original GB blocks
     adapter_distances: tuple = pf.ADAPTER_DISTANCES
     supply_filter: tuple = ()          # if given, keep only supplies whose name contains one of these strings
+    inplace_reject: float = 0.875      # rejection per attempt of every in-place engine (best quoted, arXiv:2606.28518)
     surface_cycle_seconds: float = 6e-7  # [draft] 6 t_op: cycle of the surface-code factories and layouts behind the adapter
     final_measurements: bool = False   # [draft] QUOPS has no final measurements (Sec. 2.2), so N_M = 0 as in Sec. 4.8
 
 
-BASELINE = Choices()
+# The supplies that set a point on the exact Pinnacle curves (every even width; H2 and H4) at the best quoted in-place rejection, 0.875 per
+# attempt (arXiv:2606.28518): every in-place engine is slower than these, so none is kept.
+PINNACLE_WINNERS = ('15-to-1 (Pinnacle, d_a=7)',
+                    '15-to-1 (Pinnacle, d_a=9)',
+                    '[[14,1,2]] T0, faulty T, d=(7,5,5), adapter d_a=11',
+                    '[[14,2,2]] T0,T1, two levels, (15-to-1)^6_{13,5,5}, d=(27,5,5), adapter d_a=23',
+                    '[[20,3,2]] T0,T1,T2, two levels, (15-to-1)^4_{13,5,5}, d=(27,5,5), adapter d_a=23',
+                    '[[28,1,3]] T0, cultivated engine d_a=7',
+                    '[[32,1,3]] T0, cultivated engine d_a=7',
+                    '[[47,5,3]] T0·T1·T2·T3·T4, cultivated engine d_a=9',
+                    '[[56,8,3]] T0·T1·T2·T3·T4·T5·T6·T7, cultivated engine d_a=9',
+                    '[[8,3,2]] CCZ012, faulty T, d=(7,5,5), adapter d_a=11',
+                    'cultivation, adapter d_a=11',
+                    'cultivation, adapter d_a=15',
+                    'cultivation, adapter d_a=19',
+                    'cultivation, adapter d_a=23',)
+# The supplies that set a point on the optimized Frozen curve (Frozen with T states through the adapter).
+FROZEN_WINNERS = ('(15-to-1)^8_{9,5,5} x [[15,1,3]]_{25,5,5}, adapter d_a=23',
+                  '(15-to-1)_{9,5,5} x (15-to-1)_{21,9,11}, adapter d_a=19',
+                  '[[14,1,2]] T0, faulty T, d=(7,5,5), adapter d_a=11',
+                  '[[15,1,3]], cultivated d_a=7, d=(19,5,5), adapter d_a=19',
+                  '[[15,1,3]], cultivated d_a=7, d=(19,5,5), adapter d_a=23',
+                  '[[15,1,3]], cultivated d_a=7, d=(21,5,5), adapter d_a=19',
+                  '[[15,1,3]], cultivated d_a=9, d=(19,5,5), adapter d_a=19',
+                  '[[15,1,3]], cultivated d_a=9, d=(19,5,5), adapter d_a=23',
+                  '[[15,1,3]], cultivated d_a=9, d=(21,5,5), adapter d_a=19',
+                  '[[15,1,3]], cultivated d_a=9, d=(21,5,5), adapter d_a=23',
+                  '[[15,1,3]], cultivated d_a=9, d=(23,5,5), adapter d_a=23',
+                  'cultivation, adapter d_a=11',
+                  'cultivation, adapter d_a=15',
+                  'cultivation, adapter d_a=19',
+                  'cultivation, adapter d_a=23',)
+
+
+BASELINE = Choices(supply_filter=PINNACLE_WINNERS)
 
 
 def runs_per_copy(M):
@@ -107,9 +142,9 @@ _CACHE = {}
 
 
 def supply_arrays(pc):
-    key = (pc.families, pc.adapter_distances, pc.supply_filter)
+    key = (pc.families, pc.adapter_distances, pc.supply_filter, pc.inplace_reject)
     if key not in _CACHE:
-        S = pf.all_supplies(pc.families, pc.adapter_distances)
+        S = pf.all_supplies(pc.families, pc.adapter_distances, inplace_reject=pc.inplace_reject)
         if pc.supply_filter:
             S = [x for x in S if any(f in x.name for f in pc.supply_filter)]
         a = lambda f, dt=float: np.array([f(s) for s in S], dtype=dt)
@@ -120,7 +155,7 @@ def supply_arrays(pc):
     return _CACHE[key]
 
 
-SURFACE_FAMILIES = ('surface', 'surface_jws')
+SURFACE_FAMILIES = ('surface', 'surface_fold', 'surface_jws', 'surface_catalogue')
 
 
 def supply_periods(sa, pc, ch):
@@ -245,4 +280,4 @@ def loss_for_retries(tau, fixed, h, rejection):
 
 
 # Frozen Pinnacle with adapter-delivered T states: its fixed degree-eight graph cannot host the reconfigurable GB engines.
-FROZEN_T = Choices(frozen=True, families=('surface', 'surface_jws'))
+FROZEN_T = Choices(frozen=True, families=('surface', 'surface_jws', 'surface_catalogue'), supply_filter=FROZEN_WINNERS)
