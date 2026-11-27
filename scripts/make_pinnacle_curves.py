@@ -1,11 +1,20 @@
-"""Serial Pinnacle QUOPS curves alongside the repository's cached baseline.
+"""QUOPS capability curves for Pinnacle fault tolerance (draft Secs. 3.6, 3.7, 4.10 and the Frozen appendix).
 
     python scripts/make_pinnacle_curves.py
     python scripts/make_pinnacle_curves.py --skip-sensitivity
 
-Writes results/pinnacle.json and figures/quops_direct_surface_pinnacle.{pdf,png}.
-The optional sensitivity calculation writes results/pinnacle_sensitivity.json and
-figures/pinnacle_sensitivity.{pdf,png}. No legacy model is imported or rerun.
+Writes results/pinnacle.json, figures/quops_direct_surface_pinnacle.{pdf,png} (main figure), and
+figures/quops_pinnacle_appendix.{pdf,png}. The direct and surface-code curves are cached baseline references and are
+never recomputed here, except the optimized surface-code curve, which reruns the cached surface-code model with the
+surface-code factories of the arXiv:2610.06535 protocols added to its menu (family 'jws').
+
+Pinnacle and Frozen Pinnacle use a code cycle of 12 t_op = 1.2 us (the surface code uses 6 t_op); 1 us (the published
+value) and 0.8 us are sensitivities. The shared baseline choices recorded for provenance remain those of the cached
+baseline; the Pinnacle cycle is recorded under pinnacle_choices.
+
+The provenance helpers (HASH_FORMAT, canonical_json_sha256, load_references) and the per-hardware record layout
+(supported, pinnacle, probes, direct, surface, reference_probes, crossover_vs_direct) are those of the earlier serial
+Pinnacle script, so scripts/make_frozen_pinnacle_curves.py and tests/test_pinnacle_provenance.py keep working.
 """
 import argparse
 import hashlib
@@ -20,28 +29,51 @@ sys.path.insert(0, str(ROOT))
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
 import numpy as np
 
-from capability import curves, pinnacle
+from capability import curves, frozen_pinnacle, pinnacle, surface
 from capability.config import BASELINE, HARDWARE, N_MAX
 
 PROBES = (1e4, N_MAX)
 KEYS = ('H1', 'H2', 'H3', 'H4')
 SUPPORTED_KEYS = ('H2', 'H4')
-DIRECT, SURFACE, PINNACLE = '#2a78d6', '#eb6834', '#238b59'
+DIRECT, SURFACE = '#2a78d6', '#eb6834'
+PINNACLE, PINNACLE_LIGHT, FROZEN = '#087858', '#6fbfa6', '#8c564b'   # the green of Fig. 7; STAR uses purple, direct blue, surface orange
 INK, MUTED = '#2b2b2b', '#8a8a8a'
 PAPER = 'https://arxiv.org/html/2602.11457v2'
 HASH_FORMAT = 'canonical-json-sha256-v1'
+PINNACLE_CYCLE = 12*1e-7                                   # 12 t_op with t_op = 100 ns
+PINNACLE_CH = replace(BASELINE, cycle_seconds=PINNACLE_CYCLE)
+SURFACE_CYCLE = 6e-7                                        # 6 t_op: the surface-code cycle of Sec. 3.5
+SURFACE_CH = replace(BASELINE, cycle_seconds=SURFACE_CYCLE)   # the surface-code comparison curve (cached model, 600 ns)
+SURFACE_OPTIMIZED = replace(SURFACE_CH, factories=('cultivation', 'jws_winners', 'catalogue_winners'))   # the options that set a point on the extended curve
+# All-to-all hardware: fold-transversal cultivation (Sahay, Tsai, Chang, arXiv:2509.05212) replaces color-code cultivation,
+# which it outperforms, because it needs the non-local operations that only H2 and H4 provide.
+ALL_TO_ALL_FACTORIES = ('fold_cultivation', 'litinski')
+SURFACE_OPTIMIZED_A2A = replace(SURFACE_CH, factories=ALL_TO_ALL_FACTORIES + ('jws_fold_winners', 'catalogue_fold_winners'))
+FROZEN_QUOPS = frozen_pinnacle.vary(final_measurements=False)  # N_M = 0 for QUOPS, as in the surface-code model
+FAMILIES = ('reference', 'surface_fold', 'surface_jws', 'surface_catalogue', 'gb_cat_cult')
+PLATEAU_WIDTH = 936                                         # largest deep width that completes within the week at 1.2 us
+# One row per supply that can win somewhere on the Pinnacle curve; the filters are substrings of the supply names of
+# capability/pinnacle_factories.py.
+VERDICT = (('Fold-transversal cultivation behind an adapter', ('fold-transversal cultivation, adapter',), ('surface_fold',)),
+           ('Published 15-to-1 engines', ('15-to-1 (Pinnacle',), None),
+           ('[[28,1,3]] engine with cultivated inputs', ('[[28,1,3]] T0, cultivated engine d_a=7',), ('gb_cat_cult',)),
+           ('[[32,1,3]] engine with cultivated inputs', ('[[32,1,3]] T0, cultivated engine d_a=7',), ('gb_cat_cult',)),
+           ('[[47,5,3]] engine with cultivated inputs', ('[[47,5,3]] T0·T1·T2·T3·T4, cultivated engine d_a=9',), ('gb_cat_cult',)),
+           ('[[56,8,3]] engine with cultivated inputs', ('[[56,8,3]] T0·T1·T2·T3·T4·T5·T6·T7, cultivated engine d_a=9',), ('gb_cat_cult',)),
+           ('Layout of [[14,1,2]] with fold-transversal f=3 inputs, behind an adapter', ('[[14,1,2]] T0, fold f=3',), ('surface_catalogue',)),
+           ('Layout of [[15,1,3]] with fold-transversal f=3 inputs, behind an adapter', ('[[15,1,3]], fold f=3',), ('surface_jws',)))
 MODELING_NOTES = [
-    'Serial Pauli-based computation: one processing unit and one magic engine per copy; no memory.',
-    'Logical measurement and magic-engine inputs are from arXiv:2602.11457v2, Sections IV-V.',
+    'Serial Pauli-based computation on one processing unit; the supply (magic engine, surface-code factory behind an adapter, or in-place injection) is a searched black box.',
+    'Logical measurement and magic-engine inputs are from arXiv:2602.11457v2, Sections IV-V; the code cycle is 12 t_op = 1.2 us.',
     'H1 and H3 are not modeled: a 2D nearest-neighbor realization needs placement, routing, and error costs; this is not an impossibility claim.',
     'H4 uses the same p=1e-3 depolarizing-noise fit as H2, without a claimed bimodal-noise gain.',
-    'Data survival averages geometric retries; week throughput uses expected runtime, not a deadline guarantee.',
-    'The baseline counts both Pauli error sectors using logical_error_scale=2; this is a declared choice.',
-    'Synthesis infidelity is charged separately from stochastic no-fault loss within the shared loss budget.',
-    'Direct and surface-code curves are cached baseline references and are never recomputed by this script.',
+    'Rejections stall the unit; the blocks are charged for the mean stall (relative difference from the geometric average below 1e-6).',
+    'The baseline counts both Pauli error sectors using eta=2; this is a declared choice.',
+    'Synthesis infidelity is charged within the shared loss budget, separately from the stochastic no-fault loss.',
+    'Direct and surface-code curves are cached baseline references; the optimized surface-code curve reruns only the cached surface-code model with more factories.',
+    'On all-to-all hardware (H2, H4) fold-transversal cultivation (arXiv:2509.05212) replaces color-code cultivation for the surface code, behind the Pinnacle adapter, and for Frozen; its f = 3 states are also inputs of the surface-code distillation layouts.',
 ]
 
 
@@ -74,30 +106,147 @@ def with_probes(rows, probes):
     return sorted(combined.values(), key=lambda r: (r['ensemble'], r['w']))
 
 
-def compute_pinnacle(hw, ch=BASELINE, pc=pinnacle.BASELINE):
+def probe_row(N, hw, rows, pc, ch):
+    x = pinnacle.best_at(N, hw, ch, rows, pc)
+    keys = ('s', 'w', 'ensemble', 'qubits', 'distance', 'factory', 'family', 'factories', 'T_per_rotation',
+            'run_seconds', 'loss_blocks', 'loss_magic', 'loss_synthesis')
+    return None if x is None else dict({k: x[k] for k in keys}, passes=True)
+
+
+def compute_pinnacle(hw, ch=PINNACLE_CH, pc=pinnacle.BASELINE):
     reason = pinnacle.support_reason(hw, pc)
     if reason is not None:
         return dict(supported=False, unsupported_reason=reason, pinnacle=[],
                     probes={f'{N:.0e}': None for N in PROBES})
     rows = pinnacle.sweep(hw, ch, pc)
-    probes = {f'{N:.0e}': pinnacle.best_at(N, hw, ch, rows, pc) for N in PROBES}
+    probes = {f'{N:.0e}': probe_row(N, hw, rows, pc, ch) for N in PROBES}
     return dict(supported=True, unsupported_reason=None, pinnacle=with_probes(rows, probes), probes=probes)
 
 
-def compute(ch=BASELINE, pc=pinnacle.BASELINE):
+def frozen_curves(hw, ch, direct):
+    """Frozen Pinnacle: its published CCZ engine with catalysis, and T states delivered through an adapter."""
+    cc = frozen_pinnacle.sweep(hw, ch, FROZEN_QUOPS)
+    tt = pinnacle.sweep(hw, ch, pinnacle.FROZEN_T)
+    both = cc + tt
+    probes = lambda rows, pc=None: {f'{N:.0e}': (probe_row(N, hw, rows, pc, ch) if pc else frozen_pinnacle.best_at(N, hw, ch, rows, FROZEN_QUOPS))
+                                    for N in PROBES}
+    sens = {}
+    for name, c2, fc in (('four scratch slots per pair', ch, replace(FROZEN_QUOPS, extra_batch_slots=4)),
+                         ('code cycle 1 us (published)', replace(ch, cycle_seconds=1e-6), FROZEN_QUOPS),
+                         ('code cycle 1 ms', replace(ch, cycle_seconds=1e-3), FROZEN_QUOPS),
+                         ('10^4 executions', replace(ch, executions=10**4), FROZEN_QUOPS)):
+        r2 = frozen_pinnacle.sweep(hw, c2, fc)
+        sens[name] = dict(crossover=curves.crossover(direct, r2),
+                          probes={f'{N:.0e}': frozen_pinnacle.best_at(N, hw, c2, r2, fc) for N in PROBES})
+    return dict(ccz=dict(rows=cc, crossover=curves.crossover(direct, cc), probes=probes(cc)),
+                adapter_t=dict(rows=tt, crossover=curves.crossover(direct, tt), probes=probes(tt, pinnacle.FROZEN_T)),
+                optimized=dict(rows=both, crossover=curves.crossover(direct, both)), sensitivity=sens)
+
+
+def sensitivities(hw, direct):
+    cases = {'baseline': (pinnacle.BASELINE, PINNACLE_CH)}
+    for fam in FAMILIES:
+        cases[f'only {fam}'] = (pinnacle.vary(families=(fam,)), PINNACLE_CH)
+    cases['eta = 1'] = (pinnacle.vary(eta=1.0), PINNACLE_CH)
+    cases['reaction 20 t_c'] = (pinnacle.vary(reaction=20), PINNACLE_CH)
+    cases['adapter d_a = 15 only'] = (pinnacle.vary(adapter_distances=(15,)), PINNACLE_CH)
+    for label, seconds in (('code cycle 1 us (published)', 1e-6), ('code cycle 0.8 us', 0.8e-6)):
+        cases[label] = (pinnacle.BASELINE, replace(BASELINE, cycle_seconds=seconds))   # t_op fixed: surface code stays at 600 ns
+    # A 1 ms Pinnacle cycle means t_op = 1 ms / 12, so the 6-step surface-code cycle of the factories becomes 0.5 ms.
+    cases['code cycle 1 ms'] = (pinnacle.vary(surface_cycle_seconds=0.5e-3), replace(BASELINE, cycle_seconds=1e-3))
+    cases['linear synthesis charge'] = (pinnacle.BASELINE, replace(PINNACLE_CH, synthesis_charge='linear'))
+    cases['10^4 executions'] = (pinnacle.BASELINE, replace(PINNACLE_CH, executions=10**4))
+    out = {}
+    for name, (pc, ch) in cases.items():
+        rows = pinnacle.sweep(hw, ch, pc)
+        out[name] = dict(crossover=curves.crossover(direct, rows),
+                         probes={f'{N:.0e}': probe_row(N, hw, rows, pc, ch) for N in PROBES})
+    return out
+
+
+def supply_verdict(hw, direct):
+    """Each supply used alone: crossover with direct, capability at the probes, qubits for the plateau design."""
+    out = {}
+    for name, flt, fam in VERDICT:
+        pc = pinnacle.vary(supply_filter=flt, families=fam) if fam else pinnacle.vary(supply_filter=flt)
+        rows = pinnacle.sweep(hw, PINNACLE_CH, pc)
+        plateau = pinnacle.min_qubits(PLATEAU_WIDTH, 'deep', hw, PINNACLE_CH, pc)
+        p = {f'{N:.0e}': probe_row(N, hw, rows, pc, PINNACLE_CH) for N in PROBES}
+        out[name] = dict(crossover=curves.crossover(direct, rows), s_1e4=p['1e+04'] and p['1e+04']['s'],
+                         s_1e6=p['1e+06'] and p['1e+06']['s'], plateau_qubits=plateau and plateau['qubits'],
+                         largest_width_deep=max([r['w'] for r in rows if r['ensemble'] == 'deep'], default=None))
+    return out
+
+
+def winners(hw):
+    """Supply that wins at every even width of each ensemble, for the best-of-menu curve."""
+    counts = {}
+    for ensemble in ('shallow', 'deep'):
+        for w in range(2, 4000, 2):
+            r = pinnacle.min_qubits(w, ensemble, hw, PINNACLE_CH)
+            if r is None:
+                break
+            name = r['factory'].split(', adapter')[0] if 'cultivation, adapter' in r['factory'] else r['factory']
+            counts.setdefault(name, []).append((ensemble, w, r['qubits']))
+    return {k: dict(widths=len(v), min_qubits=min(x[2] for x in v), max_qubits=max(x[2] for x in v)) for k, v in counts.items()}
+
+
+def all_to_all(hw):
+    return hw.connectivity == 'all_to_all'
+
+
+def surface_ch(hw, ch=SURFACE_CH):
+    """Surface-code choices for hw: on all-to-all hardware fold-transversal cultivation replaces color-code cultivation."""
+    return replace(ch, factories=ALL_TO_ALL_FACTORIES) if all_to_all(hw) else ch
+
+
+def surface_sc(hw, direct, ch=SURFACE_CH):
+    """The cached surface-code model at the 600 ns cycle of Sec. 3.5, the curve that Pinnacle is compared with."""
+    c = surface_ch(hw, ch)
+    rows = surface.sweep(hw, c)
+    probes = {f'{N:.0e}': surface.best_at(N, hw, c, rows) for N in PROBES}
+    return dict(rows=with_probes(rows, probes), probes=probes, crossover=curves.crossover(direct, rows))
+
+
+def surface_optimized(key, hw, base):
+    """Cached surface-code model with the surface-code factories of the 2610.06535 protocols added to its menu."""
+    c = SURFACE_OPTIMIZED_A2A if all_to_all(hw) else SURFACE_OPTIMIZED
+    rows = surface.sweep(hw, c)
+    probes = {f'{N:.0e}': surface.best_at(N, hw, c, rows) for N in PROBES}
+    return dict(rows=with_probes(rows, probes), probes=probes, crossover=curves.crossover(base[key]['direct'], rows))
+
+
+def compute(ch=BASELINE, pc=pinnacle.BASELINE, extended=True):
     reference, digest = load_references(ch)
-    out = dict(choices=asdict(ch), pinnacle_choices=asdict(pc),
+    out = dict(choices=asdict(ch), pinnacle_choices=dict(asdict(pc), cycle_seconds=PINNACLE_CYCLE),
                source_paper=dict(url=PAPER, version='v2', revised='2026-05-05'),
                provenance_hash_format=HASH_FORMAT,
                baseline_sha256=digest,
                source_of_reference='cached results/baseline.json; legacy models were not rerun',
                modeling_notes=MODELING_NOTES)
     for key in KEYS:
-        record = compute_pinnacle(HARDWARE[key], ch, pc)
-        record.update(hardware=asdict(HARDWARE[key]), direct=reference[key]['direct'],
+        hw = HARDWARE[key]
+        record = compute_pinnacle(hw, PINNACLE_CH, pc)
+        record.update(hardware=asdict(hw), direct=reference[key]['direct'],
                       surface=reference[key]['surface'], reference_probes=reference[key]['probes'])
+        record['surface_sc'] = surface_sc(hw, record['direct'])
+        if all_to_all(hw):     # the surface-code curve of the combined figure (cached choices) with fold-transversal cultivation
+            record['surface_fig7'] = surface_sc(hw, record['direct'], BASELINE)
         record['crossover_vs_direct'] = (curves.crossover(record['direct'], record['pinnacle'])
                                          if record['supported'] else None)
+        if extended:
+            ext = dict(surface_optimized=surface_optimized(key, hw, reference))
+            if record['supported']:
+                rivals = record['direct'] + record['surface_sc']['rows']   # surface code at 600 ns; the extended menu is in the appendix
+                record['crossover_vs_all'] = curves.crossover(rivals, record['pinnacle'])
+                ext.update(per_family={f: dict(rows=pinnacle.sweep(hw, PINNACLE_CH, pinnacle.vary(families=(f,))))
+                                       for f in FAMILIES},
+                           frozen=frozen_curves(hw, PINNACLE_CH, record['direct']),
+                           sensitivity=sensitivities(hw, record['direct']),
+                           supply_verdict=supply_verdict(hw, record['direct']), winners=winners(hw))
+                for f, v in ext['per_family'].items():
+                    v['crossover'] = curves.crossover(record['direct'], v['rows'])
+            record['extended'] = ext
         out[key] = record
     return out
 
@@ -108,12 +257,23 @@ def draw_curve(ax, rows, color, label, **kwargs):
     return ax.step(curves.N_GRID, y, where='post', color=color, label=label, **kwargs)
 
 
-def decorate(ax):
-    ax.set(xscale='log', yscale='log', xlim=(1, N_MAX), ylim=(1, 1e9))
+def decorate(ax, title):
+    ax.set(xscale='log', yscale='log', xlim=(1, N_MAX), ylim=(1, 1e9), title=title)
+    ax.title.set_fontsize(10)
     ax.grid(alpha=.15)
     for side in ('top', 'right'):
         ax.spines[side].set_visible(False)
-    ax.tick_params(labelsize=8)
+
+
+def label_direct(ax, rows):
+    d = max((r for r in rows if r['passes']), key=lambda r: (r['s'], r['ensemble'] == 'deep'))
+    ax.text(2, d['s']*1.8, f"direct: s = {d['s']:,} ({d['ensemble']}, w = {d['w']})", color=INK, fontsize=8, va='bottom')
+
+
+def crossover_line(ax, x, color, text, y, ha='left'):
+    ax.axvline(x, color=color, lw=1, ls=':')
+    ax.text(x*(1.2 if ha == 'left' else 1/1.2), y, f'{text}\n{x:,.0f} qubits', color=INK, fontsize=7.5, va='top' if y > 1e5 else 'center',
+            ha=ha, bbox=dict(fc='white', ec='none', alpha=.85, pad=1))
 
 
 def save_plot(fig, path):
@@ -123,103 +283,50 @@ def save_plot(fig, path):
     plt.close(fig)
 
 
-def plot(data, path):
-    fig, axes = plt.subplots(2, 2, figsize=(9, 6.6), sharex=True, sharey=True)
+def plot_main(data, path):
+    fig, axes = plt.subplots(2, 2, figsize=(9, 7.0), sharex=True, sharey=True)
     for ax, key in zip(axes.flat, KEYS):
-        value = data[key]
-        draw_curve(ax, value['direct'], DIRECT, 'Direct', lw=1.8)
-        draw_curve(ax, value['surface'], SURFACE, 'Surface code', lw=1.8)
-        if value['supported']:
-            draw_curve(ax, value['pinnacle'], PINNACLE, 'Pinnacle (serial)', lw=2.1)
-            crossing = value['crossover_vs_direct']
-            if crossing is not None:
-                ax.axvline(crossing, color=PINNACLE, lw=.9, ls=':', alpha=.7)
-                ax.text(.045, .89, f'Pinnacle exceeds direct\nat {crossing:,.0f} qubits',
-                        transform=ax.transAxes, fontsize=7.4, color=PINNACLE, va='top')
-            top = value['probes'][f'{N_MAX:.0e}']
-            if top is not None:
-                ax.axvspan(top['qubits'], N_MAX, color=PINNACLE, alpha=.045)
-                ax.plot([top['qubits'], N_MAX], [top['s'], top['s']], color=PINNACLE, lw=2, ls=':')
-                ax.text(.045, .72, f"Pinnacle at $10^6$:\ns = {top['s']:,}", transform=ax.transAxes,
-                        fontsize=7.4, va='top', color=PINNACLE)
+        v = data[key]
+        draw_curve(ax, v['direct'], DIRECT, 'Direct', lw=2)
+        draw_curve(ax, v['surface_sc']['rows'], SURFACE, 'Surface code', lw=2)
+        if v['supported']:
+            draw_curve(ax, v['pinnacle'], PINNACLE, 'Pinnacle, optimized magic engines', lw=2.2)
+            crossover_line(ax, v['crossover_vs_all'], PINNACLE, 'Pinnacle crossover', 4e8, ha='right')
         else:
-            ax.text(.045, .84, '2D grid mapping not modeled\nPlacement and routing costs needed',
-                    transform=ax.transAxes, fontsize=8, color=PINNACLE, va='top',
-                    bbox=dict(facecolor='white', edgecolor='none', alpha=.9, pad=2))
-        direct_best = max((r['s'] for r in value['direct'] if r['passes']), default=0)
-        if direct_best:
-            ax.text(2, direct_best*1.7, f'direct: s = {direct_best:,}', color=DIRECT, fontsize=7.5)
-        ax.set_title(f"{key}: {value['hardware']['name']}", fontsize=10)
-        decorate(ax)
+            ax.text(3, 3e5, 'Pinnacle: 2D-grid mapping\nnot modeled', color=PINNACLE, fontsize=8)
+        crossover = curves.crossover(v['direct'], v['surface_sc']['rows'])
+        if crossover:
+            crossover_line(ax, crossover, SURFACE, 'surface-code crossover', 4e8 if not v['supported'] else 30)
+        label_direct(ax, v['direct'])
+        decorate(ax, f"{key}: {v['hardware']['name']}")
     for ax in axes[1]:
-        ax.set_xlabel('Physical qubits N', fontsize=9)
+        ax.set_xlabel('Physical qubits N')
     for ax in axes[:, 0]:
-        ax.set_ylabel('QUOPS capability s', fontsize=9)
-    handles = [Line2D([0], [0], color=color, lw=2, label=label) for color, label in
-               ((DIRECT, 'Direct (cached)'), (SURFACE, 'Surface code (cached)'), (PINNACLE, 'Pinnacle (serial)'))]
-    fig.suptitle('QUOPS capability: direct, surface code and Pinnacle', fontsize=12, y=.98)
-    fig.legend(handles=handles, loc='upper center', bbox_to_anchor=(.5, .945), ncol=3, frameon=False, fontsize=9)
-    fig.text(.5, .016, 'One-week budget; Pinnacle uses mean retry time. H4 has no assumed bimodal gain.',
-             ha='center', color=MUTED, fontsize=8)
-    fig.subplots_adjust(left=.09, right=.985, bottom=.11, top=.84, wspace=.12, hspace=.26)
+        ax.set_ylabel('QUOPS capability s')
+    handles, labels = axes[0, 1].get_legend_handles_labels()
+    fig.legend(handles, labels, loc='lower center', ncol=2, frameon=False, fontsize=8)
+    fig.tight_layout(rect=(0, 0.07, 1, 1))
     save_plot(fig, path)
 
 
-def sensitivity_variants(pc=pinnacle.BASELINE):
-    low_error = tuple(e.name for e in pinnacle.ENGINES if e.error == 1e-11)
-    small_engine = tuple(e.name for e in pinnacle.ENGINES if e.error == 1e-9)
-    return [
-        ('baseline', {}, {}, PINNACLE, '-'),
-        ('one Pauli sector', {}, dict(logical_error_scale=1), '#58a65c', '--'),
-        ('1 ms cycle', dict(cycle_seconds=1e-3), {}, '#9467bd', '-'),
-        ('10,000 executions', dict(executions=10_000), {}, '#c44e52', '-'),
-        ('1e-9 engine only', {}, dict(engines=small_engine), '#8c6d31', '--'),
-        ('1e-11 engine only', {}, dict(engines=low_error), '#4c78a8', '--'),
-        ('measured synthesis charge', dict(synthesis_scale=.14), {}, '#555555', ':'),
-    ]
-
-
-def compute_sensitivity(baseline=None, ch=BASELINE, pc=pinnacle.BASELINE):
-    out = dict(source_paper=dict(url=PAPER, version='v2'), choices=asdict(ch), pinnacle_choices=asdict(pc),
-               legacy_reference_used=False, modeling_notes=MODELING_NOTES[:-1], variants=[])
-    for name, shared, specific, color, style in sensitivity_variants(pc):
-        changed_ch, changed_pc = replace(ch, **shared), replace(pc, **specific)
-        result = {}
-        for key in SUPPORTED_KEYS:
-            if name == 'baseline' and baseline is not None:
-                value = baseline[key]
-                record = {k: value[k] for k in ('supported', 'unsupported_reason', 'pinnacle', 'probes')}
-            else:
-                record = compute_pinnacle(HARDWARE[key], changed_ch, changed_pc)
-            result[key] = dict(hardware=asdict(HARDWARE[key]), **record)
-        out['variants'].append(dict(name=name, shared_changes=shared, pinnacle_changes=specific,
-                                    choices=asdict(changed_ch), pinnacle_choices=asdict(changed_pc),
-                                    color=color, linestyle=style, result=result))
-        print('sensitivity:', name, {key: {N: row['s'] if row else 0 for N, row in value['probes'].items()}
-                                     for key, value in result.items()}, flush=True)
-    return out
-
-
-def plot_sensitivity(data, path):
-    fig, axes = plt.subplots(1, 2, figsize=(9, 4.8), sharex=True, sharey=True)
-    handles = []
-    for variant in data['variants']:
-        for ax, key in zip(axes, SUPPORTED_KEYS):
-            draw_curve(ax, variant['result'][key]['pinnacle'], variant['color'], variant['name'],
-                       lw=2 if variant['name'] == 'baseline' else 1.5, ls=variant['linestyle'])
-        handles.append(Line2D([0], [0], color=variant['color'], lw=2, ls=variant['linestyle'], label=variant['name']))
+def plot_appendix(data, path):
+    fig, axes = plt.subplots(1, 2, figsize=(9, 4.6), sharex=True, sharey=True)
     for ax, key in zip(axes, SUPPORTED_KEYS):
-        decorate(ax)
-        ax.set_xlim(1e3, N_MAX)
-        ax.set_title(f'{key}: {HARDWARE[key].name}', fontsize=10)
-        ax.set_xlabel('Physical qubits N', fontsize=9)
-    axes[0].set_ylabel('QUOPS capability s', fontsize=9)
-    fig.suptitle('Pinnacle sensitivity: one choice changed at a time', fontsize=12, y=.98)
-    fig.legend(handles=handles, loc='upper center', bbox_to_anchor=(.5, .925), ncol=3,
-               frameon=False, fontsize=8, columnspacing=1.4)
-    fig.text(.5, .022, 'Pinnacle only; H4 uses the H2 noise fit. Runtime includes expected magic-engine retries.',
-             ha='center', color=MUTED, fontsize=8)
-    fig.subplots_adjust(left=.09, right=.985, bottom=.14, top=.72, wspace=.12)
+        v = data[key]; e = v['extended']
+        draw_curve(ax, v['direct'], DIRECT, 'Direct', lw=2)
+        draw_curve(ax, v['surface_sc']['rows'], SURFACE, 'Surface code', lw=2)
+        draw_curve(ax, e['surface_optimized']['rows'], SURFACE, 'Surface code, optimized magic-state factories', lw=1.6, ls='--')
+        draw_curve(ax, v['pinnacle'], PINNACLE, 'Pinnacle, optimized magic engines', lw=1.4)
+        draw_curve(ax, e['per_family']['reference']['rows'], PINNACLE_LIGHT, 'Pinnacle, published 15-to-1 engines only', lw=1.6, ls='--')
+        draw_curve(ax, e['frozen']['ccz']['rows'], FROZEN, 'Frozen Pinnacle, published CCZ engine with catalysis', lw=2.2)
+        draw_curve(ax, e['frozen']['optimized']['rows'], FROZEN, 'Frozen Pinnacle, optimized magic engines', lw=1.6, ls='--')
+        decorate(ax, f"{key}: {v['hardware']['name']}")
+        ax.set_xlabel('Physical qubits N')
+        label_direct(ax, v['direct'])
+    axes[0].set_ylabel('QUOPS capability s')
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc='lower center', ncol=2, frameon=False, fontsize=8)
+    fig.tight_layout(rect=(0, 0.17, 1, 1))
     save_plot(fig, path)
 
 
@@ -230,25 +337,32 @@ def write_json(data, path):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--skip-sensitivity', action='store_true', help='Only compute the baseline comparison.')
+    parser.add_argument('--skip-sensitivity', action='store_true', help='Skip the extended analysis (curves, supply comparison, Frozen).')
     args = parser.parse_args()
-    data = compute()
+    data = compute(extended=not args.skip_sensitivity)
     write_json(data, ROOT/'results/pinnacle.json')
-    plot(data, ROOT/'figures/quops_direct_surface_pinnacle')
     for key in KEYS:
-        value = data[key]
-        if not value['supported']:
-            print(f"{key}: Pinnacle unsupported ({value['unsupported_reason']})", flush=True)
+        v = data[key]
+        if not v['supported']:
+            print(f"{key}: Pinnacle unsupported ({v['unsupported_reason']})", flush=True)
             continue
-        crossing = value['crossover_vs_direct']
-        label = f'{crossing:,.0f}' if crossing is not None else 'none'
-        probes = '; '.join(f"s at {N} = {row['s']:,} (w={row['w']}, d={row['distance']}, {row['engine']})"
-                           if row else f's at {N} = 0' for N, row in value['probes'].items())
-        print(f'{key}: Pinnacle/direct crossover N={label}; {probes}', flush=True)
+        probes = '; '.join(f"s at {N} = {row['s']:,} (w={row['w']}, {row['ensemble']}, d={row['distance']}, {row['factories']} x {row['factory']}, N={row['qubits']:,.0f})"
+                           if row else f's at {N} = 0' for N, row in v['probes'].items())
+        print(f"{key}: Pinnacle/direct crossover {v['crossover_vs_direct']}; {probes}", flush=True)
     if not args.skip_sensitivity:
-        sensitivity = compute_sensitivity(data)
-        write_json(sensitivity, ROOT/'results/pinnacle_sensitivity.json')
-        plot_sensitivity(sensitivity, ROOT/'figures/pinnacle_sensitivity')
+        plot_main(data, ROOT/'figures/quops_direct_surface_pinnacle')
+        plot_appendix(data, ROOT/'figures/quops_pinnacle_appendix')
+        for key in SUPPORTED_KEYS:
+            e = data[key]['extended']
+            print(key, 'crossover vs direct and cached surface', data[key]['crossover_vs_all'],
+                  '| surface (600 ns) crossover', data[key]['surface_sc']['crossover'],
+                  '| surface (extended menu) crossover', e['surface_optimized']['crossover'],
+                  '| surface extended s at probes', {N: (r['s'] if r else 0) for N, r in e['surface_optimized']['probes'].items()},
+                  '| Frozen ccz', e['frozen']['ccz']['crossover'], 'adapter-T', e['frozen']['adapter_t']['crossover'],
+                  'optimized', e['frozen']['optimized']['crossover'], flush=True)
+            for name, sv in e['supply_verdict'].items():
+                print(f"    {name:70s} cross={sv['crossover']} s@1e4={sv['s_1e4']} s@1e6={sv['s_1e6']} plateau qubits={sv['plateau_qubits']}")
+            print('    winners:', {k: (x['widths'], x['min_qubits'], x['max_qubits']) for k, x in e['winners'].items()})
 
 
 if __name__ == '__main__':

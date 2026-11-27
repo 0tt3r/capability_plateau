@@ -1,5 +1,38 @@
 # QUOPS capability for the original Pinnacle architecture
 
+> **Update (final menus, fold-transversal cultivation).** `capability/pinnacle.py` searches magic engines and factories
+> (Sec. 3.7 of the draft) along three pathways: (A) physical T states injected in place into a GB-block engine, (B) cultivated
+> inputs distilled in a GB-block engine with the template of the published 15-to-1 engine, and (C) cultivation and
+> distillation on surface-code patches, delivered to the unit through an adapter. On all-to-all hardware, the only hardware
+> modeled for Pinnacle, color-code cultivation (Gidney, Shutty, Jones) is replaced by fold-transversal cultivation (Sahay et
+> al., arXiv:2509.05212): an f = 5 factory of 449 qubits, error 1e-9, 9.3e3 qubit-cycles per state ('fold_cultivation',
+> family 'surface_fold' behind the adapter), and f = 3 states (error 2e-6, 337-qubit patches, 1.5e3 qubit-cycles per state)
+> as inputs of every surface-code distillation layout ('fold f=3'). The volumes are read from Fig. 2b of that paper, one
+> gate step counted as t_op, with the packing factor 1.55 of the color-code cultivation row. Every protocol of the factory
+> catalogues is costed by `scripts/catalogue_factories.py` (results/catalogue_factories.json). The winners
+> (`PINNACLE_WINNERS`, `FROZEN_WINNERS`, `FOLD_JWS_WINNERS`, `FOLD_CATALOGUE_WINNERS`) come from the every-width search of
+> `scripts/find_winners.py` (results/winners.json): fold-transversal cultivation behind adapters, the published 15-to-1
+> engines, the [[28,1,3]], [[32,1,3]], [[47,5,3]], [[56,8,3]] engines (B), and layouts of [[14,1,2]] and [[15,1,3]] fed by
+> fold-transversal f = 3 states (C). Pathway A never sets a point at the best quoted in-place rejection (0.875 per
+> attempt, arXiv:2606.28518). The surface-code comparison curves of H2 and H4 (Figs. 7 and 8) also use fold-transversal
+> cultivation; H1 and H3 keep color-code cultivation. `scripts/fold_cultivation_comparison.py` reruns the all-to-all
+> comparison with unfiltered menus (with CATALOGUE_JSON set to a `--yield-rule tcount` catalogue it is the T-count
+> upper-bound check). The GB code distances are d = 6, 10, 16, 24. The schedule follows Sec. 3.5 with `F` magic engines or
+> factories, a slot `D = max(d_t, t_r, s_F)`, and no final-measurement slots for QUOPS; surface-code factories and layouts
+> run at the 600 ns surface-code cycle, the Pinnacle unit at 12 t_op = 1.2 us.
+> With only the published engines it reproduces the serial estimate below (crossover 4,862; width-84 design with 9,570
+> qubits) up to the plateau, where it allows several engines. `scripts/make_pinnacle_curves.py` keeps the provenance fields
+> read by `make_frozen_pinnacle_curves.py`.
+> The sections below document the original serial model, which `capability/frozen_pinnacle.py` still follows.
+> The one-at-a-time sensitivities are now stored in `results/pinnacle.json` (`extended.sensitivity`), so the former
+> `results/pinnacle_sensitivity.json` and `figures/pinnacle_sensitivity.*` were removed. `make_frozen_pinnacle_curves.py` keeps
+> the shared 1 us cycle, whereas the paper's Frozen numbers (appendix) come from `make_pinnacle_curves.py` at 1.2 us.
+> Cycle times follow 100 ns per time step: the Pinnacle unit runs at 12 t_op = 1.2 us, while surface-code factories and
+> layouts behind the adapter run at the 6 t_op = 600 ns surface-code cycle (`Choices.surface_cycle_seconds`), and the
+> surface-code comparison curve (`surface_sc` in `results/pinnacle.json`) is the cached model at 600 ns. QUOPS has no
+> final measurements, so the schedule adds only the startup slot (`Choices.final_measurements=False`, N_M = 0, as in the
+> surface-code QUOPS runtime); the Frozen CCZ runs use `frozen_pinnacle.vary(final_measurements=False)`.
+
 This serial Pinnacle resource estimate uses the original architecture described in
 [arXiv:2602.11457v2](https://arxiv.org/html/2602.11457v2), revised 5 May 2026.
 The comparison plots use counted sequential PBC for the surface-code baseline.
@@ -65,7 +98,7 @@ This is an explicit uniform-noise proxy, not a separately simulated bimodal fit.
 ## 2. Layout and available designs
 
 Each execution copy has one processing unit and one magic engine, with no
-separate memory. The code menu is from Table 1 of the paper:
+separate memory. The code menu is from Table 1 of the paper, restricted to the four distances that set a point on the curves (d = 6, 10, 16, 24):
 
 | Code `[[n,k,d]]` | Native logical cycle `d_t` | Physical qubits per processing block |
 |---|---:|---:|

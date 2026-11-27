@@ -1,0 +1,5941 @@
+{
+ "pinnacle_H2": {
+  "winners": [
+   "15-to-1 (Pinnacle, d_a=7)",
+   "15-to-1 (Pinnacle, d_a=9)",
+   "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19",
+   "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19",
+   "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23",
+   "[[28,1,3]] T0, cultivated engine d_a=7",
+   "[[32,1,3]] T0, cultivated engine d_a=7",
+   "[[47,5,3]] T0\u00b7T1\u00b7T2\u00b7T3\u00b7T4, cultivated engine d_a=9",
+   "[[56,8,3]] T0\u00b7T1\u00b7T2\u00b7T3\u00b7T4\u00b7T5\u00b7T6\u00b7T7, cultivated engine d_a=9",
+   "fold-transversal cultivation, adapter d_a=11",
+   "fold-transversal cultivation, adapter d_a=15",
+   "fold-transversal cultivation, adapter d_a=19",
+   "fold-transversal cultivation, adapter d_a=23"
+  ],
+  "steps": [
+   [
+    960.0,
+    36,
+    "shallow",
+    6,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    1168.0,
+    1728,
+    "deep",
+    12,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    1576.0,
+    2744,
+    "deep",
+    14,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    1620.0,
+    4096,
+    "deep",
+    16,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    2436.0,
+    21952,
+    "deep",
+    28,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    3296.0,
+    74088,
+    "deep",
+    42,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    4372.0,
+    175616,
+    "deep",
+    56,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    5232.0,
+    343000,
+    "deep",
+    70,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    6092.0,
+    592704,
+    "deep",
+    84,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    6952.0,
+    941192,
+    "deep",
+    98,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    7812.0,
+    1404928,
+    "deep",
+    112,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    8672.0,
+    1728000,
+    "deep",
+    120,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    8952.0,
+    2000376,
+    "deep",
+    126,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    9812.0,
+    2197000,
+    "deep",
+    130,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    14270.0,
+    2406104,
+    "deep",
+    134,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    14930.0,
+    2515456,
+    "deep",
+    136,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    15512.0,
+    2985984,
+    "deep",
+    144,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    17132.0,
+    3944312,
+    "deep",
+    158,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    17412.0,
+    4096000,
+    "deep",
+    160,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    19032.0,
+    5451776,
+    "deep",
+    176,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    20652.0,
+    7077888,
+    "deep",
+    192,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    22272.0,
+    8998912,
+    "deep",
+    208,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    23892.0,
+    11239424,
+    "deep",
+    224,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    25512.0,
+    13824000,
+    "deep",
+    240,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    27132.0,
+    16777216,
+    "deep",
+    256,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    28752.0,
+    19683000,
+    "deep",
+    270,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    29096.0,
+    20123648,
+    "deep",
+    272,
+    "fold-transversal cultivation, adapter d_a=23"
+   ],
+   [
+    30716.0,
+    20570824,
+    "deep",
+    274,
+    "fold-transversal cultivation, adapter d_a=23"
+   ],
+   [
+    33570.0,
+    23887872,
+    "deep",
+    288,
+    "15-to-1 (Pinnacle, d_a=7)"
+   ],
+   [
+    35190.0,
+    28094464,
+    "deep",
+    304,
+    "15-to-1 (Pinnacle, d_a=7)"
+   ],
+   [
+    36810.0,
+    32768000,
+    "deep",
+    320,
+    "15-to-1 (Pinnacle, d_a=7)"
+   ],
+   [
+    38430.0,
+    37933056,
+    "deep",
+    336,
+    "[[28,1,3]] T0, cultivated engine d_a=7"
+   ],
+   [
+    40050.0,
+    43614208,
+    "deep",
+    352,
+    "[[32,1,3]] T0, cultivated engine d_a=7"
+   ],
+   [
+    42690.0,
+    49836032,
+    "deep",
+    368,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    44310.0,
+    56623104,
+    "deep",
+    384,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    45930.0,
+    64000000,
+    "deep",
+    400,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    47550.0,
+    71991296,
+    "deep",
+    416,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    49170.0,
+    80621568,
+    "deep",
+    432,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    50790.0,
+    89915392,
+    "deep",
+    448,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    52410.0,
+    99897344,
+    "deep",
+    464,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    54030.0,
+    110592000,
+    "deep",
+    480,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    55650.0,
+    122023936,
+    "deep",
+    496,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    57270.0,
+    134217728,
+    "deep",
+    512,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    58890.0,
+    147197952,
+    "deep",
+    528,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    60510.0,
+    160989184,
+    "deep",
+    544,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    62130.0,
+    175616000,
+    "deep",
+    560,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    63750.0,
+    191102976,
+    "deep",
+    576,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    65370.0,
+    207474688,
+    "deep",
+    592,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    66990.0,
+    224755712,
+    "deep",
+    608,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    68610.0,
+    242970624,
+    "deep",
+    624,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    70230.0,
+    262144000,
+    "deep",
+    640,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    71850.0,
+    282300416,
+    "deep",
+    656,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    73470.0,
+    303464448,
+    "deep",
+    672,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    75090.0,
+    325660672,
+    "deep",
+    688,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    76710.0,
+    348913664,
+    "deep",
+    704,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    78330.0,
+    373248000,
+    "deep",
+    720,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    79950.0,
+    398688256,
+    "deep",
+    736,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    81570.0,
+    425259008,
+    "deep",
+    752,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    83190.0,
+    452984832,
+    "deep",
+    768,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    84810.0,
+    481890304,
+    "deep",
+    784,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    86430.0,
+    512000000,
+    "deep",
+    800,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    88050.0,
+    543338496,
+    "deep",
+    816,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    89670.0,
+    575930368,
+    "deep",
+    832,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    91290.0,
+    609800192,
+    "deep",
+    848,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    92910.0,
+    644972544,
+    "deep",
+    864,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    94530.0,
+    681472000,
+    "deep",
+    880,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    96150.0,
+    719323136,
+    "deep",
+    896,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    97770.0,
+    729000000,
+    "deep",
+    900,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    98790.0,
+    758550528,
+    "deep",
+    912,
+    "[[47,5,3]] T0\u00b7T1\u00b7T2\u00b7T3\u00b7T4, cultivated engine d_a=9"
+   ],
+   [
+    100410.0,
+    799178752,
+    "deep",
+    928,
+    "[[56,8,3]] T0\u00b7T1\u00b7T2\u00b7T3\u00b7T4\u00b7T5\u00b7T6\u00b7T7, cultivated engine d_a=9"
+   ],
+   [
+    102030.0,
+    804357000,
+    "deep",
+    930,
+    "[[56,8,3]] T0\u00b7T1\u00b7T2\u00b7T3\u00b7T4\u00b7T5\u00b7T6\u00b7T7, cultivated engine d_a=9"
+   ],
+   [
+    103652.0,
+    820025856,
+    "deep",
+    936,
+    "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23"
+   ]
+  ]
+ },
+ "pinnacle_H4": {
+  "winners": [
+   "15-to-1 (Pinnacle, d_a=7)",
+   "15-to-1 (Pinnacle, d_a=9)",
+   "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19",
+   "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19",
+   "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23",
+   "[[28,1,3]] T0, cultivated engine d_a=7",
+   "[[32,1,3]] T0, cultivated engine d_a=7",
+   "[[47,5,3]] T0\u00b7T1\u00b7T2\u00b7T3\u00b7T4, cultivated engine d_a=9",
+   "[[56,8,3]] T0\u00b7T1\u00b7T2\u00b7T3\u00b7T4\u00b7T5\u00b7T6\u00b7T7, cultivated engine d_a=9",
+   "fold-transversal cultivation, adapter d_a=11",
+   "fold-transversal cultivation, adapter d_a=15",
+   "fold-transversal cultivation, adapter d_a=19",
+   "fold-transversal cultivation, adapter d_a=23"
+  ],
+  "steps": [
+   [
+    960.0,
+    36,
+    "shallow",
+    6,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    1168.0,
+    1728,
+    "deep",
+    12,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    1576.0,
+    2744,
+    "deep",
+    14,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    1620.0,
+    4096,
+    "deep",
+    16,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    2436.0,
+    21952,
+    "deep",
+    28,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    3296.0,
+    74088,
+    "deep",
+    42,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    4372.0,
+    175616,
+    "deep",
+    56,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    5232.0,
+    343000,
+    "deep",
+    70,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    6092.0,
+    592704,
+    "deep",
+    84,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    6952.0,
+    941192,
+    "deep",
+    98,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    7812.0,
+    1404928,
+    "deep",
+    112,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    8672.0,
+    1728000,
+    "deep",
+    120,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    8952.0,
+    2000376,
+    "deep",
+    126,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    9812.0,
+    2197000,
+    "deep",
+    130,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    14270.0,
+    2406104,
+    "deep",
+    134,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    14930.0,
+    2515456,
+    "deep",
+    136,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    15512.0,
+    2985984,
+    "deep",
+    144,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    17132.0,
+    3944312,
+    "deep",
+    158,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    17412.0,
+    4096000,
+    "deep",
+    160,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    19032.0,
+    5451776,
+    "deep",
+    176,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    20652.0,
+    7077888,
+    "deep",
+    192,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    22272.0,
+    8998912,
+    "deep",
+    208,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    23892.0,
+    11239424,
+    "deep",
+    224,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    25512.0,
+    13824000,
+    "deep",
+    240,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    27132.0,
+    16777216,
+    "deep",
+    256,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    28752.0,
+    19683000,
+    "deep",
+    270,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    29096.0,
+    20123648,
+    "deep",
+    272,
+    "fold-transversal cultivation, adapter d_a=23"
+   ],
+   [
+    30716.0,
+    20570824,
+    "deep",
+    274,
+    "fold-transversal cultivation, adapter d_a=23"
+   ],
+   [
+    33570.0,
+    23887872,
+    "deep",
+    288,
+    "15-to-1 (Pinnacle, d_a=7)"
+   ],
+   [
+    35190.0,
+    28094464,
+    "deep",
+    304,
+    "15-to-1 (Pinnacle, d_a=7)"
+   ],
+   [
+    36810.0,
+    32768000,
+    "deep",
+    320,
+    "15-to-1 (Pinnacle, d_a=7)"
+   ],
+   [
+    38430.0,
+    37933056,
+    "deep",
+    336,
+    "[[28,1,3]] T0, cultivated engine d_a=7"
+   ],
+   [
+    40050.0,
+    43614208,
+    "deep",
+    352,
+    "[[32,1,3]] T0, cultivated engine d_a=7"
+   ],
+   [
+    42690.0,
+    49836032,
+    "deep",
+    368,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    44310.0,
+    56623104,
+    "deep",
+    384,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    45930.0,
+    64000000,
+    "deep",
+    400,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    47550.0,
+    71991296,
+    "deep",
+    416,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    49170.0,
+    80621568,
+    "deep",
+    432,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    50790.0,
+    89915392,
+    "deep",
+    448,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    52410.0,
+    99897344,
+    "deep",
+    464,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    54030.0,
+    110592000,
+    "deep",
+    480,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    55650.0,
+    122023936,
+    "deep",
+    496,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    57270.0,
+    134217728,
+    "deep",
+    512,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    58890.0,
+    147197952,
+    "deep",
+    528,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    60510.0,
+    160989184,
+    "deep",
+    544,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    62130.0,
+    175616000,
+    "deep",
+    560,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    63750.0,
+    191102976,
+    "deep",
+    576,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    65370.0,
+    207474688,
+    "deep",
+    592,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    66990.0,
+    224755712,
+    "deep",
+    608,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    68610.0,
+    242970624,
+    "deep",
+    624,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    70230.0,
+    262144000,
+    "deep",
+    640,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    71850.0,
+    282300416,
+    "deep",
+    656,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    73470.0,
+    303464448,
+    "deep",
+    672,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    75090.0,
+    325660672,
+    "deep",
+    688,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    76710.0,
+    348913664,
+    "deep",
+    704,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    78330.0,
+    373248000,
+    "deep",
+    720,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    79950.0,
+    398688256,
+    "deep",
+    736,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    81570.0,
+    425259008,
+    "deep",
+    752,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    83190.0,
+    452984832,
+    "deep",
+    768,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    84810.0,
+    481890304,
+    "deep",
+    784,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    86430.0,
+    512000000,
+    "deep",
+    800,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    88050.0,
+    543338496,
+    "deep",
+    816,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    89670.0,
+    575930368,
+    "deep",
+    832,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    91290.0,
+    609800192,
+    "deep",
+    848,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    92910.0,
+    644972544,
+    "deep",
+    864,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    94530.0,
+    681472000,
+    "deep",
+    880,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    96150.0,
+    719323136,
+    "deep",
+    896,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    97770.0,
+    729000000,
+    "deep",
+    900,
+    "15-to-1 (Pinnacle, d_a=9)"
+   ],
+   [
+    98790.0,
+    758550528,
+    "deep",
+    912,
+    "[[47,5,3]] T0\u00b7T1\u00b7T2\u00b7T3\u00b7T4, cultivated engine d_a=9"
+   ],
+   [
+    100410.0,
+    799178752,
+    "deep",
+    928,
+    "[[56,8,3]] T0\u00b7T1\u00b7T2\u00b7T3\u00b7T4\u00b7T5\u00b7T6\u00b7T7, cultivated engine d_a=9"
+   ],
+   [
+    102030.0,
+    804357000,
+    "deep",
+    930,
+    "[[56,8,3]] T0\u00b7T1\u00b7T2\u00b7T3\u00b7T4\u00b7T5\u00b7T6\u00b7T7, cultivated engine d_a=9"
+   ],
+   [
+    103652.0,
+    820025856,
+    "deep",
+    936,
+    "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23"
+   ]
+  ]
+ },
+ "frozen_H2": {
+  "winners": [
+   "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19",
+   "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=23",
+   "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19",
+   "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23",
+   "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23",
+   "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23",
+   "fold-transversal cultivation, adapter d_a=11",
+   "fold-transversal cultivation, adapter d_a=15",
+   "fold-transversal cultivation, adapter d_a=19",
+   "fold-transversal cultivation, adapter d_a=23"
+  ],
+  "steps": [
+   [
+    3238.0,
+    512,
+    "deep",
+    8,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    5760.0,
+    4096,
+    "deep",
+    16,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    8282.0,
+    13824,
+    "deep",
+    24,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    10804.0,
+    32768,
+    "deep",
+    32,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    13326.0,
+    64000,
+    "deep",
+    40,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    15848.0,
+    74088,
+    "deep",
+    42,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    16064.0,
+    110592,
+    "deep",
+    48,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    18586.0,
+    175616,
+    "deep",
+    56,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    21108.0,
+    262144,
+    "deep",
+    64,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    23630.0,
+    373248,
+    "deep",
+    72,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    26152.0,
+    512000,
+    "deep",
+    80,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    28674.0,
+    681472,
+    "deep",
+    88,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    31196.0,
+    884736,
+    "deep",
+    96,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    33718.0,
+    1124864,
+    "deep",
+    104,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    36240.0,
+    1404928,
+    "deep",
+    112,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    38762.0,
+    1728000,
+    "deep",
+    120,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    41284.0,
+    2097152,
+    "deep",
+    128,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    43806.0,
+    2515456,
+    "deep",
+    136,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    46328.0,
+    2985984,
+    "deep",
+    144,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    48850.0,
+    3511808,
+    "deep",
+    152,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    51372.0,
+    3944312,
+    "deep",
+    158,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    51652.0,
+    4096000,
+    "deep",
+    160,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    54174.0,
+    4741632,
+    "deep",
+    168,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    56696.0,
+    5451776,
+    "deep",
+    176,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    59218.0,
+    6229504,
+    "deep",
+    184,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    61740.0,
+    7077888,
+    "deep",
+    192,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    64262.0,
+    8000000,
+    "deep",
+    200,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    66784.0,
+    8998912,
+    "deep",
+    208,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    69306.0,
+    10077696,
+    "deep",
+    216,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    71828.0,
+    11239424,
+    "deep",
+    224,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    74350.0,
+    12487168,
+    "deep",
+    232,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    76872.0,
+    13824000,
+    "deep",
+    240,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    79394.0,
+    15252992,
+    "deep",
+    248,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    81916.0,
+    16777216,
+    "deep",
+    256,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    84438.0,
+    18399744,
+    "deep",
+    264,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    86960.0,
+    19683000,
+    "deep",
+    270,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    87304.0,
+    20123648,
+    "deep",
+    272,
+    "fold-transversal cultivation, adapter d_a=23"
+   ],
+   [
+    89826.0,
+    20570824,
+    "deep",
+    274,
+    "fold-transversal cultivation, adapter d_a=23"
+   ],
+   [
+    93940.0,
+    21952000,
+    "deep",
+    280,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    96462.0,
+    23887872,
+    "deep",
+    288,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    98984.0,
+    25934336,
+    "deep",
+    296,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    101506.0,
+    28094464,
+    "deep",
+    304,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    104028.0,
+    30371328,
+    "deep",
+    312,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    106550.0,
+    32768000,
+    "deep",
+    320,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    109072.0,
+    35287552,
+    "deep",
+    328,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    111594.0,
+    37933056,
+    "deep",
+    336,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    114116.0,
+    40707584,
+    "deep",
+    344,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    116638.0,
+    43614208,
+    "deep",
+    352,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    119160.0,
+    46656000,
+    "deep",
+    360,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    121682.0,
+    49836032,
+    "deep",
+    368,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    124204.0,
+    53157376,
+    "deep",
+    376,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    126726.0,
+    56623104,
+    "deep",
+    384,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    129248.0,
+    60236288,
+    "deep",
+    392,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    131770.0,
+    64000000,
+    "deep",
+    400,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    134292.0,
+    67917312,
+    "deep",
+    408,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    136814.0,
+    71991296,
+    "deep",
+    416,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    139336.0,
+    75151448,
+    "deep",
+    422,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    139680.0,
+    76225024,
+    "deep",
+    424,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=23"
+   ],
+   [
+    142202.0,
+    80621568,
+    "deep",
+    432,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=23"
+   ],
+   [
+    144724.0,
+    85184000,
+    "deep",
+    440,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=23"
+   ],
+   [
+    147246.0,
+    89915392,
+    "deep",
+    448,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=23"
+   ],
+   [
+    149768.0,
+    94818816,
+    "deep",
+    456,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=23"
+   ],
+   [
+    152290.0,
+    96071912,
+    "deep",
+    458,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=23"
+   ],
+   [
+    152606.0,
+    99897344,
+    "deep",
+    464,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    155128.0,
+    105154048,
+    "deep",
+    472,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    157650.0,
+    110592000,
+    "deep",
+    480,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    160172.0,
+    116214272,
+    "deep",
+    488,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    162694.0,
+    122023936,
+    "deep",
+    496,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    165216.0,
+    128024064,
+    "deep",
+    504,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    167738.0,
+    134217728,
+    "deep",
+    512,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    170260.0,
+    140608000,
+    "deep",
+    520,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    172782.0,
+    147197952,
+    "deep",
+    528,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    175304.0,
+    153990656,
+    "deep",
+    536,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    177826.0,
+    160989184,
+    "deep",
+    544,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    180348.0,
+    168196608,
+    "deep",
+    552,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    182870.0,
+    175616000,
+    "deep",
+    560,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    185392.0,
+    179406144,
+    "deep",
+    564,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    185736.0,
+    183250432,
+    "deep",
+    568,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    188258.0,
+    191102976,
+    "deep",
+    576,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    190780.0,
+    199176704,
+    "deep",
+    584,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    193302.0,
+    207474688,
+    "deep",
+    592,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    195824.0,
+    216000000,
+    "deep",
+    600,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    198346.0,
+    224755712,
+    "deep",
+    608,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    200868.0,
+    233744896,
+    "deep",
+    616,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    203390.0,
+    242970624,
+    "deep",
+    624,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    205912.0,
+    252435968,
+    "deep",
+    632,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    208434.0,
+    262144000,
+    "deep",
+    640,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    210956.0,
+    272097792,
+    "deep",
+    648,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    213478.0,
+    282300416,
+    "deep",
+    656,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    216000.0,
+    292754944,
+    "deep",
+    664,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    218522.0,
+    303464448,
+    "deep",
+    672,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    221044.0,
+    314432000,
+    "deep",
+    680,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    223566.0,
+    325660672,
+    "deep",
+    688,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    226088.0,
+    337153536,
+    "deep",
+    696,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    228610.0,
+    348913664,
+    "deep",
+    704,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    231132.0,
+    360944128,
+    "deep",
+    712,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    233654.0,
+    373248000,
+    "deep",
+    720,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    236176.0,
+    385828352,
+    "deep",
+    728,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    238698.0,
+    392223168,
+    "deep",
+    732,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    239328.0,
+    398688256,
+    "deep",
+    736,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    241850.0,
+    411830784,
+    "deep",
+    744,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    244372.0,
+    425259008,
+    "deep",
+    752,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    246894.0,
+    438976000,
+    "deep",
+    760,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    249416.0,
+    452984832,
+    "deep",
+    768,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    251938.0,
+    467288576,
+    "deep",
+    776,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    254460.0,
+    481890304,
+    "deep",
+    784,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    256982.0,
+    496793088,
+    "deep",
+    792,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    259504.0,
+    512000000,
+    "deep",
+    800,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    262026.0,
+    527514112,
+    "deep",
+    808,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    264548.0,
+    543338496,
+    "deep",
+    816,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    267070.0,
+    559476224,
+    "deep",
+    824,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    269592.0,
+    575930368,
+    "deep",
+    832,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    272114.0,
+    592704000,
+    "deep",
+    840,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    274636.0,
+    609800192,
+    "deep",
+    848,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    277158.0,
+    627222016,
+    "deep",
+    856,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    279680.0,
+    644972544,
+    "deep",
+    864,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    282202.0,
+    663054848,
+    "deep",
+    872,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    284724.0,
+    681472000,
+    "deep",
+    880,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    288014.0,
+    700227072,
+    "deep",
+    888,
+    "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23"
+   ],
+   [
+    290536.0,
+    714516984,
+    "deep",
+    894,
+    "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23"
+   ]
+  ]
+ },
+ "frozen_H4": {
+  "winners": [
+   "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19",
+   "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=23",
+   "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19",
+   "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23",
+   "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23",
+   "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23",
+   "fold-transversal cultivation, adapter d_a=11",
+   "fold-transversal cultivation, adapter d_a=15",
+   "fold-transversal cultivation, adapter d_a=19",
+   "fold-transversal cultivation, adapter d_a=23"
+  ],
+  "steps": [
+   [
+    3238.0,
+    512,
+    "deep",
+    8,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    5760.0,
+    4096,
+    "deep",
+    16,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    8282.0,
+    13824,
+    "deep",
+    24,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    10804.0,
+    32768,
+    "deep",
+    32,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    13326.0,
+    64000,
+    "deep",
+    40,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    15848.0,
+    74088,
+    "deep",
+    42,
+    "fold-transversal cultivation, adapter d_a=11"
+   ],
+   [
+    16064.0,
+    110592,
+    "deep",
+    48,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    18586.0,
+    175616,
+    "deep",
+    56,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    21108.0,
+    262144,
+    "deep",
+    64,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    23630.0,
+    373248,
+    "deep",
+    72,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    26152.0,
+    512000,
+    "deep",
+    80,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    28674.0,
+    681472,
+    "deep",
+    88,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    31196.0,
+    884736,
+    "deep",
+    96,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    33718.0,
+    1124864,
+    "deep",
+    104,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    36240.0,
+    1404928,
+    "deep",
+    112,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    38762.0,
+    1728000,
+    "deep",
+    120,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    41284.0,
+    2097152,
+    "deep",
+    128,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    43806.0,
+    2515456,
+    "deep",
+    136,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    46328.0,
+    2985984,
+    "deep",
+    144,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    48850.0,
+    3511808,
+    "deep",
+    152,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    51372.0,
+    3944312,
+    "deep",
+    158,
+    "fold-transversal cultivation, adapter d_a=15"
+   ],
+   [
+    51652.0,
+    4096000,
+    "deep",
+    160,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    54174.0,
+    4741632,
+    "deep",
+    168,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    56696.0,
+    5451776,
+    "deep",
+    176,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    59218.0,
+    6229504,
+    "deep",
+    184,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    61740.0,
+    7077888,
+    "deep",
+    192,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    64262.0,
+    8000000,
+    "deep",
+    200,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    66784.0,
+    8998912,
+    "deep",
+    208,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    69306.0,
+    10077696,
+    "deep",
+    216,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    71828.0,
+    11239424,
+    "deep",
+    224,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    74350.0,
+    12487168,
+    "deep",
+    232,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    76872.0,
+    13824000,
+    "deep",
+    240,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    79394.0,
+    15252992,
+    "deep",
+    248,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    81916.0,
+    16777216,
+    "deep",
+    256,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    84438.0,
+    18399744,
+    "deep",
+    264,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    86960.0,
+    19683000,
+    "deep",
+    270,
+    "fold-transversal cultivation, adapter d_a=19"
+   ],
+   [
+    87304.0,
+    20123648,
+    "deep",
+    272,
+    "fold-transversal cultivation, adapter d_a=23"
+   ],
+   [
+    89826.0,
+    20570824,
+    "deep",
+    274,
+    "fold-transversal cultivation, adapter d_a=23"
+   ],
+   [
+    93940.0,
+    21952000,
+    "deep",
+    280,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    96462.0,
+    23887872,
+    "deep",
+    288,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    98984.0,
+    25934336,
+    "deep",
+    296,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    101506.0,
+    28094464,
+    "deep",
+    304,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    104028.0,
+    30371328,
+    "deep",
+    312,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    106550.0,
+    32768000,
+    "deep",
+    320,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    109072.0,
+    35287552,
+    "deep",
+    328,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    111594.0,
+    37933056,
+    "deep",
+    336,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    114116.0,
+    40707584,
+    "deep",
+    344,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    116638.0,
+    43614208,
+    "deep",
+    352,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    119160.0,
+    46656000,
+    "deep",
+    360,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    121682.0,
+    49836032,
+    "deep",
+    368,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    124204.0,
+    53157376,
+    "deep",
+    376,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    126726.0,
+    56623104,
+    "deep",
+    384,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    129248.0,
+    60236288,
+    "deep",
+    392,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    131770.0,
+    64000000,
+    "deep",
+    400,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    134292.0,
+    67917312,
+    "deep",
+    408,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    136814.0,
+    71991296,
+    "deep",
+    416,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    139336.0,
+    75151448,
+    "deep",
+    422,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=19"
+   ],
+   [
+    139680.0,
+    76225024,
+    "deep",
+    424,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=23"
+   ],
+   [
+    142202.0,
+    80621568,
+    "deep",
+    432,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=23"
+   ],
+   [
+    144724.0,
+    85184000,
+    "deep",
+    440,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=23"
+   ],
+   [
+    147246.0,
+    89915392,
+    "deep",
+    448,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=23"
+   ],
+   [
+    149768.0,
+    94818816,
+    "deep",
+    456,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=23"
+   ],
+   [
+    152290.0,
+    96071912,
+    "deep",
+    458,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5), adapter d_a=23"
+   ],
+   [
+    152606.0,
+    99897344,
+    "deep",
+    464,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    155128.0,
+    105154048,
+    "deep",
+    472,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    157650.0,
+    110592000,
+    "deep",
+    480,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    160172.0,
+    116214272,
+    "deep",
+    488,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    162694.0,
+    122023936,
+    "deep",
+    496,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    165216.0,
+    128024064,
+    "deep",
+    504,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    167738.0,
+    134217728,
+    "deep",
+    512,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    170260.0,
+    140608000,
+    "deep",
+    520,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    172782.0,
+    147197952,
+    "deep",
+    528,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    175304.0,
+    153990656,
+    "deep",
+    536,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    177826.0,
+    160989184,
+    "deep",
+    544,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    180348.0,
+    168196608,
+    "deep",
+    552,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    182870.0,
+    175616000,
+    "deep",
+    560,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    185392.0,
+    179406144,
+    "deep",
+    564,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=19"
+   ],
+   [
+    185736.0,
+    183250432,
+    "deep",
+    568,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    188258.0,
+    191102976,
+    "deep",
+    576,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    190780.0,
+    199176704,
+    "deep",
+    584,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    193302.0,
+    207474688,
+    "deep",
+    592,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    195824.0,
+    216000000,
+    "deep",
+    600,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    198346.0,
+    224755712,
+    "deep",
+    608,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    200868.0,
+    233744896,
+    "deep",
+    616,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    203390.0,
+    242970624,
+    "deep",
+    624,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    205912.0,
+    252435968,
+    "deep",
+    632,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    208434.0,
+    262144000,
+    "deep",
+    640,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    210956.0,
+    272097792,
+    "deep",
+    648,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    213478.0,
+    282300416,
+    "deep",
+    656,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    216000.0,
+    292754944,
+    "deep",
+    664,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    218522.0,
+    303464448,
+    "deep",
+    672,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    221044.0,
+    314432000,
+    "deep",
+    680,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    223566.0,
+    325660672,
+    "deep",
+    688,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    226088.0,
+    337153536,
+    "deep",
+    696,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    228610.0,
+    348913664,
+    "deep",
+    704,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    231132.0,
+    360944128,
+    "deep",
+    712,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    233654.0,
+    373248000,
+    "deep",
+    720,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    236176.0,
+    385828352,
+    "deep",
+    728,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    238698.0,
+    392223168,
+    "deep",
+    732,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    239328.0,
+    398688256,
+    "deep",
+    736,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    241850.0,
+    411830784,
+    "deep",
+    744,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    244372.0,
+    425259008,
+    "deep",
+    752,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    246894.0,
+    438976000,
+    "deep",
+    760,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    249416.0,
+    452984832,
+    "deep",
+    768,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    251938.0,
+    467288576,
+    "deep",
+    776,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    254460.0,
+    481890304,
+    "deep",
+    784,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    256982.0,
+    496793088,
+    "deep",
+    792,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    259504.0,
+    512000000,
+    "deep",
+    800,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    262026.0,
+    527514112,
+    "deep",
+    808,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    264548.0,
+    543338496,
+    "deep",
+    816,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    267070.0,
+    559476224,
+    "deep",
+    824,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    269592.0,
+    575930368,
+    "deep",
+    832,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    272114.0,
+    592704000,
+    "deep",
+    840,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    274636.0,
+    609800192,
+    "deep",
+    848,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    277158.0,
+    627222016,
+    "deep",
+    856,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    279680.0,
+    644972544,
+    "deep",
+    864,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    282202.0,
+    663054848,
+    "deep",
+    872,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    284724.0,
+    681472000,
+    "deep",
+    880,
+    "[[15,1,3]], fold f=3, d=(21,5,5), adapter d_a=23"
+   ],
+   [
+    288014.0,
+    700227072,
+    "deep",
+    888,
+    "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23"
+   ],
+   [
+    290536.0,
+    714516984,
+    "deep",
+    894,
+    "[[15,1,3]], fold f=3, d=(23,5,5), adapter d_a=23"
+   ]
+  ]
+ },
+ "surface_H2": {
+  "winners": [
+   "[[14,1,2]] T0, fold f=3, d=(19,5,5)",
+   "[[14,1,2]] T0, fold f=3, d=(21,5,5)",
+   "[[14,2,2]] T0,T1, fold f=3, d=(19,5,5)",
+   "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)",
+   "[[14,2,2]] T0,T1, fold f=3, d=(23,5,5)",
+   "[[15,1,3]], fold f=3, d=(19,5,5)",
+   "[[15,1,3]], fold f=3, d=(21,5,5)",
+   "[[15,1,3]], fold f=3, d=(23,5,5)",
+   "fold-transversal cultivation"
+  ],
+  "steps": [
+   [
+    949.0,
+    8,
+    "deep",
+    2,
+    "fold-transversal cultivation"
+   ],
+   [
+    2017.0,
+    16,
+    "shallow",
+    4,
+    "fold-transversal cultivation"
+   ],
+   [
+    2564.0,
+    64,
+    "deep",
+    4,
+    "fold-transversal cultivation"
+   ],
+   [
+    4013.0,
+    216,
+    "deep",
+    6,
+    "fold-transversal cultivation"
+   ],
+   [
+    5272.0,
+    512,
+    "deep",
+    8,
+    "fold-transversal cultivation"
+   ],
+   [
+    8193.0,
+    1000,
+    "deep",
+    10,
+    "fold-transversal cultivation"
+   ],
+   [
+    9161.0,
+    1728,
+    "deep",
+    12,
+    "fold-transversal cultivation"
+   ],
+   [
+    14645.0,
+    2744,
+    "deep",
+    14,
+    "fold-transversal cultivation"
+   ],
+   [
+    15997.0,
+    4096,
+    "deep",
+    16,
+    "fold-transversal cultivation"
+   ],
+   [
+    17349.0,
+    5832,
+    "deep",
+    18,
+    "fold-transversal cultivation"
+   ],
+   [
+    19377.0,
+    8000,
+    "deep",
+    20,
+    "fold-transversal cultivation"
+   ],
+   [
+    21516.0,
+    10648,
+    "deep",
+    22,
+    "fold-transversal cultivation"
+   ],
+   [
+    29249.0,
+    13824,
+    "deep",
+    24,
+    "fold-transversal cultivation"
+   ],
+   [
+    31949.0,
+    17576,
+    "deep",
+    26,
+    "fold-transversal cultivation"
+   ],
+   [
+    33749.0,
+    21952,
+    "deep",
+    28,
+    "fold-transversal cultivation"
+   ],
+   [
+    35549.0,
+    27000,
+    "deep",
+    30,
+    "fold-transversal cultivation"
+   ],
+   [
+    37349.0,
+    32768,
+    "deep",
+    32,
+    "fold-transversal cultivation"
+   ],
+   [
+    40049.0,
+    39304,
+    "deep",
+    34,
+    "fold-transversal cultivation"
+   ],
+   [
+    41849.0,
+    46656,
+    "deep",
+    36,
+    "fold-transversal cultivation"
+   ],
+   [
+    44548.0,
+    54872,
+    "deep",
+    38,
+    "fold-transversal cultivation"
+   ],
+   [
+    46348.0,
+    64000,
+    "deep",
+    40,
+    "fold-transversal cultivation"
+   ],
+   [
+    61717.0,
+    74088,
+    "deep",
+    42,
+    "fold-transversal cultivation"
+   ],
+   [
+    64029.0,
+    85184,
+    "deep",
+    44,
+    "fold-transversal cultivation"
+   ],
+   [
+    66341.0,
+    97336,
+    "deep",
+    46,
+    "fold-transversal cultivation"
+   ],
+   [
+    68653.0,
+    110592,
+    "deep",
+    48,
+    "fold-transversal cultivation"
+   ],
+   [
+    70965.0,
+    125000,
+    "deep",
+    50,
+    "fold-transversal cultivation"
+   ],
+   [
+    74433.0,
+    140608,
+    "deep",
+    52,
+    "fold-transversal cultivation"
+   ],
+   [
+    76745.0,
+    157464,
+    "deep",
+    54,
+    "fold-transversal cultivation"
+   ],
+   [
+    79057.0,
+    175616,
+    "deep",
+    56,
+    "fold-transversal cultivation"
+   ],
+   [
+    81369.0,
+    195112,
+    "deep",
+    58,
+    "fold-transversal cultivation"
+   ],
+   [
+    83681.0,
+    216000,
+    "deep",
+    60,
+    "fold-transversal cultivation"
+   ],
+   [
+    87149.0,
+    238328,
+    "deep",
+    62,
+    "fold-transversal cultivation"
+   ],
+   [
+    89461.0,
+    262144,
+    "deep",
+    64,
+    "fold-transversal cultivation"
+   ],
+   [
+    92800.0,
+    287496,
+    "deep",
+    66,
+    "fold-transversal cultivation"
+   ],
+   [
+    95112.0,
+    314432,
+    "deep",
+    68,
+    "fold-transversal cultivation"
+   ],
+   [
+    120301.0,
+    343000,
+    "deep",
+    70,
+    "fold-transversal cultivation"
+   ],
+   [
+    123189.0,
+    373248,
+    "deep",
+    72,
+    "fold-transversal cultivation"
+   ],
+   [
+    127521.0,
+    405224,
+    "deep",
+    74,
+    "fold-transversal cultivation"
+   ],
+   [
+    130409.0,
+    438976,
+    "deep",
+    76,
+    "fold-transversal cultivation"
+   ],
+   [
+    133297.0,
+    474552,
+    "deep",
+    78,
+    "fold-transversal cultivation"
+   ],
+   [
+    136185.0,
+    512000,
+    "deep",
+    80,
+    "fold-transversal cultivation"
+   ],
+   [
+    139073.0,
+    551368,
+    "deep",
+    82,
+    "fold-transversal cultivation"
+   ],
+   [
+    141961.0,
+    592704,
+    "deep",
+    84,
+    "fold-transversal cultivation"
+   ],
+   [
+    146293.0,
+    636056,
+    "deep",
+    86,
+    "fold-transversal cultivation"
+   ],
+   [
+    149181.0,
+    681472,
+    "deep",
+    88,
+    "fold-transversal cultivation"
+   ],
+   [
+    152069.0,
+    729000,
+    "deep",
+    90,
+    "fold-transversal cultivation"
+   ],
+   [
+    154957.0,
+    778688,
+    "deep",
+    92,
+    "fold-transversal cultivation"
+   ],
+   [
+    157845.0,
+    830584,
+    "deep",
+    94,
+    "fold-transversal cultivation"
+   ],
+   [
+    160733.0,
+    884736,
+    "deep",
+    96,
+    "fold-transversal cultivation"
+   ],
+   [
+    163621.0,
+    941192,
+    "deep",
+    98,
+    "fold-transversal cultivation"
+   ],
+   [
+    167953.0,
+    1000000,
+    "deep",
+    100,
+    "fold-transversal cultivation"
+   ],
+   [
+    170841.0,
+    1061208,
+    "deep",
+    102,
+    "fold-transversal cultivation"
+   ],
+   [
+    173729.0,
+    1124864,
+    "deep",
+    104,
+    "fold-transversal cultivation"
+   ],
+   [
+    176617.0,
+    1191016,
+    "deep",
+    106,
+    "fold-transversal cultivation"
+   ],
+   [
+    179505.0,
+    1259712,
+    "deep",
+    108,
+    "fold-transversal cultivation"
+   ],
+   [
+    182393.0,
+    1331000,
+    "deep",
+    110,
+    "fold-transversal cultivation"
+   ],
+   [
+    185281.0,
+    1404928,
+    "deep",
+    112,
+    "fold-transversal cultivation"
+   ],
+   [
+    190784.0,
+    1481544,
+    "deep",
+    114,
+    "fold-transversal cultivation"
+   ],
+   [
+    200650.0,
+    1560896,
+    "deep",
+    116,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    238589.0,
+    1643032,
+    "deep",
+    118,
+    "fold-transversal cultivation"
+   ],
+   [
+    242117.0,
+    1728000,
+    "deep",
+    120,
+    "fold-transversal cultivation"
+   ],
+   [
+    245645.0,
+    1815848,
+    "deep",
+    122,
+    "fold-transversal cultivation"
+   ],
+   [
+    249173.0,
+    1906624,
+    "deep",
+    124,
+    "fold-transversal cultivation"
+   ],
+   [
+    252701.0,
+    2000376,
+    "deep",
+    126,
+    "fold-transversal cultivation"
+   ],
+   [
+    256229.0,
+    2097152,
+    "deep",
+    128,
+    "fold-transversal cultivation"
+   ],
+   [
+    261521.0,
+    2197000,
+    "deep",
+    130,
+    "fold-transversal cultivation"
+   ],
+   [
+    265049.0,
+    2299968,
+    "deep",
+    132,
+    "fold-transversal cultivation"
+   ],
+   [
+    268577.0,
+    2406104,
+    "deep",
+    134,
+    "fold-transversal cultivation"
+   ],
+   [
+    272105.0,
+    2515456,
+    "deep",
+    136,
+    "fold-transversal cultivation"
+   ],
+   [
+    275633.0,
+    2628072,
+    "deep",
+    138,
+    "fold-transversal cultivation"
+   ],
+   [
+    279161.0,
+    2744000,
+    "deep",
+    140,
+    "fold-transversal cultivation"
+   ],
+   [
+    282689.0,
+    2863288,
+    "deep",
+    142,
+    "fold-transversal cultivation"
+   ],
+   [
+    286217.0,
+    2985984,
+    "deep",
+    144,
+    "fold-transversal cultivation"
+   ],
+   [
+    291509.0,
+    3112136,
+    "deep",
+    146,
+    "fold-transversal cultivation"
+   ],
+   [
+    295037.0,
+    3241792,
+    "deep",
+    148,
+    "fold-transversal cultivation"
+   ],
+   [
+    298565.0,
+    3375000,
+    "deep",
+    150,
+    "fold-transversal cultivation"
+   ],
+   [
+    302093.0,
+    3511808,
+    "deep",
+    152,
+    "fold-transversal cultivation"
+   ],
+   [
+    305621.0,
+    3652264,
+    "deep",
+    154,
+    "fold-transversal cultivation"
+   ],
+   [
+    309149.0,
+    3796416,
+    "deep",
+    156,
+    "fold-transversal cultivation"
+   ],
+   [
+    312677.0,
+    3944312,
+    "deep",
+    158,
+    "fold-transversal cultivation"
+   ],
+   [
+    316205.0,
+    4096000,
+    "deep",
+    160,
+    "fold-transversal cultivation"
+   ],
+   [
+    319733.0,
+    4251528,
+    "deep",
+    162,
+    "fold-transversal cultivation"
+   ],
+   [
+    325025.0,
+    4410944,
+    "deep",
+    164,
+    "fold-transversal cultivation"
+   ],
+   [
+    328553.0,
+    4574296,
+    "deep",
+    166,
+    "fold-transversal cultivation"
+   ],
+   [
+    332081.0,
+    4741632,
+    "deep",
+    168,
+    "fold-transversal cultivation"
+   ],
+   [
+    335609.0,
+    4913000,
+    "deep",
+    170,
+    "fold-transversal cultivation"
+   ],
+   [
+    339137.0,
+    5088448,
+    "deep",
+    172,
+    "fold-transversal cultivation"
+   ],
+   [
+    342665.0,
+    5268024,
+    "deep",
+    174,
+    "fold-transversal cultivation"
+   ],
+   [
+    346193.0,
+    5451776,
+    "deep",
+    176,
+    "fold-transversal cultivation"
+   ],
+   [
+    349721.0,
+    5639752,
+    "deep",
+    178,
+    "fold-transversal cultivation"
+   ],
+   [
+    353249.0,
+    5832000,
+    "deep",
+    180,
+    "fold-transversal cultivation"
+   ],
+   [
+    358541.0,
+    6028568,
+    "deep",
+    182,
+    "fold-transversal cultivation"
+   ],
+   [
+    362069.0,
+    6229504,
+    "deep",
+    184,
+    "fold-transversal cultivation"
+   ],
+   [
+    372766.0,
+    6434856,
+    "deep",
+    186,
+    "[[14,2,2]] T0,T1, fold f=3, d=(19,5,5)"
+   ],
+   [
+    376294.0,
+    6644672,
+    "deep",
+    188,
+    "[[14,2,2]] T0,T1, fold f=3, d=(19,5,5)"
+   ],
+   [
+    379822.0,
+    6859000,
+    "deep",
+    190,
+    "[[14,2,2]] T0,T1, fold f=3, d=(19,5,5)"
+   ],
+   [
+    383350.0,
+    7077888,
+    "deep",
+    192,
+    "[[14,2,2]] T0,T1, fold f=3, d=(19,5,5)"
+   ],
+   [
+    386878.0,
+    7301384,
+    "deep",
+    194,
+    "[[14,2,2]] T0,T1, fold f=3, d=(19,5,5)"
+   ],
+   [
+    391546.0,
+    7529536,
+    "deep",
+    196,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    395074.0,
+    7762392,
+    "deep",
+    198,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    468085.0,
+    8000000,
+    "deep",
+    200,
+    "fold-transversal cultivation"
+   ],
+   [
+    474433.0,
+    8242408,
+    "deep",
+    202,
+    "fold-transversal cultivation"
+   ],
+   [
+    478665.0,
+    8489664,
+    "deep",
+    204,
+    "fold-transversal cultivation"
+   ],
+   [
+    482897.0,
+    8741816,
+    "deep",
+    206,
+    "fold-transversal cultivation"
+   ],
+   [
+    487129.0,
+    8998912,
+    "deep",
+    208,
+    "fold-transversal cultivation"
+   ],
+   [
+    491361.0,
+    9261000,
+    "deep",
+    210,
+    "fold-transversal cultivation"
+   ],
+   [
+    495593.0,
+    9528128,
+    "deep",
+    212,
+    "fold-transversal cultivation"
+   ],
+   [
+    499825.0,
+    9800344,
+    "deep",
+    214,
+    "fold-transversal cultivation"
+   ],
+   [
+    504057.0,
+    10077696,
+    "deep",
+    216,
+    "fold-transversal cultivation"
+   ],
+   [
+    508289.0,
+    10360232,
+    "deep",
+    218,
+    "fold-transversal cultivation"
+   ],
+   [
+    512521.0,
+    10648000,
+    "deep",
+    220,
+    "fold-transversal cultivation"
+   ],
+   [
+    518869.0,
+    10941048,
+    "deep",
+    222,
+    "fold-transversal cultivation"
+   ],
+   [
+    523101.0,
+    11239424,
+    "deep",
+    224,
+    "fold-transversal cultivation"
+   ],
+   [
+    527333.0,
+    11543176,
+    "deep",
+    226,
+    "fold-transversal cultivation"
+   ],
+   [
+    531565.0,
+    11852352,
+    "deep",
+    228,
+    "fold-transversal cultivation"
+   ],
+   [
+    535797.0,
+    12167000,
+    "deep",
+    230,
+    "fold-transversal cultivation"
+   ],
+   [
+    540029.0,
+    12487168,
+    "deep",
+    232,
+    "fold-transversal cultivation"
+   ],
+   [
+    544261.0,
+    12812904,
+    "deep",
+    234,
+    "fold-transversal cultivation"
+   ],
+   [
+    548493.0,
+    13144256,
+    "deep",
+    236,
+    "fold-transversal cultivation"
+   ],
+   [
+    552725.0,
+    13481272,
+    "deep",
+    238,
+    "fold-transversal cultivation"
+   ],
+   [
+    556957.0,
+    13824000,
+    "deep",
+    240,
+    "fold-transversal cultivation"
+   ],
+   [
+    561189.0,
+    14172488,
+    "deep",
+    242,
+    "fold-transversal cultivation"
+   ],
+   [
+    567537.0,
+    14526784,
+    "deep",
+    244,
+    "fold-transversal cultivation"
+   ],
+   [
+    571769.0,
+    14886936,
+    "deep",
+    246,
+    "fold-transversal cultivation"
+   ],
+   [
+    576001.0,
+    15252992,
+    "deep",
+    248,
+    "fold-transversal cultivation"
+   ],
+   [
+    584691.0,
+    15625000,
+    "deep",
+    250,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    588923.0,
+    16003008,
+    "deep",
+    252,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    593155.0,
+    16387064,
+    "deep",
+    254,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    597387.0,
+    16777216,
+    "deep",
+    256,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    601619.0,
+    17173512,
+    "deep",
+    258,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    605851.0,
+    17576000,
+    "deep",
+    260,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    610083.0,
+    17984728,
+    "deep",
+    262,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    614315.0,
+    18399744,
+    "deep",
+    264,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    620663.0,
+    18821096,
+    "deep",
+    266,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    624895.0,
+    19248832,
+    "deep",
+    268,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    629127.0,
+    19683000,
+    "deep",
+    270,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    633359.0,
+    20123648,
+    "deep",
+    272,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    637591.0,
+    20570824,
+    "deep",
+    274,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    641823.0,
+    21024576,
+    "deep",
+    276,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    646055.0,
+    21484952,
+    "deep",
+    278,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    650287.0,
+    21952000,
+    "deep",
+    280,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    654519.0,
+    22425768,
+    "deep",
+    282,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    658751.0,
+    22906304,
+    "deep",
+    284,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    662983.0,
+    23393656,
+    "deep",
+    286,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    667215.0,
+    23887872,
+    "deep",
+    288,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    673563.0,
+    24389000,
+    "deep",
+    290,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    677795.0,
+    24897088,
+    "deep",
+    292,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    682027.0,
+    25412184,
+    "deep",
+    294,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    686259.0,
+    25934336,
+    "deep",
+    296,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    691061.0,
+    26463592,
+    "deep",
+    298,
+    "[[15,1,3]], fold f=3, d=(19,5,5)"
+   ],
+   [
+    695383.0,
+    27000000,
+    "deep",
+    300,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    699615.0,
+    27543608,
+    "deep",
+    302,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    703847.0,
+    28094464,
+    "deep",
+    304,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    708079.0,
+    28652616,
+    "deep",
+    306,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    712311.0,
+    29218112,
+    "deep",
+    308,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    716543.0,
+    29791000,
+    "deep",
+    310,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    720775.0,
+    30371328,
+    "deep",
+    312,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    727123.0,
+    30959144,
+    "deep",
+    314,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    731985.0,
+    31554496,
+    "deep",
+    316,
+    "[[15,1,3]], fold f=3, d=(21,5,5)"
+   ],
+   [
+    736985.0,
+    32157432,
+    "deep",
+    318,
+    "[[15,1,3]], fold f=3, d=(23,5,5)"
+   ],
+   [
+    743186.0,
+    32768000,
+    "deep",
+    320,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    747418.0,
+    33386248,
+    "deep",
+    322,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    751650.0,
+    34012224,
+    "deep",
+    324,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    755882.0,
+    34645976,
+    "deep",
+    326,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    760114.0,
+    35287552,
+    "deep",
+    328,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    764346.0,
+    35937000,
+    "deep",
+    330,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    768578.0,
+    36594368,
+    "deep",
+    332,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    772810.0,
+    37259704,
+    "deep",
+    334,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    778278.0,
+    37933056,
+    "deep",
+    336,
+    "[[14,2,2]] T0,T1, fold f=3, d=(23,5,5)"
+   ],
+   [
+    782510.0,
+    38614472,
+    "deep",
+    338,
+    "[[14,2,2]] T0,T1, fold f=3, d=(23,5,5)"
+   ],
+   [
+    793676.0,
+    39304000,
+    "deep",
+    340,
+    "[[15,1,3]], fold f=3, d=(23,5,5)"
+   ],
+   [
+    929907.0,
+    40001688,
+    "deep",
+    342,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    934907.0,
+    40707584,
+    "deep",
+    344,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    939907.0,
+    41421736,
+    "deep",
+    346,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    944907.0,
+    42144192,
+    "deep",
+    348,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    949907.0,
+    42875000,
+    "deep",
+    350,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    954907.0,
+    43614208,
+    "deep",
+    352,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    959907.0,
+    44361864,
+    "deep",
+    354,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    964907.0,
+    45118016,
+    "deep",
+    356,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    969907.0,
+    45882712,
+    "deep",
+    358,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    974907.0,
+    46656000,
+    "deep",
+    360,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    979907.0,
+    47437928,
+    "deep",
+    362,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    984907.0,
+    48228544,
+    "deep",
+    364,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    992407.0,
+    49027896,
+    "deep",
+    366,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    997407.0,
+    49836032,
+    "deep",
+    368,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ]
+  ]
+ },
+ "surface_H4": {
+  "winners": [
+   "[[14,1,2]] T0, fold f=3, d=(19,5,5)",
+   "[[14,1,2]] T0, fold f=3, d=(21,5,5)",
+   "[[14,2,2]] T0,T1, fold f=3, d=(19,5,5)",
+   "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)",
+   "[[14,2,2]] T0,T1, fold f=3, d=(23,5,5)",
+   "[[15,1,3]], fold f=3, d=(19,5,5)",
+   "[[15,1,3]], fold f=3, d=(21,5,5)",
+   "[[15,1,3]], fold f=3, d=(23,5,5)",
+   "[[8,3,2]] CCZ012, fold f=3, d=(19,5,5)",
+   "fold-transversal cultivation"
+  ],
+  "steps": [
+   [
+    949.0,
+    8,
+    "deep",
+    2,
+    "fold-transversal cultivation"
+   ],
+   [
+    1249.0,
+    16,
+    "shallow",
+    4,
+    "fold-transversal cultivation"
+   ],
+   [
+    2017.0,
+    64,
+    "deep",
+    4,
+    "fold-transversal cultivation"
+   ],
+   [
+    3152.0,
+    216,
+    "deep",
+    6,
+    "fold-transversal cultivation"
+   ],
+   [
+    4661.0,
+    512,
+    "deep",
+    8,
+    "fold-transversal cultivation"
+   ],
+   [
+    5633.0,
+    1000,
+    "deep",
+    10,
+    "fold-transversal cultivation"
+   ],
+   [
+    6892.0,
+    1728,
+    "deep",
+    12,
+    "fold-transversal cultivation"
+   ],
+   [
+    10613.0,
+    2744,
+    "deep",
+    14,
+    "fold-transversal cultivation"
+   ],
+   [
+    11581.0,
+    4096,
+    "deep",
+    16,
+    "fold-transversal cultivation"
+   ],
+   [
+    12549.0,
+    5832,
+    "deep",
+    18,
+    "fold-transversal cultivation"
+   ],
+   [
+    14001.0,
+    8000,
+    "deep",
+    20,
+    "fold-transversal cultivation"
+   ],
+   [
+    15660.0,
+    10648,
+    "deep",
+    22,
+    "fold-transversal cultivation"
+   ],
+   [
+    16628.0,
+    13824,
+    "deep",
+    24,
+    "fold-transversal cultivation"
+   ],
+   [
+    24109.0,
+    17576,
+    "deep",
+    26,
+    "fold-transversal cultivation"
+   ],
+   [
+    25461.0,
+    21952,
+    "deep",
+    28,
+    "fold-transversal cultivation"
+   ],
+   [
+    26813.0,
+    27000,
+    "deep",
+    30,
+    "fold-transversal cultivation"
+   ],
+   [
+    28165.0,
+    32768,
+    "deep",
+    32,
+    "fold-transversal cultivation"
+   ],
+   [
+    30193.0,
+    39304,
+    "deep",
+    34,
+    "fold-transversal cultivation"
+   ],
+   [
+    31545.0,
+    46656,
+    "deep",
+    36,
+    "fold-transversal cultivation"
+   ],
+   [
+    32897.0,
+    54872,
+    "deep",
+    38,
+    "fold-transversal cultivation"
+   ],
+   [
+    34249.0,
+    64000,
+    "deep",
+    40,
+    "fold-transversal cultivation"
+   ],
+   [
+    36277.0,
+    74088,
+    "deep",
+    42,
+    "fold-transversal cultivation"
+   ],
+   [
+    38416.0,
+    85184,
+    "deep",
+    44,
+    "fold-transversal cultivation"
+   ],
+   [
+    39768.0,
+    97336,
+    "deep",
+    46,
+    "fold-transversal cultivation"
+   ],
+   [
+    53549.0,
+    110592,
+    "deep",
+    48,
+    "fold-transversal cultivation"
+   ],
+   [
+    55349.0,
+    125000,
+    "deep",
+    50,
+    "fold-transversal cultivation"
+   ],
+   [
+    58049.0,
+    140608,
+    "deep",
+    52,
+    "fold-transversal cultivation"
+   ],
+   [
+    59849.0,
+    157464,
+    "deep",
+    54,
+    "fold-transversal cultivation"
+   ],
+   [
+    61649.0,
+    175616,
+    "deep",
+    56,
+    "fold-transversal cultivation"
+   ],
+   [
+    63449.0,
+    195112,
+    "deep",
+    58,
+    "fold-transversal cultivation"
+   ],
+   [
+    65249.0,
+    216000,
+    "deep",
+    60,
+    "fold-transversal cultivation"
+   ],
+   [
+    67949.0,
+    238328,
+    "deep",
+    62,
+    "fold-transversal cultivation"
+   ],
+   [
+    69749.0,
+    262144,
+    "deep",
+    64,
+    "fold-transversal cultivation"
+   ],
+   [
+    71549.0,
+    287496,
+    "deep",
+    66,
+    "fold-transversal cultivation"
+   ],
+   [
+    73349.0,
+    314432,
+    "deep",
+    68,
+    "fold-transversal cultivation"
+   ],
+   [
+    75149.0,
+    343000,
+    "deep",
+    70,
+    "fold-transversal cultivation"
+   ],
+   [
+    76949.0,
+    373248,
+    "deep",
+    72,
+    "fold-transversal cultivation"
+   ],
+   [
+    79649.0,
+    405224,
+    "deep",
+    74,
+    "fold-transversal cultivation"
+   ],
+   [
+    81449.0,
+    438976,
+    "deep",
+    76,
+    "fold-transversal cultivation"
+   ],
+   [
+    83249.0,
+    474552,
+    "deep",
+    78,
+    "fold-transversal cultivation"
+   ],
+   [
+    85049.0,
+    512000,
+    "deep",
+    80,
+    "fold-transversal cultivation"
+   ],
+   [
+    87748.0,
+    551368,
+    "deep",
+    82,
+    "fold-transversal cultivation"
+   ],
+   [
+    89548.0,
+    592704,
+    "deep",
+    84,
+    "fold-transversal cultivation"
+   ],
+   [
+    92248.0,
+    636056,
+    "deep",
+    86,
+    "fold-transversal cultivation"
+   ],
+   [
+    100912.0,
+    681472,
+    "deep",
+    88,
+    "[[8,3,2]] CCZ012, fold f=3, d=(19,5,5)"
+   ],
+   [
+    121829.0,
+    729000,
+    "deep",
+    90,
+    "fold-transversal cultivation"
+   ],
+   [
+    124141.0,
+    778688,
+    "deep",
+    92,
+    "fold-transversal cultivation"
+   ],
+   [
+    126453.0,
+    830584,
+    "deep",
+    94,
+    "fold-transversal cultivation"
+   ],
+   [
+    128765.0,
+    884736,
+    "deep",
+    96,
+    "fold-transversal cultivation"
+   ],
+   [
+    131077.0,
+    941192,
+    "deep",
+    98,
+    "fold-transversal cultivation"
+   ],
+   [
+    134545.0,
+    1000000,
+    "deep",
+    100,
+    "fold-transversal cultivation"
+   ],
+   [
+    136857.0,
+    1061208,
+    "deep",
+    102,
+    "fold-transversal cultivation"
+   ],
+   [
+    139169.0,
+    1124864,
+    "deep",
+    104,
+    "fold-transversal cultivation"
+   ],
+   [
+    141481.0,
+    1191016,
+    "deep",
+    106,
+    "fold-transversal cultivation"
+   ],
+   [
+    143793.0,
+    1259712,
+    "deep",
+    108,
+    "fold-transversal cultivation"
+   ],
+   [
+    146105.0,
+    1331000,
+    "deep",
+    110,
+    "fold-transversal cultivation"
+   ],
+   [
+    148417.0,
+    1404928,
+    "deep",
+    112,
+    "fold-transversal cultivation"
+   ],
+   [
+    151885.0,
+    1481544,
+    "deep",
+    114,
+    "fold-transversal cultivation"
+   ],
+   [
+    154197.0,
+    1560896,
+    "deep",
+    116,
+    "fold-transversal cultivation"
+   ],
+   [
+    156509.0,
+    1643032,
+    "deep",
+    118,
+    "fold-transversal cultivation"
+   ],
+   [
+    158821.0,
+    1728000,
+    "deep",
+    120,
+    "fold-transversal cultivation"
+   ],
+   [
+    161133.0,
+    1815848,
+    "deep",
+    122,
+    "fold-transversal cultivation"
+   ],
+   [
+    163445.0,
+    1906624,
+    "deep",
+    124,
+    "fold-transversal cultivation"
+   ],
+   [
+    165757.0,
+    2000376,
+    "deep",
+    126,
+    "fold-transversal cultivation"
+   ],
+   [
+    168069.0,
+    2097152,
+    "deep",
+    128,
+    "fold-transversal cultivation"
+   ],
+   [
+    171537.0,
+    2197000,
+    "deep",
+    130,
+    "fold-transversal cultivation"
+   ],
+   [
+    173849.0,
+    2299968,
+    "deep",
+    132,
+    "fold-transversal cultivation"
+   ],
+   [
+    176161.0,
+    2406104,
+    "deep",
+    134,
+    "fold-transversal cultivation"
+   ],
+   [
+    178473.0,
+    2515456,
+    "deep",
+    136,
+    "fold-transversal cultivation"
+   ],
+   [
+    180785.0,
+    2628072,
+    "deep",
+    138,
+    "fold-transversal cultivation"
+   ],
+   [
+    183097.0,
+    2744000,
+    "deep",
+    140,
+    "fold-transversal cultivation"
+   ],
+   [
+    185409.0,
+    2863288,
+    "deep",
+    142,
+    "fold-transversal cultivation"
+   ],
+   [
+    187721.0,
+    2985984,
+    "deep",
+    144,
+    "fold-transversal cultivation"
+   ],
+   [
+    191189.0,
+    3112136,
+    "deep",
+    146,
+    "fold-transversal cultivation"
+   ],
+   [
+    193501.0,
+    3241792,
+    "deep",
+    148,
+    "fold-transversal cultivation"
+   ],
+   [
+    195813.0,
+    3375000,
+    "deep",
+    150,
+    "fold-transversal cultivation"
+   ],
+   [
+    198125.0,
+    3511808,
+    "deep",
+    152,
+    "fold-transversal cultivation"
+   ],
+   [
+    201464.0,
+    3652264,
+    "deep",
+    154,
+    "fold-transversal cultivation"
+   ],
+   [
+    203776.0,
+    3796416,
+    "deep",
+    156,
+    "fold-transversal cultivation"
+   ],
+   [
+    206088.0,
+    3944312,
+    "deep",
+    158,
+    "fold-transversal cultivation"
+   ],
+   [
+    214238.0,
+    4096000,
+    "deep",
+    160,
+    "[[14,2,2]] T0,T1, fold f=3, d=(19,5,5)"
+   ],
+   [
+    216550.0,
+    4251528,
+    "deep",
+    162,
+    "[[14,2,2]] T0,T1, fold f=3, d=(19,5,5)"
+   ],
+   [
+    221044.0,
+    4410944,
+    "deep",
+    164,
+    "[[8,3,2]] CCZ012, fold f=3, d=(19,5,5)"
+   ],
+   [
+    227988.0,
+    4574296,
+    "deep",
+    166,
+    "[[15,1,3]], fold f=3, d=(21,5,5)"
+   ],
+   [
+    271921.0,
+    4741632,
+    "deep",
+    168,
+    "fold-transversal cultivation"
+   ],
+   [
+    274809.0,
+    4913000,
+    "deep",
+    170,
+    "fold-transversal cultivation"
+   ],
+   [
+    277697.0,
+    5088448,
+    "deep",
+    172,
+    "fold-transversal cultivation"
+   ],
+   [
+    280585.0,
+    5268024,
+    "deep",
+    174,
+    "fold-transversal cultivation"
+   ],
+   [
+    283473.0,
+    5451776,
+    "deep",
+    176,
+    "fold-transversal cultivation"
+   ],
+   [
+    286361.0,
+    5639752,
+    "deep",
+    178,
+    "fold-transversal cultivation"
+   ],
+   [
+    289249.0,
+    5832000,
+    "deep",
+    180,
+    "fold-transversal cultivation"
+   ],
+   [
+    293581.0,
+    6028568,
+    "deep",
+    182,
+    "fold-transversal cultivation"
+   ],
+   [
+    296469.0,
+    6229504,
+    "deep",
+    184,
+    "fold-transversal cultivation"
+   ],
+   [
+    299357.0,
+    6434856,
+    "deep",
+    186,
+    "fold-transversal cultivation"
+   ],
+   [
+    302245.0,
+    6644672,
+    "deep",
+    188,
+    "fold-transversal cultivation"
+   ],
+   [
+    305133.0,
+    6859000,
+    "deep",
+    190,
+    "fold-transversal cultivation"
+   ],
+   [
+    308021.0,
+    7077888,
+    "deep",
+    192,
+    "fold-transversal cultivation"
+   ],
+   [
+    310909.0,
+    7301384,
+    "deep",
+    194,
+    "fold-transversal cultivation"
+   ],
+   [
+    313797.0,
+    7529536,
+    "deep",
+    196,
+    "fold-transversal cultivation"
+   ],
+   [
+    316685.0,
+    7762392,
+    "deep",
+    198,
+    "fold-transversal cultivation"
+   ],
+   [
+    319573.0,
+    8000000,
+    "deep",
+    200,
+    "fold-transversal cultivation"
+   ],
+   [
+    323905.0,
+    8242408,
+    "deep",
+    202,
+    "fold-transversal cultivation"
+   ],
+   [
+    326793.0,
+    8489664,
+    "deep",
+    204,
+    "fold-transversal cultivation"
+   ],
+   [
+    329681.0,
+    8741816,
+    "deep",
+    206,
+    "fold-transversal cultivation"
+   ],
+   [
+    332569.0,
+    8998912,
+    "deep",
+    208,
+    "fold-transversal cultivation"
+   ],
+   [
+    335457.0,
+    9261000,
+    "deep",
+    210,
+    "fold-transversal cultivation"
+   ],
+   [
+    338345.0,
+    9528128,
+    "deep",
+    212,
+    "fold-transversal cultivation"
+   ],
+   [
+    341233.0,
+    9800344,
+    "deep",
+    214,
+    "fold-transversal cultivation"
+   ],
+   [
+    344121.0,
+    10077696,
+    "deep",
+    216,
+    "fold-transversal cultivation"
+   ],
+   [
+    347009.0,
+    10360232,
+    "deep",
+    218,
+    "fold-transversal cultivation"
+   ],
+   [
+    349897.0,
+    10648000,
+    "deep",
+    220,
+    "fold-transversal cultivation"
+   ],
+   [
+    354229.0,
+    10941048,
+    "deep",
+    222,
+    "fold-transversal cultivation"
+   ],
+   [
+    357117.0,
+    11239424,
+    "deep",
+    224,
+    "fold-transversal cultivation"
+   ],
+   [
+    360005.0,
+    11543176,
+    "deep",
+    226,
+    "fold-transversal cultivation"
+   ],
+   [
+    362893.0,
+    11852352,
+    "deep",
+    228,
+    "fold-transversal cultivation"
+   ],
+   [
+    365781.0,
+    12167000,
+    "deep",
+    230,
+    "fold-transversal cultivation"
+   ],
+   [
+    368669.0,
+    12487168,
+    "deep",
+    232,
+    "fold-transversal cultivation"
+   ],
+   [
+    371557.0,
+    12812904,
+    "deep",
+    234,
+    "fold-transversal cultivation"
+   ],
+   [
+    374445.0,
+    13144256,
+    "deep",
+    236,
+    "fold-transversal cultivation"
+   ],
+   [
+    377333.0,
+    13481272,
+    "deep",
+    238,
+    "fold-transversal cultivation"
+   ],
+   [
+    381392.0,
+    13824000,
+    "deep",
+    240,
+    "fold-transversal cultivation"
+   ],
+   [
+    387567.0,
+    14172488,
+    "deep",
+    242,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    391899.0,
+    14526784,
+    "deep",
+    244,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    394787.0,
+    14886936,
+    "deep",
+    246,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    397675.0,
+    15252992,
+    "deep",
+    248,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    400563.0,
+    15625000,
+    "deep",
+    250,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    403451.0,
+    16003008,
+    "deep",
+    252,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    406339.0,
+    16387064,
+    "deep",
+    254,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    409227.0,
+    16777216,
+    "deep",
+    256,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    412115.0,
+    17173512,
+    "deep",
+    258,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    415003.0,
+    17576000,
+    "deep",
+    260,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    417891.0,
+    17984728,
+    "deep",
+    262,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    420779.0,
+    18399744,
+    "deep",
+    264,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    425111.0,
+    18821096,
+    "deep",
+    266,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    428659.0,
+    19248832,
+    "deep",
+    268,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    431547.0,
+    19683000,
+    "deep",
+    270,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    434435.0,
+    20123648,
+    "deep",
+    272,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    437323.0,
+    20570824,
+    "deep",
+    274,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    440211.0,
+    21024576,
+    "deep",
+    276,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    443729.0,
+    21484952,
+    "deep",
+    278,
+    "[[15,1,3]], fold f=3, d=(21,5,5)"
+   ],
+   [
+    447878.0,
+    21952000,
+    "deep",
+    280,
+    "[[14,2,2]] T0,T1, fold f=3, d=(19,5,5)"
+   ],
+   [
+    450766.0,
+    22425768,
+    "deep",
+    282,
+    "[[14,2,2]] T0,T1, fold f=3, d=(19,5,5)"
+   ],
+   [
+    453654.0,
+    22906304,
+    "deep",
+    284,
+    "[[14,2,2]] T0,T1, fold f=3, d=(19,5,5)"
+   ],
+   [
+    456542.0,
+    23393656,
+    "deep",
+    286,
+    "[[14,2,2]] T0,T1, fold f=3, d=(19,5,5)"
+   ],
+   [
+    460570.0,
+    23887872,
+    "deep",
+    288,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    464902.0,
+    24389000,
+    "deep",
+    290,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    467790.0,
+    24897088,
+    "deep",
+    292,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    470678.0,
+    25412184,
+    "deep",
+    294,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    473566.0,
+    25934336,
+    "deep",
+    296,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    476454.0,
+    26463592,
+    "deep",
+    298,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    479342.0,
+    27000000,
+    "deep",
+    300,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    482230.0,
+    27543608,
+    "deep",
+    302,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    485118.0,
+    28094464,
+    "deep",
+    304,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    488006.0,
+    28652616,
+    "deep",
+    306,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    490894.0,
+    29218112,
+    "deep",
+    308,
+    "[[14,2,2]] T0,T1, fold f=3, d=(21,5,5)"
+   ],
+   [
+    495018.0,
+    29791000,
+    "deep",
+    310,
+    "[[14,2,2]] T0,T1, fold f=3, d=(23,5,5)"
+   ],
+   [
+    502724.0,
+    30371328,
+    "deep",
+    312,
+    "[[15,1,3]], fold f=3, d=(23,5,5)"
+   ],
+   [
+    606431.0,
+    30959144,
+    "deep",
+    314,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    609959.0,
+    31554496,
+    "deep",
+    316,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    613487.0,
+    32157432,
+    "deep",
+    318,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    617015.0,
+    32768000,
+    "deep",
+    320,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    620543.0,
+    33386248,
+    "deep",
+    322,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    624071.0,
+    34012224,
+    "deep",
+    324,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    627599.0,
+    34645976,
+    "deep",
+    326,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    631127.0,
+    35287552,
+    "deep",
+    328,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    634655.0,
+    35937000,
+    "deep",
+    330,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    638183.0,
+    36594368,
+    "deep",
+    332,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    641711.0,
+    37259704,
+    "deep",
+    334,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    645239.0,
+    37933056,
+    "deep",
+    336,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    648767.0,
+    38614472,
+    "deep",
+    338,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    654059.0,
+    39304000,
+    "deep",
+    340,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    657587.0,
+    40001688,
+    "deep",
+    342,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    661115.0,
+    40707584,
+    "deep",
+    344,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    664643.0,
+    41421736,
+    "deep",
+    346,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    668171.0,
+    42144192,
+    "deep",
+    348,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    671699.0,
+    42875000,
+    "deep",
+    350,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    675227.0,
+    43614208,
+    "deep",
+    352,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    678755.0,
+    44361864,
+    "deep",
+    354,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    682283.0,
+    45118016,
+    "deep",
+    356,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    685811.0,
+    45882712,
+    "deep",
+    358,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    689339.0,
+    46656000,
+    "deep",
+    360,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    692867.0,
+    47437928,
+    "deep",
+    362,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    696395.0,
+    48228544,
+    "deep",
+    364,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    701687.0,
+    49027896,
+    "deep",
+    366,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    705215.0,
+    49836032,
+    "deep",
+    368,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    708743.0,
+    50653000,
+    "deep",
+    370,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    712271.0,
+    51478848,
+    "deep",
+    372,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    715799.0,
+    52313624,
+    "deep",
+    374,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    719327.0,
+    53157376,
+    "deep",
+    376,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    722855.0,
+    54010152,
+    "deep",
+    378,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    726383.0,
+    54872000,
+    "deep",
+    380,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    729911.0,
+    55742968,
+    "deep",
+    382,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    733439.0,
+    56623104,
+    "deep",
+    384,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    736967.0,
+    57512456,
+    "deep",
+    386,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    740495.0,
+    58411072,
+    "deep",
+    388,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    744023.0,
+    59319000,
+    "deep",
+    390,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    747551.0,
+    60236288,
+    "deep",
+    392,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    752843.0,
+    61162984,
+    "deep",
+    394,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    756371.0,
+    62099136,
+    "deep",
+    396,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    759899.0,
+    63044792,
+    "deep",
+    398,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    763427.0,
+    64000000,
+    "deep",
+    400,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    766955.0,
+    64964808,
+    "deep",
+    402,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    770483.0,
+    65939264,
+    "deep",
+    404,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    774011.0,
+    66923416,
+    "deep",
+    406,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    777539.0,
+    67917312,
+    "deep",
+    408,
+    "[[14,1,2]] T0, fold f=3, d=(19,5,5)"
+   ],
+   [
+    781637.0,
+    68921000,
+    "deep",
+    410,
+    "[[15,1,3]], fold f=3, d=(19,5,5)"
+   ],
+   [
+    785165.0,
+    69934528,
+    "deep",
+    412,
+    "[[15,1,3]], fold f=3, d=(19,5,5)"
+   ],
+   [
+    788693.0,
+    70957944,
+    "deep",
+    414,
+    "[[15,1,3]], fold f=3, d=(19,5,5)"
+   ],
+   [
+    792311.0,
+    71991296,
+    "deep",
+    416,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    795839.0,
+    73034632,
+    "deep",
+    418,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    799367.0,
+    74088000,
+    "deep",
+    420,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    804659.0,
+    75151448,
+    "deep",
+    422,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    808187.0,
+    76225024,
+    "deep",
+    424,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    811715.0,
+    77308776,
+    "deep",
+    426,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    815243.0,
+    78402752,
+    "deep",
+    428,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    818771.0,
+    79507000,
+    "deep",
+    430,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    822299.0,
+    80621568,
+    "deep",
+    432,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    825827.0,
+    81746504,
+    "deep",
+    434,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    829355.0,
+    82881856,
+    "deep",
+    436,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    832883.0,
+    84027672,
+    "deep",
+    438,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    836411.0,
+    85184000,
+    "deep",
+    440,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    839939.0,
+    86350888,
+    "deep",
+    442,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    843467.0,
+    87528384,
+    "deep",
+    444,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    846995.0,
+    88716536,
+    "deep",
+    446,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    850523.0,
+    89915392,
+    "deep",
+    448,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    854051.0,
+    91125000,
+    "deep",
+    450,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    859343.0,
+    92345408,
+    "deep",
+    452,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    862871.0,
+    93576664,
+    "deep",
+    454,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    866399.0,
+    94818816,
+    "deep",
+    456,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    869927.0,
+    96071912,
+    "deep",
+    458,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    873455.0,
+    97336000,
+    "deep",
+    460,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    876983.0,
+    98611128,
+    "deep",
+    462,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    880511.0,
+    99897344,
+    "deep",
+    464,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    884039.0,
+    101194696,
+    "deep",
+    466,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    887567.0,
+    102503232,
+    "deep",
+    468,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    891095.0,
+    103823000,
+    "deep",
+    470,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    894623.0,
+    105154048,
+    "deep",
+    472,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    898151.0,
+    106496424,
+    "deep",
+    474,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    901679.0,
+    107850176,
+    "deep",
+    476,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    905207.0,
+    109215352,
+    "deep",
+    478,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    908735.0,
+    110592000,
+    "deep",
+    480,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    914027.0,
+    111980168,
+    "deep",
+    482,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    917555.0,
+    113379904,
+    "deep",
+    484,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    921083.0,
+    114791256,
+    "deep",
+    486,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    924611.0,
+    116214272,
+    "deep",
+    488,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    928139.0,
+    117649000,
+    "deep",
+    490,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    931667.0,
+    119095488,
+    "deep",
+    492,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    935195.0,
+    120553784,
+    "deep",
+    494,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    938723.0,
+    122023936,
+    "deep",
+    496,
+    "[[14,1,2]] T0, fold f=3, d=(21,5,5)"
+   ],
+   [
+    942881.0,
+    123505992,
+    "deep",
+    498,
+    "[[15,1,3]], fold f=3, d=(21,5,5)"
+   ],
+   [
+    946409.0,
+    125000000,
+    "deep",
+    500,
+    "[[15,1,3]], fold f=3, d=(21,5,5)"
+   ],
+   [
+    949937.0,
+    126506008,
+    "deep",
+    502,
+    "[[15,1,3]], fold f=3, d=(21,5,5)"
+   ],
+   [
+    953465.0,
+    128024064,
+    "deep",
+    504,
+    "[[15,1,3]], fold f=3, d=(21,5,5)"
+   ],
+   [
+    956993.0,
+    129554216,
+    "deep",
+    506,
+    "[[15,1,3]], fold f=3, d=(21,5,5)"
+   ],
+   [
+    960521.0,
+    131096512,
+    "deep",
+    508,
+    "[[15,1,3]], fold f=3, d=(21,5,5)"
+   ],
+   [
+    964049.0,
+    132651000,
+    "deep",
+    510,
+    "[[15,1,3]], fold f=3, d=(21,5,5)"
+   ],
+   [
+    967577.0,
+    134217728,
+    "deep",
+    512,
+    "[[15,1,3]], fold f=3, d=(21,5,5)"
+   ],
+   [
+    972869.0,
+    135796744,
+    "deep",
+    514,
+    "[[15,1,3]], fold f=3, d=(21,5,5)"
+   ],
+   [
+    976397.0,
+    137388096,
+    "deep",
+    516,
+    "[[15,1,3]], fold f=3, d=(21,5,5)"
+   ],
+   [
+    979925.0,
+    138991832,
+    "deep",
+    518,
+    "[[15,1,3]], fold f=3, d=(21,5,5)"
+   ],
+   [
+    983453.0,
+    140608000,
+    "deep",
+    520,
+    "[[15,1,3]], fold f=3, d=(21,5,5)"
+   ],
+   [
+    986981.0,
+    142236648,
+    "deep",
+    522,
+    "[[15,1,3]], fold f=3, d=(21,5,5)"
+   ],
+   [
+    991277.0,
+    143877824,
+    "deep",
+    524,
+    "[[15,1,3]], fold f=3, d=(23,5,5)"
+   ],
+   [
+    994805.0,
+    145531576,
+    "deep",
+    526,
+    "[[15,1,3]], fold f=3, d=(23,5,5)"
+   ],
+   [
+    998333.0,
+    147197952,
+    "deep",
+    528,
+    "[[15,1,3]], fold f=3, d=(23,5,5)"
+   ]
+  ]
+ }
+}

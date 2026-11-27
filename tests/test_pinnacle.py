@@ -1,240 +1,223 @@
-"""Pinnacle checks against the paper and independently counted resource constraints."""
-from dataclasses import FrozenInstanceError, replace
-from math import ceil, exp, expm1, floor, log1p
+"""Tests of the Pinnacle model: published engine parameters, hand-computed designs, and an independent brute force."""
+import json
+import math
+from math import ceil, log1p
+from pathlib import Path
 
 import numpy as np
 import pytest
 
-from capability import curves, pinnacle, quops
-from capability.config import BASELINE, HARDWARE, WEEK_SECONDS, vary
+from capability import curves, pinnacle as P, pinnacle_factories as pf
+from capability.config import BASELINE, HARDWARE, WEEK_SECONDS
+from capability.quops import layer_counts, size
+from capability.surface import EPS, NT
+
+ROOT = Path(__file__).resolve().parents[1]
+H2, H4, H1, H3 = (HARDWARE[k] for k in ('H2', 'H4', 'H1', 'H3'))
+REF = P.vary(families=('reference',))
 
 
-def code_at(distance):
-    return next(code for code in pinnacle.CODES if code.d == distance)
+def proto(name):
+    return next(q for q in pf.PROTOCOLS if q['name'] == name)
 
 
-def engine_at(error):
-    return next(engine for engine in pinnacle.ENGINES if engine.error == error)
+def test_engine_template_reproduces_published_engines():
+    """Pinnacle v2 Eqs. 9 and 10: 4410 and 5430 qubits, 26 code cycles, about 10% rejection, 1e-9 and 1e-11."""
+    for d_a, qubits, target in ((7, 4410, 1e-9), (9, 5430, 1e-11)):
+        p_a, p_in = pf.CULTIVATED[d_a]
+        s, attempt, p_rot = pf.engine(proto('[[15,1,3]]'), d_a, p_a, p_in, True)
+        assert s.qubits == qubits
+        assert attempt == 26
+        assert s.reject == pytest.approx(0.10, abs=0.005)
+        assert target/2 < s.error < 2*target                        # the paper rounds its output targets to one digit
+        assert p_rot == pytest.approx(p_in + (d_a + 1)*p_a)
 
 
-def test_published_processing_blocks():
-    # Table 1 of arXiv:2602.11457v2; includes data, checks, gadgets, and bridges.
-    expected = [
-        (30, 8, 4, 6, 140),
-        (62, 10, 6, 8, 244),
-        (126, 12, 10, 12, 452),
-        (254, 14, 16, 18, 860),
-        (510, 16, 24, 26, 1620),
-    ]
-    assert [(c.n, c.k, c.d, c.code_cycles, c.processing_qubits)
-            for c in pinnacle.CODES] == expected
+def test_engine_time_matches_eq11():
+    assert pf.engine_time(4, 7) == 23 and pf.engine_time(4, 9) == 26     # the 23 and 26 cycles of Pinnacle v2
 
 
-@pytest.mark.parametrize('error,qubits,ancilla', [(1e-9, 4410, 7), (1e-11, 5430, 9)])
-def test_published_magic_engines(error, qubits, ancilla):
-    engine = engine_at(error)
-    assert engine.qubits == qubits
-    assert engine.code_distance == 24
-    assert engine.ancilla_distance == ancilla
-    assert engine.postselection_rounds == 2
-    assert engine.rejection == pytest.approx(0.1)
-    assert pinnacle.engine_period(engine) == 26
+def test_minimal_engine_footprint_of_the_low_noise_engine():
+    """Pinnacle v2 Eq. 7 (p = 1e-4, physical T state): 252 + 10 * 31 + 30 = 592 with the d = 10 block."""
+    assert 252 + 10*31 + 30*(1 + 1 - 1) == 592
 
 
-@pytest.mark.parametrize('distance', [4, 6, 10, 16, 24])
-def test_processing_block_error_is_the_published_surgery_fit(distance):
-    code, hw = code_at(distance), HARDWARE['H2']
-    # Eq. 12 and Table 2: this is per block per native logical cycle, not per qubit.
-    expected = 6.2 * (hw.p / 0.0158)**(distance / 2 + 0.47)
-    assert pinnacle.p_block(code, hw) == pytest.approx(expected, rel=1e-13)
+def test_protocol_data():
+    ref = proto('[[15,1,3]]')
+    assert (ref['n'], ref['k'], ref['d'], ref['wires'], ref['A_d']) == (15, 1, 3, 5, 35)     # Bravyi-Kitaev 15-to-1
+    for q in pf.PROTOCOLS:
+        assert q['wires'] > q['k'] and q['A_d'] > 0 and q['d'] >= 3
 
 
-def test_reaction_time_stretches_the_engine_period():
-    engine = engine_at(1e-9)
-    choices = pinnacle.vary(reaction_cycles=100)
-    # Eq. 11 with d_a=7, r=2: max(22, 108, 113), above the native 26-cycle engine.
-    assert pinnacle.engine_period(engine, choices) == 113
+def test_surface_supply_adapter():
+    s = next(x for x in pf.surface_supplies(distances=(15,)) if x.name.startswith('cultivation'))
+    assert (s.qubits, s.cycles, s.error) == (1024, 100., 2e-9)
+    assert s.port_qubits == 454 + 29                                   # the Frozen Pinnacle seed patch plus bridge
+    assert s.port_error == pytest.approx(16*0.03*(1e-3/0.01)**8)
+    assert s.min_slot == 15
 
 
-def test_geometric_retries_have_the_correct_mean_survival():
-    code = code_at(4)
-    engine = engine_at(1e-9)
-    ch = vary(threshold=100.0)
-    pc = pinnacle.vary(logical_error_scale=1.0)
-    row = pinnacle.evaluate(2, 'shallow', HARDWARE['H2'], ch, code, engine, 5, pc)
-    assert row is not None
-    period = pinnacle.engine_period(engine, pc)
-    hazard = (period / code.code_cycles) * -log1p(-pinnacle.p_block(code, HARDWARE['H2']))
-    # Enumerate one successful T consumption after 1, 2, ... attempts, including idle retries.
-    survive_one = sum((1 - engine.rejection) * engine.rejection**(attempts - 1)
-                      * exp(-attempts * hazard) for attempts in range(1, 200))
-    tau = 2 * 5
-    fixed = 2 + pc.startup_logical_cycles
-    expected = exp(-fixed * hazard) * survive_one**tau
-    assert exp(-row['loss_data']) == pytest.approx(expected, rel=1e-12)
-    assert row['logical_cycles'] == pytest.approx(fixed + tau / (1 - engine.rejection))
-    # Substituting the mean duration into exp(-hazard*time) is not the same expectation.
-    assert expected > exp(-hazard * row['logical_cycles'])
+def test_fold_transversal_cultivation_behind_the_adapter():
+    """All-to-all baseline: fold-transversal cultivation (arXiv:2509.05212) replaces color-code cultivation."""
+    from capability.factories import FOLD_F5
+    s = next(x for x in pf.all_supplies(('surface_fold',), (11,)) if x.name.startswith('fold-transversal'))
+    assert (s.qubits, s.error) == (449, 1e-9)
+    assert s.cycles == pytest.approx(3.6e4*(1024*100/6.6e4)/6/449) == pytest.approx(FOLD_F5['volume']/449)
+    assert not any(x.name.startswith('cultivation') for x in P.supply_arrays(P.BASELINE)['S'])
 
 
-@pytest.mark.parametrize('hazard', [0.0, 1e-15, 0.015, 10.0])
-@pytest.mark.parametrize('rejection', [0.0, 0.1, 0.25, 0.9])
-def test_retry_survival_matches_finite_enumeration(hazard, rejection):
-    tau, fixed = 10, 3
-    survive_one = sum((1 - rejection) * rejection**(attempts - 1) * exp(-attempts * hazard)
-                      for attempts in range(1, 500))
-    expected = exp(-fixed * hazard) * survive_one**tau
-    actual = exp(-pinnacle.loss_for_retries(tau, fixed, hazard, rejection))
-    assert actual == pytest.approx(expected, rel=1e-12, abs=0)
+def test_two_level_supply_is_cleaner_but_bigger():
+    one = next(s for s in pf.injected_supplies() if s.name == '[[15,1,3]], injected, 1 level')
+    two = next(s for s in pf.injected_supplies() if s.name == '[[15,1,3]], injected, 2 levels, F1=16')
+    assert one.error == pytest.approx(35*(3e-3)**3, rel=1e-12)          # p_rot = 3p for the physical-T ancilla
+    assert two.error < 1e-15 and two.qubits > 10*one.qubits
 
 
-@pytest.mark.parametrize('w,ensemble', [(4, 'shallow'), (12, 'deep'), (100, 'shallow')])
-@pytest.mark.parametrize('executions', [1, 10_000])
-def test_design_satisfies_independently_counted_resources_and_losses(w, ensemble, executions):
-    hw, ch = HARDWARE['H2'], vary(executions=executions)
-    row = pinnacle.min_qubits(w, ensemble, hw, ch)
-    assert row is not None
-    code, engine = code_at(row['distance']), next(e for e in pinnacle.ENGINES if e.name == row['engine'])
-    blocks = ceil(w / code.k)
-    tau = w * quops.layer_counts(w, ensemble)[0] * row['T_per_rotation']
-    fixed = w + pinnacle.BASELINE.startup_logical_cycles
-    period = max(code.code_cycles, pinnacle.engine_period(engine))
-    expected_cycles = (fixed + tau / (1 - engine.rejection)) * period
-    assert row['blocks'] == blocks
-    assert row['logical_capacity'] == blocks * code.k
-    assert row['T_total'] == tau
-    assert row['cycles'] == pytest.approx(expected_cycles)
-    assert row['run_seconds'] == pytest.approx(expected_cycles * ch.cycle_seconds)
-    runs = min(floor(WEEK_SECONDS / row['run_seconds']), executions)
-    copies = ceil(executions / runs)
-    assert row['runs_per_copy'] == runs
-    assert row['copies'] == copies
-    assert row['qubits'] == copies * (blocks * code.processing_qubits + engine.qubits)
-    hazard = (blocks * period / code.code_cycles * pinnacle.BASELINE.logical_error_scale
-              * -log1p(-pinnacle.p_block(code, hw)))
-    expected_data = fixed * hazard + tau * log1p(expm1(hazard) / (1 - engine.rejection))
-    expected_magic = tau * -log1p(-engine.error)
-    expected_synthesis = w * quops.layer_counts(w, ensemble)[0] * row['eps']**2
-    assert row['loss_data'] == pytest.approx(expected_data, rel=1e-6, abs=1e-12)
-    assert row['loss_magic'] == pytest.approx(expected_magic)
-    assert row['loss_synthesis'] == pytest.approx(expected_synthesis)
-    assert row['loss_total'] == pytest.approx(expected_data + expected_magic + expected_synthesis,
-                                              rel=1e-6, abs=1e-12)
-    assert row['loss_total'] <= ch.threshold + 1e-12
-    assert row['q_no_fault'] == pytest.approx(exp(-row['loss_stochastic']))
-    assert row['quality'] == pytest.approx(exp(-row['loss_total']))
+def test_reference_matches_pr3_serial_design():
+    """Pinnacle-only reference menu: the width-84 deep design of the earlier serial model (9570 qubits). With the engine
+    template's output error (6.2e-10 instead of the quoted 1e-9) synthesis is looser, so the run is 265 s, not 274 s."""
+    r = P.min_qubits(84, 'deep', H2, BASELINE, REF)
+    assert r['qubits'] == 9570 and r['distance'] == 16 and r['factories'] == 1
+    assert r['run_seconds'] == pytest.approx(265, abs=1)
+    p4 = P.best_at(1e4, H2, BASELINE, P.sweep(H2, BASELINE, REF), REF)
+    assert p4['s'] == 592704
+    assert curves.crossover(json.loads((ROOT/'results/baseline.json').read_text())['H2']['direct'],
+                            P.sweep(H2, BASELINE, REF)) == 4862
 
 
-def test_multiple_copies_obey_the_common_week_budget():
-    ch = vary(executions=10_000, cycle_seconds=1e-3)
-    row = pinnacle.evaluate(12, 'deep', HARDWARE['H2'], ch, code_at(24), engine_at(1e-11), 40)
-    assert row is not None and row['copies'] > 1
-    assert row['copies'] * row['runs_per_copy'] >= ch.executions
-    assert (row['copies'] - 1) * row['runs_per_copy'] < ch.executions
-    assert row['runs_per_copy'] * row['run_seconds'] <= WEEK_SECONDS
+def lam(x):
+    return -log1p(-x)
 
 
-def test_large_t_count_does_not_overflow_a_windows_int32():
-    row = pinnacle.evaluate(600, 'deep', HARDWARE['H2'], BASELINE, code_at(24), engine_at(1e-11), 100)
-    assert row is not None
-    expected = 600 * (600**2 // 2) * 100
-    assert expected > np.iinfo(np.int32).max
-    assert row['T_total'] == expected
-    assert row['loss_magic'] == pytest.approx(expected * -log1p(-1e-11))
-    assert row['loss_data'] >= 0
-    assert row['cycles'] > 0
+def hand_design(w, ensemble, code, s, NTc, F, hw=H2, ch=BASELINE, eta=2.0):
+    """Independent evaluation of one design in the surface-code form: N, T_run, and the stochastic loss."""
+    n_rot, _ = layer_counts(w, ensemble)
+    R = w*n_rot
+    NT_total = R*NTc
+    beta = ceil(w/code.k)
+    D = max(code.dt, 10, s.min_slot)
+    period = s.cycles*(6e-7/ch.cycle_seconds if s.family in P.SURFACE_FAMILIES else 1)   # surface code at 600 ns
+    cycles = max(NT_total*D, ceil(NT_total/F)*period) + D                                   # N_M = 0 for QUOPS
+    N = beta*code.qubits + F*s.qubits + s.port_qubits
+    p_pb = 6.2*(hw.p/0.0158)**(code.d/2 + 0.47)
+    volume = beta*cycles/code.dt
+    loss = eta*volume*lam(p_pb) + NT_total*(lam(s.error) + lam(s.port_error))
+    eps = 2.**(-(NTc - 1.0970643939393736)/3.0764791908264293)
+    return N, cycles, loss + R*eps**2
 
 
-def test_linear_and_squared_synthesis_charges_have_distinct_pass_criteria():
-    args = (4, 'shallow', HARDWARE['H2'])
-    code, engine = code_at(16), engine_at(1e-9)
-    squared = pinnacle.evaluate(*args, BASELINE, code, engine, 10)
-    assert squared is not None
-    assert pinnacle.evaluate(*args, vary(synthesis_charge='linear'), code, engine, 10) is None
-    linear = pinnacle.evaluate(*args, vary(synthesis_charge='linear', threshold=10), code, engine, 10)
-    rotations = 4 * quops.layer_counts(4, 'shallow')[0]
-    assert linear['loss_synthesis'] == pytest.approx(rotations * linear['eps'])
-    assert squared['loss_synthesis'] == pytest.approx(rotations * squared['eps']**2)
+def test_hand_computed_design():
+    r = P.min_qubits(84, 'deep', H2, BASELINE, P.BASELINE)
+    code = next(c for c in P.CODES if c.d == r['distance'])
+    s = next(x for x in pf.all_supplies(P.BASELINE.families) if x.name == r['factory'])
+    N, cycles, total = hand_design(84, 'deep', code, s, r['T_per_rotation'], r['factories'])
+    assert N == r['qubits'] and cycles == pytest.approx(r['cycles'])
+    assert total <= 0.5 + 1e-12
+    assert r['loss_blocks'] + r['loss_magic'] + r['loss_synthesis'] == pytest.approx(total, rel=1e-9)
 
 
-def test_separate_synthesis_budget_preserves_stochastic_no_fault_probability():
-    args = (4, 'shallow', HARDWARE['H2'])
-    code, engine = code_at(16), engine_at(1e-9)
-    shared = vary(threshold=0.001)
-    assert pinnacle.evaluate(*args, shared, code, engine, 10) is None
-    separate = vary(threshold=0.001, synthesis_budget=0.2)
-    row = pinnacle.evaluate(*args, separate, code, engine, 10)
-    assert row is not None
-    assert row['loss_stochastic'] <= separate.threshold
-    assert row['loss_synthesis'] <= separate.synthesis_budget
-    assert row['loss_total'] > separate.threshold
-    assert row['q_no_fault'] >= exp(-separate.threshold)
-    assert row['quality'] < row['q_no_fault']
-    assert pinnacle.evaluate(*args, vary(threshold=0.001, synthesis_budget=0.01),
-                              code, engine, 10) is None
+def brute_force(w, ensemble, hw, pc):
+    """Enumerate every design explicitly, with the smallest sufficient number of supplies."""
+    best = np.inf
+    for code in P.CODES:
+        if code.d not in pc.codes:
+            continue
+        for s in pf.all_supplies(pc.families, pc.adapter_distances):
+            if pc.supply_filter and not any(f in s.name for f in pc.supply_filter):
+                continue
+            for NTc in range(5, 161):
+                for F in range(1, 400):
+                    N, cycles, total = hand_design(w, ensemble, code, s, NTc, F, hw)
+                    if total <= BASELINE.threshold and cycles <= WEEK_SECONDS/BASELINE.cycle_seconds:
+                        best = min(best, N)
+                        break
+    return best
 
 
-@pytest.mark.parametrize('key', ['H1', 'H3'])
-def test_nearest_neighbor_grid_has_no_free_nonlocal_pinnacle_operations(key):
-    hw = HARDWARE[key]
-    assert pinnacle.min_qubits(4, 'shallow', hw, BASELINE) is None
-    assert pinnacle.sweep(hw, BASELINE) == []
+@pytest.mark.parametrize('w,ensemble,families', [(6, 'shallow', ('reference', 'surface')), (4, 'deep', ('gb_cult', 'gb_inject')),
+                                                  (10, 'deep', ('reference', 'gb_inject2'))])
+def test_search_matches_brute_force(w, ensemble, families):
+    pc = P.vary(families=families, adapter_distances=(15, 23), supply_filter=())   # the search checked over every entry
+    r = P.min_qubits(w, ensemble, H2, BASELINE, pc)
+    assert r['qubits'] == brute_force(w, ensemble, H2, pc)
 
 
-def test_bimodal_hardware_uses_the_same_declared_conservative_fit():
-    a = pinnacle.min_qubits(12, 'deep', HARDWARE['H2'], BASELINE)
-    b = pinnacle.min_qubits(12, 'deep', HARDWARE['H4'], BASELINE)
-    for field in ('qubits', 'distance', 'engine', 'T_per_rotation', 'cycles', 'loss_total'):
-        assert a[field] == b[field]
+def test_min_qubits_never_decreases_with_width():
+    for ensemble in ('shallow', 'deep'):
+        qs = [P.min_qubits(w, ensemble, H2, BASELINE)['qubits'] for w in range(2, 120, 2)]
+        assert qs == sorted(qs)
 
 
-def test_unpublished_physical_error_rate_does_not_reuse_the_engine_menu():
-    hw = replace(HARDWARE['H2'], p=1e-4, eps_1q=1e-4, eps_2q=1e-4)
-    assert pinnacle.min_qubits(4, 'shallow', hw) is None
-    assert pinnacle.sweep(hw) == []
+def test_best_at_refines_sampled_widths():
+    rows = P.sweep(H2, BASELINE)
+    got = P.best_at(1e5, H2, BASELINE, rows)
+    nxt = [e for e in ('shallow', 'deep') if P.min_qubits(got['w'] + 2, e, H2, BASELINE)]
+    assert got['qubits'] <= 1e5
+    for e in nxt:
+        n = P.min_qubits(got['w'] + 2, e, H2, BASELINE)
+        assert n['qubits'] > 1e5 or size(got['w'] + 2, e) <= got['s']
 
 
-@pytest.mark.parametrize('width', [-2, 0, 1, 3])
-def test_invalid_quops_width_is_rejected(width):
-    with pytest.raises(ValueError):
-        pinnacle.min_qubits(width, 'shallow', HARDWARE['H2'])
+def test_grid_hardware_is_unsupported_not_zero():
+    for hw in (H1, H3):
+        assert P.min_qubits(4, 'deep', hw, BASELINE) is None
+        assert P.sweep(hw, BASELINE) == []
+        assert P.best_at(1e5, hw, BASELINE, []) is None
+        assert 'not modeled' in P.support_reason(hw)
 
 
-@pytest.mark.parametrize('ensemble', ['shallow', 'deep'])
-def test_optimizer_matches_exhaustive_discrete_designs(ensemble):
-    hw, w = HARDWARE['H2'], 6
-    candidates = [pinnacle.evaluate(w, ensemble, hw, BASELINE, code, engine, int(nT))
-                  for code in pinnacle.CODES for engine in pinnacle.ENGINES for nT in pinnacle.NT]
-    feasible = [row for row in candidates if row is not None]
-    expected = min(row['qubits'] for row in feasible)
-    actual = pinnacle.min_qubits(w, ensemble, hw, BASELINE)
-    assert actual['qubits'] == expected
+def test_noise_classes_share_the_block_fit():
+    assert P.min_qubits(40, 'deep', H2, BASELINE)['qubits'] == P.min_qubits(40, 'deep', H4, BASELINE)['qubits']
 
 
-@pytest.mark.parametrize('ensemble', ['shallow', 'deep'])
-def test_minimum_qubits_never_decrease_across_block_boundaries(ensemble):
-    rows = [pinnacle.min_qubits(w, ensemble, HARDWARE['H2']) for w in range(2, 82, 2)]
-    assert all(row is not None for row in rows)
-    assert np.all(np.diff([row['qubits'] for row in rows]) >= 0)
+def test_larger_menu_is_never_worse():
+    for w in (4, 20, 100, 500):
+        a = P.min_qubits(w, 'deep', H2, BASELINE, REF)['qubits']
+        b = P.min_qubits(w, 'deep', H2, BASELINE, P.BASELINE)['qubits']
+        assert b <= a
 
 
-def test_capability_probe_refines_the_budget_boundary_and_works_with_curves():
-    hw = HARDWARE['H2']
-    rows = pinnacle.sweep(hw, BASELINE)
-    row = pinnacle.best_at(10_000, hw, BASELINE, rows)
-    assert row is not None and row['qubits'] <= 10_000
-    next_design = pinnacle.min_qubits(row['w'] + 2, row['ensemble'], hw, BASELINE)
-    assert next_design is None or next_design['qubits'] > 10_000
-    assert pinnacle.capability(10_000, hw, BASELINE, rows) == row['s']
-    assert row['s'] >= curves.capability(rows, 10_000)
-    values = curves.curve(rows)
-    assert np.all(np.diff(values) >= 0)
+def test_eta_one_lowers_the_qubit_need():
+    assert P.min_qubits(600, 'deep', H2, BASELINE, P.vary(eta=1.0))['qubits'] <= P.min_qubits(600, 'deep', H2, BASELINE)['qubits']
 
 
-def test_architecture_choices_do_not_mutate_shared_configuration():
-    changed = pinnacle.vary(reaction_cycles=20)
-    assert changed.reaction_cycles == 20
-    assert pinnacle.BASELINE.reaction_cycles == 10
-    assert BASELINE.executions == 1
-    with pytest.raises(FrozenInstanceError):
-        pinnacle.BASELINE.reaction_cycles = 20
+def test_cycle_time_scales_runtime_exactly_and_leaves_qubits_unchanged_when_not_time_limited():
+    """With engine supplies only; surface-code supplies keep their own 600 ns cycle."""
+    from dataclasses import replace
+    a = P.min_qubits(60, 'deep', H2, BASELINE, REF)
+    b = P.min_qubits(60, 'deep', H2, replace(BASELINE, cycle_seconds=1.2e-6), REF)
+    assert b['cycles'] == pytest.approx(a['cycles']) and b['run_seconds'] == pytest.approx(1.2*a['run_seconds'])
+    assert b['qubits'] == a['qubits']
+
+
+def test_frozen_block_menu_is_a_selectable_subset():
+    pc = P.FROZEN_T
+    r = P.min_qubits(18, 'deep', H2, BASELINE, pc)
+    assert r['code_k'] == 8 and r['blocks'] == 3 and r['distance'] == 24
+    assert r['qubits'] >= 3*2522                          # three full 2522-qubit Frozen blocks plus the supply
+    assert P.min_qubits(2, 'shallow', H2, BASELINE, pc)['qubits'] > P.min_qubits(2, 'shallow', H2, BASELINE)['qubits']
+
+
+def test_extended_surface_menu_is_never_worse_than_the_cached_menu():
+    from dataclasses import replace
+    from capability import surface
+    ext = replace(BASELINE, factories=('cultivation', 'litinski', 'jws'))
+    for w, e in ((6, 'deep'), (40, 'deep'), (300, 'shallow')):
+        a, b = surface.min_qubits(w, e, H2, BASELINE), surface.min_qubits(w, e, H2, ext)
+        assert b['qubits'] <= a['qubits']
+
+
+def test_surface_supplies_run_at_the_surface_code_cycle():
+    """A cultivation factory of 100 surface-code cycles delivers every 50 Pinnacle cycles at 1.2 us (600 ns / 1.2 us)."""
+    from dataclasses import replace
+    pc = P.vary(families=('surface',), supply_filter=('cultivation, adapter d_a=15',))
+    sa = P.supply_arrays(pc)
+    assert P.supply_periods(sa, pc, replace(BASELINE, cycle_seconds=1.2e-6)) == pytest.approx([50.])
+    assert P.supply_periods(sa, P.vary(supply_filter=('15-to-1 (Pinnacle, d_a=7)',)), BASELINE)[0] != 50.
+
+
+def test_quops_has_no_final_measurement_slots():
+    """N_M = 0 for QUOPS (draft Sec. 2.2), as in the surface-code runtime of Sec. 4.8: only the startup slot is added."""
+    a = P.min_qubits(40, 'deep', H2, BASELINE, REF)
+    b = P.min_qubits(40, 'deep', H2, BASELINE, P.vary(families=('reference',), final_measurements=True))
+    assert b['cycles'] - a['cycles'] == pytest.approx(40*a['slot'])

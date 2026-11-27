@@ -24,6 +24,7 @@ python -m venv .venv
 .venv/bin/python scripts/compare_surface_architectures.py
 .venv/bin/python scripts/audit_surface_architectures.py
 .venv/bin/python scripts/make_star_comparison.py
+.venv/bin/python scripts/make_quops_comparison.py
 .venv/bin/python -m pytest -q
 ```
 
@@ -33,6 +34,19 @@ python -m venv .venv
 `pbc_comparison_v2` and `architecture_audit_v3` output directories, respectively.
 The Pinnacle script reads the regenerated baseline. Run it before the Frozen Pinnacle script,
 which reads both the baseline and the original Pinnacle results.
+`catalogue_factories.py --master MASTER_CATALOG_JSON --search SEARCH_OUTPUTS_DIR` costs the distance-2 and distance-3
+catalogue factories (from the repositories of arXiv:2610.06535 and of Singh, Gidney and Jones) as surface-code layouts and as
+Pinnacle engine inputs, and writes `results/catalogue_factories.json`, which the Pinnacle and extended surface-code menus read.
+On the all-to-all classes H2 and H4, fold-transversal cultivation (arXiv:2509.05212) replaces color-code cultivation for
+the surface code, Pinnacle, and Frozen. `find_winners.py` finds the magic engines and factories that set a point on the exact
+all-to-all curves (results/winners.json), and `fold_cultivation_comparison.py` reruns that comparison with unfiltered menus.
+`make_pinnacle_curves.py` also computes the Frozen Pinnacle curves with the options that set a point on their curves,
+the surface-code curve with its extended menu (cultivation and the layouts that set a point on it), the supply
+comparison (`supply_verdict`), and the sensitivities; see
+[the Pinnacle note](docs/pinnacle.md).
+`make_quops_comparison.py` draws the combined capability figure of the draft (`figures/quops_comparison.*`)
+from the cached direct, surface-code, and Pinnacle results and the STAR steps in
+`results/quops_comparison_star.json`; it recomputes nothing.
 The notebook [quops_walkthrough.ipynb](notebooks/quops_walkthrough.ipynb) independently calculates
 one direct and one sequential PBC design before constructing the curves.
 
